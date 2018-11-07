@@ -1,0 +1,12 @@
+# IDEs:
+.idea/
+.vscode/
+.vs/
+
+# packages:
+node_modules/
+
+# local files and folders:
+.directory
+local.*
+dist/
