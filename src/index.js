@@ -3,7 +3,7 @@
 import 'babel-runtime/regenerator';
 import 'webpack-hot-middleware/client?reload=true';         // creates websocket connection (and reloading on change)
 import './styles/normalize.css';
-import './styles/baseKitchenSink.css';
+import './styles/resets.css';
 import './index.html';
 
 import Vue from 'vue';
