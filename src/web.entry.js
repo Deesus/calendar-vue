@@ -20,10 +20,14 @@ Object.defineProperty(Vue.prototype,
 // ==================================================
 // vue instance:
 // ==================================================
-new Vue({
-    el: '#app',
 
-    render(h) {
-        return h(App);
-    }
-});
+// TODO: we get `[Vue warn]: Cannot find element: #app' unless we use `window.onload`; need to fix something in Webpack
+window.onload = function() {
+    new Vue({
+        el: '#app',
+
+        render(h) {
+            return h(App);
+        }
+    });
+};

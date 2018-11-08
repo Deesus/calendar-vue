@@ -6,7 +6,7 @@ const VueLoaderPlugin   = require('vue-loader/lib/plugin');
 
 module.exports = {
     entry: {
-        main: ['./src/index.js']
+        main: ['./src/web.entry.js']
     },
 
 

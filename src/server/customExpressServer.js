@@ -25,5 +25,5 @@ server.use(staticMiddleware);
 
 const PORT_NUMBER = 8080;
 server.listen(PORT_NUMBER, () => {
-    console.log(`\nSrver is listening to http://localhost:${PORT_NUMBER}\n`);
+    console.log(`\nServer is listening to http://localhost:${PORT_NUMBER}\n`);
 });

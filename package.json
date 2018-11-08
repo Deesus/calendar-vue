@@ -39,6 +39,7 @@
     "webpack-hot-middleware": "^2.24.3"
   },
   "dependencies": {
+    "moment-timezone": "^0.5.23",
     "vue": "^2.5.17"
   },
   "browserslist": [

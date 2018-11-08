@@ -1,6 +1,6 @@
 <template>
-    <div class="layout">
-        meo mix
+    <div>
+        meow
     </div>
 </template>
 
@@ -22,7 +22,5 @@
 
 
 <style scoped>
-    .layout {
-        margin-top: 60px;
-    }
+
 </style>
