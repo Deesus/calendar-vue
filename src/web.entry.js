@@ -11,6 +11,8 @@ import moment from 'moment-timezone';
 import Vue from 'vue';
 import App from './App.vue';
 
+// by defining a getter property (`$moment`) and then passing it as a `data` property in the Vue instance below,
+// we can use `$moment` in all of our components:
 Object.defineProperty(Vue.prototype,
                       '$moment',
                       {
@@ -25,6 +27,10 @@ Object.defineProperty(Vue.prototype,
 window.onload = function() {
     new Vue({
         el: '#app',
+
+        data: {
+            moment
+        },
 
         render(h) {
             return h(App);
