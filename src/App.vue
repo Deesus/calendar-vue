@@ -1,15 +1,13 @@
 <template>
     <div>
-        <div v-for="week in weeksInMonth">
-            week
-            <div>{{ week }}</div>
-            <br>
-        </div>
+        <c-month-view :daysInMonth="daysInMonth"></c-month-view>
     </div>
 </template>
 
 
 <script>
+    import CMonthView from './components/CMonthView.vue';
+
     export default {
         name: 'App',
 
@@ -75,36 +73,12 @@
                 }
 
                 return days;
-            },
-
-
-            /**
-             * Generates a list of weeks in month-view for the selected (currently viewing) month
-             *
-             * @returns {Array}
-             */
-            weeksInMonth() {
-                // there should be 5 rows/weeks for every month
-                let days = this.daysInMonth;
-                let weeks = [];
-                let week = [];
-
-
-                // loop through days and add to `week`; if we have 7 days in week, add to `weeks`:
-                for (let day of days) {
-                    week.push(day);
-
-                    if (week.length === 7) {
-                        weeks.push(week);
-                        week = [];
-                    }
-                }
-
-                return weeks;
             }
         },
 
-        components: {},
+        components: {
+            'c-month-view': CMonthView
+        },
 
         created() {
 
