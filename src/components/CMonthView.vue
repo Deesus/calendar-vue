@@ -1,7 +1,8 @@
 <template>
     <div class="c-month-view">
+
         <div class="c-month-view__heading">
-            {{ formatSelectedMonth }} {{ formatSelectedYear }}
+            {{ formattedSelectedMonth }} {{ formattedSelectedYear }}
         </div>
         <br>
 
@@ -9,7 +10,6 @@
             <button @click="previousMonthHandler" type="button">&lt;</button>
             <button @click="nextMonthHandler" type="button">&gt;</button>
         </div>
-
         <br>
 
         <div class="c-week-heading">
@@ -34,31 +34,8 @@
 
 
 <script>
-    const DATE_ENUM = Object.freeze({
-        // day of week:
-        SUNDAY: 0,
-        MONDAY: 1,
-        TUESDAY: 2,
-        WEDNESDAY: 3,
-        THURSDAY: 4,
-        FRIDAY: 5,
-        SATURDAY: 6,
-
-        // n.b. the month in this moment object ranges from 1-12, but when we use `.month()` method on this object, we get 0-indexed months
-        // months:
-        JANUARY: 0,
-        FEBRUARY: 1,
-        MARCH: 2,
-        APRIL: 3,
-        MAY: 4,
-        JUNE: 5,
-        JULY: 6,
-        AUGUST: 7,
-        SEPTEMBER: 8,
-        OCTOBER: 9,
-        NOVEMBER: 10,
-        DECEMBER: 11
-    });
+    import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
+    import { DATE_ENUM } from '../appConstants';
 
     export default {
         name: 'CMonthView',
@@ -80,9 +57,6 @@
                 else {
                     this.$store.commit('setCurrentMonth', this.$store.state.selectedMonth - 1);
                 }
-
-                console.log(`month: ${this.$store.state.selectedMonth}`);
-                console.log(`year: ${this.$store.state.selectedYear}`);
             },
 
             nextMonthHandler() {
@@ -93,9 +67,6 @@
                 else {
                     this.$store.commit('setCurrentMonth', this.$store.state.selectedMonth + 1);
                 }
-
-                console.log(`month: ${this.$store.state.selectedMonth}`);
-                console.log(`year: ${this.$store.state.selectedYear}`);
             }
         },
 
@@ -132,14 +103,10 @@
              * @returns {Array}: list of moment date object
              */
             daysInMonth() {
-                let days = [];                          // list of days we will display in a month-view
-
-
-                // n.b. the month in this moment object ranges from 1-12, but when we use `.month()` method on this object, we get 0-indexed months:
-                // thus, `this.$store.state.selectedMonth` is 0-indexed, so we add `1` to offset it:
-                let firstDayOfMonth = this.$moment(`${this.$store.state.selectedYear}-${this.$store.state.selectedMonth+1}-1`,
-                                                   'YYYY-M-D');
-
+                let days = [];  // list of days we will display in a month-view
+                let firstDayOfMonth = createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
+                                                                         this.$store.state.selectedMonth,
+                                                                         1);
 
                 // if day is not Sunday, then we add days from previous months to list to fill up the week:
                 {
@@ -176,32 +143,20 @@
                 return days;
             },
 
-            formatSelectedMonth() {
-                return this.$moment(this.$store.state.selectedMonth).format('MMM');
+            formattedSelectedMonth() {
+                // TODO: n.b. we could also map the month names to an enum so that we don't keep returning moment objects:
+                return createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
+                                                          this.$store.state.selectedMonth,
+                                                          this.$store.state.selectedDay)
+                    .format('MMM');
             },
 
-            formatSelectedYear() {
+            formattedSelectedYear() {
                 return this.$store.state.selectedYear;
             },
-
-            year() {
-                return this.$store.state.selectedYear;
-            },
-
-            month() {
-                return this.$store.state.selectedMonth;
-            },
-
 
         }, // computed
 
-
-
-        created() {
-            console.log(`day: ${this.$store.state.selectedDay}`);
-            console.log(`month: ${this.$store.state.selectedMonth}`);
-            console.log(`year: ${this.$store.state.selectedYear}`);
-        }
     }
 </script>
 

@@ -10,7 +10,7 @@ import moment from 'moment-timezone';
 
 import Vue from 'vue';
 import App from './App.vue';
-import store from './store/index';
+import store from './store/storeMonthVuew';
 
 // by defining a getter property (`$moment`) and then passing it as a `data` property in the Vue instance below,
 // we can use `$moment` in all of our components:
