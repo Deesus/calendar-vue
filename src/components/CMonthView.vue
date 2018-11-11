@@ -22,11 +22,10 @@
             <div class="c-week-heading__day">Sat</div>
         </div>
 
-        <!-- TODO: create a new component for 'day': -->
         <div class="c-week" v-for="week in weeksInMonth">
-            <div v-for="day in week" class="c-day">{{ day.date() }}</div>
+            <!-- TODO: see: https://vuejs.org/guide/list.html#key -->
+            <c-month-view-day v-for="day in week" :day="day" :key="day.id"></c-month-view-day>
         </div>
-
 
     </div>
 </template>
@@ -36,6 +35,7 @@
 <script>
     import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
     import { DATE_ENUM } from '../appConstants';
+    import CMonthViewDay from './CMonthViewDay.vue';
 
     export default {
         name: 'CMonthView',
@@ -157,6 +157,10 @@
 
         }, // computed
 
+
+        components: {
+            'c-month-view-day': CMonthViewDay
+        }
     }
 </script>
 
@@ -179,11 +183,5 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-    }
-
-    .c-day {
-        width: 150px;
-        height: 150px;
-        border: 1px solid lightslategray;
     }
 </style>

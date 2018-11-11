@@ -1,3 +1,5 @@
+// TODO: move file to different folder?
+
 const DATE_ENUM = Object.freeze({
     // ---------- day of week: ----------
     SUNDAY: 0,
