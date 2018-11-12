@@ -14,16 +14,16 @@ export default new Vuex.Store({
     },
 
     mutations: {
+        setCurrentDay(state, payload) {
+            state.selectedDay = payload;
+        },
+
         setCurrentMonth(state, payload) {
             state.selectedMonth = payload;
         },
 
         setCurrentYear(state, payload) {
             state.selectedYear = payload;
-        },
-
-        setCurrentDay(state, payload) {
-            state.selectedDay = payload;
         }
     }
 });

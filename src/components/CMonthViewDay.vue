@@ -1,7 +1,9 @@
 <template>
-    <div :class="monthViewDayStyles" @click="dayClicked">
-        {{ day.date() }}
-    </div>
+    <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } } ">
+        <div :class="monthViewDayStyles" @click="dayClicked">
+            {{ day.date() }}
+        </div>
+    </router-link>
 </template>
 
 
@@ -9,17 +11,26 @@
     export default {
         name: 'CMonthViewDay',
 
+
         data() {
             return {};
         },
 
+
         props: ['day'],
 
-        methods: {
-            dayClicked() {
 
+        methods: {
+            // TODO: we want to redirect to the month user was previously viewing rather than the clicked month
+            // since we commit the the 'current date', if we select days from next/previous month,
+            // the return link redirects to new month rather than the month user was viewing
+            dayClicked() {
+                this.$store.commit('setCurrentDay',     this.day.date() );
+                this.$store.commit('setCurrentMonth',   this.day.month() );
+                this.$store.commit('setCurrentYear',    this.day.year() );
             },
         },
+
 
         computed: {
 
@@ -28,12 +39,18 @@
                 let isToday = this.day.isSame(this.$moment(), 'day');
 
                 return {
-                    'c-month-view-day': true,
-                    'c-month-view-day--muted': isNotCurrentMonth,
-                    'c-month-view-day--today': isToday
+                    'c-month-view-day':         true,
+                    'c-month-view-day--muted':  isNotCurrentMonth,
+                    'c-month-view-day--today':  isToday
                 };
+            },
+
+            dayTimeStamp() {
+                // n.b. we offset month value by 1:
+                return `${this.day.date()}-${this.day.month()+1}-${this.day.year()}`;
             }
         }
+
     }
 </script>
 

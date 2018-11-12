@@ -1,14 +1,14 @@
 <template>
     <div>
-        <c-month-view></c-month-view>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
     </div>
 </template>
 
 
 
 <script>
-    import CMonthView from './components/CMonthView.vue';
-
     export default {
         name: 'App',
 
@@ -20,9 +20,7 @@
 
         methods: {},
 
-        components: {
-            'c-month-view': CMonthView
-        }
+        components: {}
     }
 </script>
 

@@ -7,10 +7,16 @@ import './styles/resets.css';
 import './index.html';
 
 import moment from 'moment-timezone';
-
 import Vue from 'vue';
 import App from './App.vue';
-import store from './store/storeMonthVuew';
+import store from './store/storeMonthView';
+import VueRouter from 'vue-router';
+Vue.use (VueRouter);
+
+import routes from './vueRoutes';
+const router = new VueRouter({
+   routes
+});
 
 // by defining a getter property (`$moment`) and then passing it as a `data` property in the Vue instance below,
 // we can use `$moment` in all of our components:
@@ -34,6 +40,8 @@ window.onload = function() {
         },
 
         store: store,
+
+        router: router,
 
         render(h) {
             return h(App);
