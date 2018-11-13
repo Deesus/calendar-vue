@@ -17,7 +17,12 @@
         },
 
 
-        props: ['day'],
+        props: {
+            day: {
+                type:       Object,   // we could have also imported moment and specified that as the type
+                required:   true
+            }
+        },
 
 
         methods: {
@@ -33,7 +38,6 @@
 
 
         computed: {
-
             monthViewDayStyles() {
                 let isNotCurrentMonth = this.day.month() !== this.$store.state.selectedMonth;
                 let isToday = this.day.isSame(this.$moment(), 'day');
