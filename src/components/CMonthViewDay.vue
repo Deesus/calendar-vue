@@ -1,13 +1,16 @@
 <template>
     <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } } ">
         <div :class="monthViewDayStyles" @click="dayClicked">
-            {{ day.date() }}
+            <div>{{ day.date() }}</div>
+            <div v-for="event in eventsInDay">{{ event.name }}</div>
         </div>
     </router-link>
 </template>
 
 
 <script>
+    import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
+
     export default {
         name: 'CMonthViewDay',
 
@@ -38,10 +41,15 @@
 
 
         computed: {
-            events() {
-                // check if the event day is the same as day in calendar month:
-                // return this.$store.state.events.filter( (event) => event.date.isSame(this.day, 'day') );
-                // TODO: check startDate and endDate, if today's date is between them;
+            // TODO: same function in DayView; place function in utils
+            eventsInDay() {
+
+                let listOfEvents = this.$store.state.eventsInCalendar;
+
+                return listOfEvents.filter((event) => {
+                    return (this.day.isSameOrAfter(event.startDate, 'day')) &&
+                           (this.day.isSameOrBefore(event.endDate, 'day'));
+                });
             },
 
             monthViewDayStyles() {
@@ -56,6 +64,7 @@
             },
 
             dayTimeStamp() {
+                // TODO: can we place this function in utils module?
                 // n.b. we offset month value by 1:
                 return `${this.day.date()}-${this.day.month()+1}-${this.day.year()}`;
             }

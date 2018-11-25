@@ -21,15 +21,18 @@
     export default {
         name: 'CDayView',
 
+
         data() {
             return {
 
             }
         },
 
+
         methods: {
             // TODO: fill out click event: open modal, enter time
         },
+
 
         computed: {
             /**
