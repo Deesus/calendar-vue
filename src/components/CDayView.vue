@@ -6,43 +6,50 @@
         </div>
 
         <ul>
-            <li v-for="hour in hoursInDay" :key="hour.index" @click="hourClicked">
-                {{ hour }}
+            <li v-for="(event, index) in eventsInDay" :key="index">
+                {{ event.startDate.format('h:mma') }}
+                {{ event.name }}
             </li>
         </ul>
-
     </div>
 </template>
 
 
 <script>
+    import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
+
     export default {
         name: 'CDayView',
 
         data() {
             return {
-                // TODO: replace with a moment object where you can format the time in any way you want:
-                hoursInDay: [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                             12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-                            .map((val, index) => {
-                                if (index < 12) {
-                                    return `${val}am`;
-                                }
-                                else {
-                                    return `${val}pm`;
-                                }
-                            })
+
             }
         },
 
         methods: {
             // TODO: fill out click event: open modal, enter time
-            hourClicked(event) {
-                console.log(event);
-            }
         },
 
         computed: {
+            /**
+             * Filters the Vuex store's event list for only the events in the selected day
+             *
+             * @returns {Array}: list of events on the selected date
+             */
+            eventsInDay() {
+
+                let listOfEvents = this.$store.state.eventsInCalendar;
+                let selectedDate = createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
+                                                                      this.$store.state.selectedMonth,
+                                                                      this.$store.state.selectedDay);
+
+                return listOfEvents.filter((event) => {
+                    return (selectedDate.isSameOrAfter(event.startDate, 'day')) &&
+                           (selectedDate.isSameOrBefore(event.endDate, 'day'));
+                });
+            },
+
             formattedFullDate() {
                 return `${this.$store.state.selectedDay}/${this.$store.state.selectedMonth+1}/${this.$store.state.selectedYear}`;
             }

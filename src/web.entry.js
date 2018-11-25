@@ -9,7 +9,7 @@ import './index.html';
 import moment from 'moment-timezone';
 import Vue from 'vue';
 import App from './App.vue';
-import store from './store/storeMonthView';
+import store from './store/store.calendar';
 import VueRouter from 'vue-router';
 Vue.use (VueRouter);
 

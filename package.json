@@ -1,7 +1,7 @@
 {
-  "name": "kitchen-sink",
+  "name": "calendar-vue",
   "version": "1.0.0",
-  "description": "kitchen sink",
+  "description": "a vue calendar",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config=config/webpack.dev.js",
@@ -9,7 +9,7 @@
     "production": ""
   },
   "keywords": [
-    "kitchen sink"
+    "vue calendar"
   ],
   "author": "Dee Reddy | Ди Редди",
   "devDependencies": {

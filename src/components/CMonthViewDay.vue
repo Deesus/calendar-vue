@@ -38,6 +38,12 @@
 
 
         computed: {
+            events() {
+                // check if the event day is the same as day in calendar month:
+                // return this.$store.state.events.filter( (event) => event.date.isSame(this.day, 'day') );
+                // TODO: check startDate and endDate, if today's date is between them;
+            },
+
             monthViewDayStyles() {
                 let isNotCurrentMonth = this.day.month() !== this.$store.state.selectedMonth;
                 let isToday = this.day.isSame(this.$moment(), 'day');
