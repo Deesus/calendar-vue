@@ -4,7 +4,7 @@
         <!-- ---------- header: ---------- -->
         <div class="c-day-view__heading">
             <div>{{ formattedFullDate }}</div>
-            <router-link :to="{name: 'month-view' }">back to month view</router-link>
+            <router-link :to="{name: 'month-view' }" @click.native="returnToMonthViewLinkClicked">back to month view</router-link>
         </div>
         <div>
             <!-- TODO: replace with svg icon: -->
@@ -84,6 +84,10 @@
             toggleShowEventControlsClicked() {
                 // n.b. once we show the 'add event' controls, it is always shown until user leaves day-view:
                 this.shouldShowEventControls = true;
+            },
+
+            returnToMonthViewLinkClicked() {
+                // n.b. this is a placeholder in case we need to extend the functionality of the component
             }
         },
 
