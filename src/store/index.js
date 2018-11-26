@@ -6,6 +6,7 @@ Vue.use(Vuex);
 import moment from 'moment-timezone';
 
 export default new Vuex.Store({
+
     state: {
         // n.b. these are numbers:
         selectedYear:   moment().year(),
@@ -14,12 +15,13 @@ export default new Vuex.Store({
         eventsInCalendar: [
             // TODO: replace dummy data:
             // TODO: need to validate start/end dates
-            { name: 'vacation', startDate: moment(), endDate: moment().add(5, 'days'), label: 'yellow' },
-            { name: 'vacation 2', startDate: moment(), endDate: moment().add(5, 'days'), label: 'red' },
-            { name: 'meeting',  startDate: moment().subtract(8, 'days').add(3, 'hours'), endDate: moment().subtract(8, 'days').add(6, 'hours'), label: 'green' },
-            { name: 'one more', startDate: moment().subtract(8, 'days').add(5, 'hours'), endDate: moment().subtract(8, 'days').add(10, 'hours'), label: 'blue' }
+            { name: 'vacation', startTime: moment(), endTime: moment().add(5, 'days'), label: 'yellow' },
+            { name: 'vacation 2', startTime: moment(), endTime: moment().add(5, 'days'), label: 'red' },
+            { name: 'meeting',  startTime: moment().subtract(8, 'days').add(3, 'hours'), endTime: moment().subtract(8, 'days').add(6, 'hours'), label: 'green' },
+            { name: 'one more', startTime: moment().subtract(8, 'days').add(5, 'hours'), endTime: moment().subtract(8, 'days').add(10, 'hours'), label: 'blue' }
         ]
     },
+
 
     mutations: {
         setCurrentDay(state, payload) {
@@ -35,7 +37,12 @@ export default new Vuex.Store({
         },
 
         addEventToCalendar(state, payload) {
-            state.eventsInCalendar = payload;
+            state.eventsInCalendar.push(payload);
         }
+    },
+
+
+    actions: {
+
     }
 });

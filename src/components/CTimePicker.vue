@@ -15,6 +15,7 @@
 
         data() {
             return {
+                // n.b. these are default time-picker values:
                 hoursInput:     '12',
                 minutesInput:   '00',
                 meridiemValue:  'AM'
@@ -23,6 +24,14 @@
 
 
         methods: {
+            emitTimePickerData() {
+                this.$emit('timePickerUpdated', {
+                    hoursInput:     this.hoursInput,
+                    minutesInput:   this.minutesInput,
+                    meridiemValue:  this.meridiemValue
+                });
+            },
+
             formattedHoursInput() {
                 let inputValue = parseInt(this.hoursInput, 10);
 
@@ -34,11 +43,13 @@
                     this.hoursInput = 12;
                 }
                 else if (inputValue >= 1 && inputValue <= 9) {
-                    this.hoursInput = '0' + this.hoursInput;
+                    this.hoursInput = `0${inputValue}`;
                 }
                 else {
                     this.hoursInput = inputValue;
                 }
+
+                this.emitTimePickerData();
             },
 
             formattedMinutesInput() {
@@ -49,7 +60,7 @@
                     this.minutesInput = '';
                 }
                 else if (inputValue >=1 && inputValue <= 9) {
-                    this.minutesInput = '0' + inputValue;
+                    this.minutesInput = `0${inputValue}`;
                 }
                 else if (inputValue <= 0 || inputValue > 59) {
                     this.minutesInput = '00';
@@ -57,6 +68,8 @@
                 else {
                     this.minutesInput = inputValue;
                 }
+
+                this.emitTimePickerData();
             },
 
             toggleMeridiemClicked() {
@@ -66,8 +79,15 @@
                 else {
                     this.meridiemValue = 'AM';
                 }
+
+                this.emitTimePickerData();
             }
-        } // /methods
+        }, // /methods
+
+
+        mounted() {
+            this.emitTimePickerData();
+        }
     }
 </script>
 

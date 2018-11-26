@@ -11,10 +11,6 @@
             <button @click="nextMonthHandler" type="button">&gt;</button>
         </div>
 
-        <c-time-picker></c-time-picker>
-        <br>
-        <br>
-
         <div class="c-week-heading">
             <div class="c-week-heading__day">Sun</div>
             <div class="c-week-heading__day">Mon</div>
@@ -39,7 +35,6 @@
     import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
     import { DATE_ENUM } from '../appConstants';
     import CMonthViewDay from './CMonthViewDay.vue';
-    import CTimePicker from './CTimePicker.vue';
 
     export default {
         name: 'CMonthView',
@@ -163,8 +158,7 @@
 
 
         components: {
-            CMonthViewDay,
-            CTimePicker
+            CMonthViewDay
         }
     }
 </script>

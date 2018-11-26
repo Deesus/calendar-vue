@@ -47,8 +47,8 @@
                 let listOfEvents = this.$store.state.eventsInCalendar;
 
                 return listOfEvents.filter((event) => {
-                    return (this.day.isSameOrAfter(event.startDate, 'day')) &&
-                           (this.day.isSameOrBefore(event.endDate, 'day'));
+                    return (this.day.isSameOrAfter(event.startTime, 'day')) &&
+                           (this.day.isSameOrBefore(event.endTime,  'day'));
                 });
             },
 
