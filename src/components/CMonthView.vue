@@ -1,11 +1,5 @@
 <template>
     <div class="c-month-view">
-
-        <div class="c-month-view__heading">
-            {{ formattedSelectedMonth }} {{ formattedSelectedYear }}
-        </div>
-        <br>
-
         <div class="c-month-view__controls">
             <button @click="previousMonthHandler" type="button">&lt;</button>
             <button @click="nextMonthHandler" type="button">&gt;</button>
@@ -31,7 +25,7 @@
 
 
 <script>
-    import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
+    import { createMomentObjectFromYearMonthDay } from '../utils/utils';
     import { DATE_ENUM } from '../appConstants';
     import CMonthViewDay from './CMonthViewDay.vue';
     import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/mutation-types';
@@ -140,20 +134,7 @@
                 }
 
                 return days;
-            },
-
-            formattedSelectedMonth() {
-                // TODO: n.b. we could also map the month names to an enum so that we don't keep returning moment objects:
-                return createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
-                                                          this.$store.state.selectedMonth,
-                                                          this.$store.state.selectedDay)
-                    .format('MMM');
-            },
-
-            formattedSelectedYear() {
-                return this.$store.state.selectedYear;
-            },
-
+            }
         }, // computed
 
 
@@ -166,6 +147,12 @@
 
 
 <style lang="less" scoped>
+    @import "../styles/base/_constants.less";
+
+    .c-month-view {
+        padding-top: @page-top-padding;
+    }
+
     .c-week-heading {
         display: flex;
         flex-direction: row;

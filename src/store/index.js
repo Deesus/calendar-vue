@@ -4,6 +4,8 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import moment from 'moment-timezone';
+import { createMomentObjectFromYearMonthDay } from '../utils/utils';
+
 import { ADD_EVENT_TO_CALENDAR_MUTATION,
          REMOVE_EVENT_FROM_CALENDAR_MUTATION,
          SELECT_EVENT_ID_MUTATION,
@@ -68,6 +70,13 @@ export default new Vuex.Store({
 
         [SHOW_CONFIRM_MODAL_MUTATION](state, shouldShowModal) {
             state.shouldShowConfirmModal = shouldShowModal;
+        }
+    },
+
+
+    getters: {
+        getMomentObjectFromSelectedDate(state) {
+            return createMomentObjectFromYearMonthDay(state.selectedYear, state.selectedMonth, state.selectedDay);
         }
     },
 

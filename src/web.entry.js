@@ -2,7 +2,7 @@
 // TODO: clean up imports - do we even need some of these (e.g. index.html import)?
 import 'babel-runtime/regenerator';
 import 'webpack-hot-middleware/client?reload=true';         // creates websocket connection (and reloading on change)
-import './styles/less/app.less';
+import './styles/app.less';
 import './index.html';
 
 import moment from 'moment-timezone';

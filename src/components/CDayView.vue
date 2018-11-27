@@ -54,7 +54,7 @@
     import { createMomentObjectFromYearMonthDay,
              createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
              createUniqueId
-           } from '../utils/utilsTimeAndDates';
+           } from '../utils/utils';
     import { ADD_EVENT_TO_CALENDAR_MUTATION,
              SELECT_EVENT_ID_MUTATION,
              SHOW_CONFIRM_MODAL_MUTATION
@@ -143,9 +143,7 @@
              */
             eventsInDay() {
                 let listOfEvents = this.$store.state.eventsInCalendar;
-                let selectedDate = createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
-                                                                      this.$store.state.selectedMonth,
-                                                                      this.$store.state.selectedDay);
+                let selectedDate = this.$store.getters.getMomentObjectFromSelectedDate;
 
                 return listOfEvents.filter((event) => {
                     return (selectedDate.isSameOrAfter(event.startTime, 'day')) &&

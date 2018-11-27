@@ -22,6 +22,7 @@ body {
   font-size: 1.6em;                     // using `em` instead of `rem` in body b/c bug in chrome (use `rem` in all other areas)
   font-weight: normal;
   color: @font-color-default;
+  line-height: @line-height-default;
   min-height: 100vh;
 }
 
@@ -33,6 +34,29 @@ body {
 a {
   text-decoration: none;
   cursor: pointer;
+}
+
+a,
+button,
+input,
+textarea,
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+  outline: 0 !important;    // TODO: try to remove `!important`; however, this property is being overridden otherwise
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  margin: 0;
+}
+
+strong {
+  font-weight: normal;
 }
 
 i {
