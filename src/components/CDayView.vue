@@ -41,6 +41,8 @@
              createUniqueId
            } from '../utils/utilsTimeAndDates';
 
+    import { ADD_EVENT_TO_CALENDAR_MUTATION, REMOVE_EVENT_FROM_CALENDAR_MUTATION } from '../store/mutation-types';
+
     import CTimePicker from './CTimePicker.vue';
 
     export default {
@@ -81,7 +83,7 @@
                                                                                        this.newEventStartTime.meridiem);
 
                 // TODO: should change from mutation to action:
-                this.$store.commit('addEventToCalendar', {
+                this.$store.commit(ADD_EVENT_TO_CALENDAR_MUTATION, {
                     id:         createUniqueId(),
                     name:       this.newEventName,
                     startTime:  momentObj,
@@ -100,7 +102,7 @@
             },
 
             deleteEventClicked(id) {
-                this.$store.commit('removeEventFromCalendar', id);
+                this.$store.commit(REMOVE_EVENT_FROM_CALENDAR_MUTATION, id);
             }
         },
 

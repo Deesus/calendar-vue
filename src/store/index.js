@@ -4,6 +4,13 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import moment from 'moment-timezone';
+import { ADD_EVENT_TO_CALENDAR_MUTATION,
+         REMOVE_EVENT_FROM_CALENDAR_MUTATION,
+         SET_CURRENT_DAY_MUTATION,
+         SET_CURRENT_MONTH_MUTATION,
+         SET_CURRENT_YEAR_MUTATION
+       } from './mutation-types';
+
 
 export default new Vuex.Store({
 
@@ -27,23 +34,23 @@ export default new Vuex.Store({
 
 
     mutations: {
-        setCurrentDay(state, payload) {
+        [SET_CURRENT_DAY_MUTATION](state, payload) {
             state.selectedDay = payload;
         },
 
-        setCurrentMonth(state, payload) {
+        [SET_CURRENT_MONTH_MUTATION](state, payload) {
             state.selectedMonth = payload;
         },
 
-        setCurrentYear(state, payload) {
+        [SET_CURRENT_YEAR_MUTATION](state, payload) {
             state.selectedYear = payload;
         },
 
-        addEventToCalendar(state, event) {
+        [ADD_EVENT_TO_CALENDAR_MUTATION](state, event) {
             state.eventsInCalendar.push(event);
         },
 
-        removeEventFromCalendar(state, idToRemove) {
+        [REMOVE_EVENT_FROM_CALENDAR_MUTATION](state, idToRemove) {
             state.eventsInCalendar = state.eventsInCalendar.filter( (event)=> {
                 return event.id !== idToRemove;
             });

@@ -34,6 +34,7 @@
     import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
     import { DATE_ENUM } from '../appConstants';
     import CMonthViewDay from './CMonthViewDay.vue';
+    import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/mutation-types';
 
     export default {
         name: 'CMonthView',
@@ -49,21 +50,21 @@
 
             previousMonthHandler() {
                 if (this.$store.state.selectedMonth === DATE_ENUM.JANUARY) {
-                    this.$store.commit('setCurrentMonth', DATE_ENUM.DECEMBER);
-                    this.$store.commit('setCurrentYear', this.$store.state.selectedYear - 1);
+                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.DECEMBER);
+                    this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear - 1);
                 }
                 else {
-                    this.$store.commit('setCurrentMonth', this.$store.state.selectedMonth - 1);
+                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, this.$store.state.selectedMonth - 1);
                 }
             },
 
             nextMonthHandler() {
                 if (this.$store.state.selectedMonth === DATE_ENUM.DECEMBER) {
-                    this.$store.commit('setCurrentMonth', DATE_ENUM.JANUARY);
-                    this.$store.commit('setCurrentYear', this.$store.state.selectedYear + 1);
+                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.JANUARY);
+                    this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear + 1);
                 }
                 else {
-                    this.$store.commit('setCurrentMonth', this.$store.state.selectedMonth + 1);
+                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, this.$store.state.selectedMonth + 1);
                 }
             }
         },

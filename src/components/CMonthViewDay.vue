@@ -9,7 +9,10 @@
 
 
 <script>
-    import { createMomentObjectFromYearMonthDay } from '../utils/utilsTimeAndDates';
+    import { SET_CURRENT_DAY_MUTATION,
+             SET_CURRENT_MONTH_MUTATION,
+             SET_CURRENT_YEAR_MUTATION
+           } from '../store/mutation-types';
 
     export default {
         name: 'CMonthViewDay',
@@ -33,9 +36,9 @@
             // since we commit the the 'current date', if we select days from next/previous month,
             // the return link redirects to new month rather than the month user was viewing
             dayClicked() {
-                this.$store.commit('setCurrentDay',     this.day.date() );
-                this.$store.commit('setCurrentMonth',   this.day.month() );
-                this.$store.commit('setCurrentYear',    this.day.year() );
+                this.$store.commit(SET_CURRENT_DAY_MUTATION,     this.day.date() );
+                this.$store.commit(SET_CURRENT_MONTH_MUTATION,   this.day.month() );
+                this.$store.commit(SET_CURRENT_YEAR_MUTATION,    this.day.year() );
             },
         },
 
