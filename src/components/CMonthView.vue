@@ -165,16 +165,16 @@
 
 
 
-<style scoped>
+<style lang="less" scoped>
     .c-week-heading {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
         width: 100%;
-    }
 
-    .c-week-heading__day {
-        width: 150px;
+        &__day {
+            width: 150px;
+        }
     }
 
     .c-week {

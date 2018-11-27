@@ -179,11 +179,7 @@
 </script>
 
 
-<style scoped>
-    ul {
-        list-style: none;
-    }
-
+<style lang="less" scoped>
     li {
         border-top: 1px solid silver;
         margin: 0;

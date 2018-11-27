@@ -78,6 +78,16 @@ module.exports = {
                 ]
             },
 
+            // ---------- Less: ----------
+            {
+                test: /\.less$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',           // style-loader is responsible for injecting the css into the html
+                    'less-loader'
+                ]
+            },
+
             // ---------- CSS: ----------
             {
                 // regex for file extensions we are targeting:

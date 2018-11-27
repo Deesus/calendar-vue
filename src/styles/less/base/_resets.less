@@ -1,0 +1,49 @@
+@import "_constants";
+@import (less) "normalize.css";
+
+
+html {
+  box-sizing: border-box;
+
+  // font-size set to 62.5% so that 1rem = 10px for easy calculations (e.g. 3rem = 30px):
+  font-size: 62.5%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: @font-family-default;    // n.b. we are referencing Open Sans via fonts.googleapis.com
+  font-size: 1.6em;                     // using `em` instead of `rem` in body b/c bug in chrome (use `rem` in all other areas)
+  font-weight: normal;
+  color: @font-color-default;
+  min-height: 100vh;
+}
+
+
+// ==================================================
+// opinionated element overrides:
+// ==================================================
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+i {
+  font-style: normal;
+}
+
+ul {
+  list-style: none;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  vertical-align: baseline;
+}

@@ -93,7 +93,7 @@
 </script>
 
 
-<style scoped>
+<style lang="less" scoped>
     .c-time-picker {
         border: 1px solid rgb(200, 200, 230);
         border-radius: 3px;

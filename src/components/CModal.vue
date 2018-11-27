@@ -40,7 +40,7 @@
 </script>
 
 
-<style scoped>
+<style lang="less" scoped>
     .modal {
         position: fixed;
         left: 50%;
@@ -53,15 +53,15 @@
         padding: 16px;
         min-height: 100px;
         box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
-    }
 
-    .modal--medium {
-        width: 280px;
-    }
+        &&--medium {
+            width: 280px;
+        }
 
-    .modal__header {
-        display: flex;
-        justify-content: space-between;
+        &__header {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     .modal-overlay {

@@ -77,19 +77,19 @@
 </script>
 
 
-<style scoped>
+<style lang="less" scoped>
     .c-month-view-day {
         width: 150px;
         height: 150px;
         border: 1px solid lightslategray;
-    }
 
-    .c-month-view-day--muted {
-        color: rgb(120,120,120);
-        background: rgb(248, 248, 254);
-    }
+        &&--muted {
+            color: rgb(120,120,120);
+            background: rgb(248, 248, 254);
+        }
 
-    .c-month-view-day--today {
-        background: #faff9a;
+        &&--today {
+            background: #faff9a;
+        }
     }
 </style>

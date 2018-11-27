@@ -57,7 +57,7 @@
 
 
 
-<style scoped>
+<style lang="less" scoped>
     #app {
         min-height: 100vh;
     }
