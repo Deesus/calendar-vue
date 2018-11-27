@@ -6,9 +6,11 @@ Vue.use(Vuex);
 import moment from 'moment-timezone';
 import { ADD_EVENT_TO_CALENDAR_MUTATION,
          REMOVE_EVENT_FROM_CALENDAR_MUTATION,
+         SELECT_EVENT_ID_MUTATION,
          SET_CURRENT_DAY_MUTATION,
          SET_CURRENT_MONTH_MUTATION,
-         SET_CURRENT_YEAR_MUTATION
+         SET_CURRENT_YEAR_MUTATION,
+         SHOW_CONFIRM_MODAL_MUTATION
        } from './mutation-types';
 
 
@@ -19,6 +21,8 @@ export default new Vuex.Store({
         selectedYear:   moment().year(),
         selectedMonth:  moment().month(),     // n.b. month is 0-indexed
         selectedDay:    moment().date(),
+        selectedEventId: null,
+        shouldShowConfirmModal: false,
 
         // n.b. if we were more concerned about performance, we should replace the events array with an object/hash
         // so that we select and delete at O(1) instead of doing Array.filter:
@@ -46,14 +50,24 @@ export default new Vuex.Store({
             state.selectedYear = payload;
         },
 
+        // TODO: this should be an async Vuex action:
         [ADD_EVENT_TO_CALENDAR_MUTATION](state, event) {
             state.eventsInCalendar.push(event);
         },
 
+        // TODO: this should be an async Vuex action:
         [REMOVE_EVENT_FROM_CALENDAR_MUTATION](state, idToRemove) {
             state.eventsInCalendar = state.eventsInCalendar.filter( (event)=> {
                 return event.id !== idToRemove;
             });
+        },
+
+        [SELECT_EVENT_ID_MUTATION](state, payload) {
+            state.selectedEventId = payload;
+        },
+
+        [SHOW_CONFIRM_MODAL_MUTATION](state, shouldShowModal) {
+            state.shouldShowConfirmModal = shouldShowModal;
         }
     },
 

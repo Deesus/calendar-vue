@@ -55,10 +55,12 @@
              createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
              createUniqueId
            } from '../utils/utilsTimeAndDates';
-
-    import { ADD_EVENT_TO_CALENDAR_MUTATION, REMOVE_EVENT_FROM_CALENDAR_MUTATION } from '../store/mutation-types';
-
+    import { ADD_EVENT_TO_CALENDAR_MUTATION,
+             SELECT_EVENT_ID_MUTATION,
+             SHOW_CONFIRM_MODAL_MUTATION
+           } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
+
 
     export default {
         name: 'CDayView',
@@ -86,7 +88,7 @@
 
 
         methods: {
-            /* when time-picker updates its internal state (e.g. onblur), we update the CDayView's data */
+            // when time-picker updates its internal state (e.g. onblur), we update the CDayView's data:
             updateStartTimeData(payload) {
                 this.newEventStartTime.hours    = payload.hoursInput;
                 this.newEventStartTime.minutes  = payload.minutesInput;
@@ -94,7 +96,6 @@
             },
 
             addEventSubmitted() {
-
                 // check if form fields are valid:
                 if (this.isFormValid === false) {
                     return;
@@ -128,7 +129,8 @@
             },
 
             deleteEventClicked(id) {
-                this.$store.commit(REMOVE_EVENT_FROM_CALENDAR_MUTATION, id);
+                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, true);
+                this.$store.commit(SELECT_EVENT_ID_MUTATION, id);
             },
         },
 
@@ -140,7 +142,6 @@
              * @returns {Array}: list of events on the selected date
              */
             eventsInDay() {
-
                 let listOfEvents = this.$store.state.eventsInCalendar;
                 let selectedDate = createMomentObjectFromYearMonthDay(this.$store.state.selectedYear,
                                                                       this.$store.state.selectedMonth,
