@@ -2,7 +2,7 @@
     <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } } ">
         <div :class="monthViewDayStyles" @click="dayClicked">
             <div>{{ day.date() }}</div>
-            <div v-for="event in eventsInDay">{{ event.name }}</div>
+            <div v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
         </div>
     </router-link>
 </template>

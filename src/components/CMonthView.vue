@@ -21,9 +21,8 @@
             <div class="c-week-heading__day">Sat</div>
         </div>
 
-        <div class="c-week" v-for="week in weeksInMonth">
-            <!-- TODO: see: https://vuejs.org/guide/list.html#key -->
-            <c-month-view-day v-for="day in week" :day="day" :key="day.id"></c-month-view-day>
+        <div class="c-week" v-for="(week, weekIndex) in weeksInMonth" :key="weekIndex">
+            <c-month-view-day v-for="(day, dayIndex) in week" :day="day" :key="dayIndex"></c-month-view-day>
         </div>
 
     </div>

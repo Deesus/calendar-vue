@@ -15,14 +15,19 @@
         <div v-if="shouldShowEventControls">
             <span>Start time:</span>
             <c-time-picker v-on:timePickerUpdated="updateStartTimeData"></c-time-picker>
-            <button typeof="button" @click="btnAddEventClicked">Add Event</button>
+            <button type="button" @click="addEventSubmitted">Add Event</button>
         </div>
 
         <!-- ---------- list of events: ---------- -->
         <ul>
-            <li v-for="(event, index) in eventsInDay" :key="index">
-                {{ event.startTime.format('h:mma') }}
-                {{ event.name }}
+            <li v-for="event in eventsInDay" :key="event.id">
+                <span>
+                    {{ event.startTime.format('h:mma') }}
+                    {{ event.name }}
+                </span>
+
+                <!-- TODO: replace with svg icon: -->
+                <i class="icon icon--close" @click="deleteEventClicked(event.id)">X</i>
             </li>
         </ul>
 
@@ -32,7 +37,10 @@
 
 <script>
     import { createMomentObjectFromYearMonthDay,
-             createMomentObjectFromYearMonthDayHoursMinutesMeridiem } from '../utils/utilsTimeAndDates';
+             createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
+             createUniqueId
+           } from '../utils/utilsTimeAndDates';
+
     import CTimePicker from './CTimePicker.vue';
 
     export default {
@@ -64,7 +72,7 @@
                 this.newEventStartTime.meridiem = payload.meridiemValue;
             },
 
-            btnAddEventClicked() {
+            addEventSubmitted() {
                 let momentObj = createMomentObjectFromYearMonthDayHoursMinutesMeridiem(this.$store.state.selectedYear,
                                                                                        this.$store.state.selectedMonth,
                                                                                        this.$store.state.selectedDay,
@@ -74,6 +82,7 @@
 
                 // TODO: should change from mutation to action:
                 this.$store.commit('addEventToCalendar', {
+                    id:         createUniqueId(),
                     name:       this.newEventName,
                     startTime:  momentObj,
                     endTime:    momentObj,
@@ -88,6 +97,10 @@
 
             returnToMonthViewLinkClicked() {
                 // n.b. this is a placeholder in case we need to extend the functionality of the component
+            },
+
+            deleteEventClicked(id) {
+                this.$store.commit('removeEventFromCalendar', id);
             }
         },
 
@@ -133,5 +146,9 @@
         border-top: 1px solid silver;
         margin: 0;
         padding: 12px 0;
+    }
+
+    .icon--close {
+        cursor: pointer;
     }
 </style>
