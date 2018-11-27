@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="app">
         <router-view></router-view>
     </div>
 </template>
@@ -11,12 +11,8 @@
         name: 'App',
 
         data() {
-            return {
-
-            };
+            return {};
         },
-
-        methods: {},
 
         components: {}
     }
@@ -25,5 +21,7 @@
 
 
 <style scoped>
-
+    #app {
+        min-height: 100vh;
+    }
 </style>

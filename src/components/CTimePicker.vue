@@ -86,6 +86,7 @@
 
 
         mounted() {
+            // as soon as the component is mounted, it emits the default time-picker values to parent:
             this.emitTimePickerData();
         }
     }

@@ -12,22 +12,37 @@
         </div>
 
         <!-- ---------- add event: ---------- -->
-        <div v-if="shouldShowEventControls">
-            <span>Start time:</span>
-            <c-time-picker v-on:timePickerUpdated="updateStartTimeData"></c-time-picker>
-            <button type="button" @click="addEventSubmitted">Add Event</button>
-        </div>
+        <form v-if="shouldShowEventControls">
+            <div>
+                <label :for="addEventNameElementId">Name:</label>
+                <input id="addEventNameElementId" :name="addEventNameElementId" type="text" v-model.trim="newEventName">
+            </div>
+            <div>
+                <label>Start time:</label>
+                <c-time-picker v-on:timePickerUpdated="updateStartTimeData"></c-time-picker>
+                <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add Event</button>
+            </div>
+            <div>
+                <label :for="addEventNotesElementId">Notes:</label>
+                <textarea :id="addEventNotesElementId" :name="addEventNotesElementId" v-model.trim="newEventNotes"></textarea>
+            </div>
+        </form>
 
         <!-- ---------- list of events: ---------- -->
         <ul>
             <li v-for="event in eventsInDay" :key="event.id">
-                <span>
-                    {{ event.startTime.format('h:mma') }}
-                    {{ event.name }}
-                </span>
+                <div>
+                    <div>
+                        {{ event.startTime.format('h:mma') }}
+                        {{ event.name }}
 
-                <!-- TODO: replace with svg icon: -->
-                <i class="icon icon--close" @click="deleteEventClicked(event.id)">X</i>
+                        <!-- TODO: replace with svg icon: -->
+                        <i class="icon icon--close" @click="deleteEventClicked(event.id)">X</i>
+                    </div>
+                    <div>
+                        {{ event.notes }}
+                    </div>
+                </div>
             </li>
         </ul>
 
@@ -51,9 +66,13 @@
 
         data() {
             return {
+                addEventNameElementId:  'add-event-name',
+                addEventNotesElementId: 'add-notes-textarea',
+
                 // TODO: replace dummy event name, and event label:
-                newEventName: 'Test event' + Math.random(),
                 newEventLabel: 'yellow',
+                newEventName: '',
+                newEventNotes: '',
 
                 // n.b. default values get updated as soon as the time-picker component has mounted:
                 newEventStartTime: {
@@ -75,6 +94,12 @@
             },
 
             addEventSubmitted() {
+
+                // check if form fields are valid:
+                if (this.isFormValid === false) {
+                    return;
+                }
+
                 let momentObj = createMomentObjectFromYearMonthDayHoursMinutesMeridiem(this.$store.state.selectedYear,
                                                                                        this.$store.state.selectedMonth,
                                                                                        this.$store.state.selectedDay,
@@ -88,6 +113,7 @@
                     name:       this.newEventName,
                     startTime:  momentObj,
                     endTime:    momentObj,
+                    notes:      this.newEventNotes,
                     label:      this.newEventLabel
                 });
             },
@@ -103,7 +129,7 @@
 
             deleteEventClicked(id) {
                 this.$store.commit(REMOVE_EVENT_FROM_CALENDAR_MUTATION, id);
-            }
+            },
         },
 
 
@@ -128,6 +154,19 @@
 
             formattedFullDate() {
                 return `${this.$store.state.selectedDay}/${this.$store.state.selectedMonth+1}/${this.$store.state.selectedYear}`;
+            },
+
+            isFormValid() {
+                let validationErrors = [];
+
+                // check various form fields:
+                // n.b. right now, this error list doesn't do much; but we'll need it if we want to extend the validation (e.g. add error styles to inputs):
+                if (this.newEventName === '') {
+                    validationErrors.push(this.addEventNameElementId);
+                }
+
+                // form is valid if # of errors is zero:
+                return validationErrors.length === 0;
             }
         },
 
