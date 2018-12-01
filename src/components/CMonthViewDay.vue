@@ -79,8 +79,8 @@
 
 <style lang="less" scoped>
     .c-month-view-day {
-        width: 150px;
-        height: 150px;
+        width: 100%;
+        height: 100%;
         border: 1px solid lightslategray;
 
         &&--muted {

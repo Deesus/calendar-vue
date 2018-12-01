@@ -2,7 +2,6 @@
     <div id="app">
 
         <!-- main layout: -->
-        <c-nav></c-nav>
         <router-view></router-view>
 
         <!-- modals: -->
@@ -21,7 +20,6 @@
 
 <script>
     import CModal from './components/CModal.vue';
-    import CNav from './components/CNav.vue';
     import { REMOVE_EVENT_FROM_CALENDAR_MUTATION,
              SHOW_CONFIRM_MODAL_MUTATION
            } from './store/mutation-types';
@@ -55,19 +53,17 @@
 
 
         components: {
-            CModal,
-            CNav
+            CModal
         }
     }
 </script>
-
 
 
 <style lang="less" scoped>
     #app {
         min-height: 100vh;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: nowrap;
     }
 </style>
