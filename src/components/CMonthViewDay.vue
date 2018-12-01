@@ -1,8 +1,10 @@
 <template>
     <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } } ">
         <div :class="monthViewDayStyles" @click="dayClicked">
-            <div>{{ day.date() }}</div>
-            <div v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
+            <div class="c-month-view-day__date-heading">
+                <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
+            </div>
+            <div class="event" v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
         </div>
     </router-link>
 </template>
@@ -57,12 +59,10 @@
 
             monthViewDayStyles() {
                 let isNotCurrentMonth = this.day.month() !== this.$store.state.selectedMonth;
-                let isToday = this.day.isSame(this.$moment(), 'day');
 
                 return {
                     'c-month-view-day':         true,
                     'c-month-view-day--muted':  isNotCurrentMonth,
-                    'c-month-view-day--today':  isToday
                 };
             },
 
@@ -70,6 +70,15 @@
                 // TODO: can we place this function in utils module?
                 // n.b. we offset month value by 1:
                 return `${this.day.date()}-${this.day.month()+1}-${this.day.year()}`;
+            },
+
+            dateNumberStyle() {
+                let isToday = this.day.isSame(this.$moment(), 'day');
+
+                return {
+                    'date-number':        true,
+                    'date-number--today': isToday
+                }
             }
         }
 
@@ -78,18 +87,42 @@
 
 
 <style lang="less" scoped>
+    @import "../styles/base/_constants.less";
+
     .c-month-view-day {
         width: 100%;
         height: 100%;
-        border: 1px solid lightslategray;
+        background: white;
+        padding: 8px;
 
         &&--muted {
-            color: rgb(120,120,120);
-            background: rgb(248, 248, 254);
+            background: @calendar-muted-bg-color;
         }
 
-        &&--today {
-            background: #faff9a;
+        &__date-heading {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 4px;
         }
+    }
+
+    .date-number {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        line-height: 1;
+
+        &&--today {
+            color: white;
+            background: #1EAAFC;
+            border-radius: 50%;
+        }
+    }
+
+    .event {
+
     }
 </style>

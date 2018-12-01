@@ -67,14 +67,10 @@
     .c-nav {
         width: 100%;
         padding: @page-top-padding 20px 20px 20px;
-
-        &__header {
-
-        }
     }
 
     .c-nav-header__month {
-        color: @font-color-white;
+        color: @font-color-default;
     }
 
     .c-nav-header__year {

@@ -1,18 +1,18 @@
 <template>
-    <div>
-        <!-- TODO: the c-nav component is really part of the Month view, so it shouldn't be a separate component; it creates an extra div in DOM -->
-        <c-nav></c-nav>
-        <div class="c-month-view">
-            <div class="c-month-view__heading">Sun</div>
-            <div class="c-month-view__heading">Mon</div>
-            <div class="c-month-view__heading">Tue</div>
-            <div class="c-month-view__heading">Wed</div>
-            <div class="c-month-view__heading">Thu</div>
-            <div class="c-month-view__heading">Fri</div>
-            <div class="c-month-view__heading">Sat</div>
+    <!-- TODO: the c-nav component is really part of the Month view, so it shouldn't be a separate component; it creates an extra div in DOM -->
+    <!--<c-nav></c-nav>-->
+    <div class="c-month-view">
+        <!-- --------- month heading: ---------- -->
+        <div class="c-month-view__heading">Sun</div>
+        <div class="c-month-view__heading">Mon</div>
+        <div class="c-month-view__heading">Tue</div>
+        <div class="c-month-view__heading">Wed</div>
+        <div class="c-month-view__heading">Thu</div>
+        <div class="c-month-view__heading">Fri</div>
+        <div class="c-month-view__heading">Sat</div>
 
-            <c-month-view-day v-for="(day, index) in daysInMonth" :day="day" :key="index"></c-month-view-day>
-        </div>
+        <!-- ---------- days in month: ---------- -->
+        <c-month-view-day v-for="(day, index) in daysInMonth" :day="day" :key="index"></c-month-view-day>
     </div>
 </template>
 
@@ -97,9 +97,17 @@
 
     .c-month-view {
         display: grid;
-        grid-template-rows: 32px repeat(4, 1fr);
-        grid-template-columns: repeat(7, 1fr);
-        grid-gap: 2px;
+        grid-template-columns: repeat(7, 1fr);      /* there are 7 days in a week */
+        grid-template-rows: 32px repeat(4, 1fr);    /* there is always the month heading + 4 weeks */
+        grid-auto-rows: 1fr;                        /* if there are more than 4 weeks in a month, each row will have height of 1fr */
+        grid-gap: 1px;
         justify-items: stretch;
+        min-height: 100vh;
+        background: @calendar-border-color;
+        cursor: pointer;                            /* prevents cursor from reverting when hovering over grid gaps */
+
+        &__heading {
+            background: white;
+        }
     }
 </style>
