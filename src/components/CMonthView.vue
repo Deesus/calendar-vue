@@ -2,14 +2,17 @@
     <!-- TODO: the c-nav component is really part of the Month view, so it shouldn't be a separate component; it creates an extra div in DOM -->
     <!--<c-nav></c-nav>-->
     <div class="c-month-view">
+
         <!-- --------- month heading: ---------- -->
-        <div class="c-month-view__heading">Sun</div>
-        <div class="c-month-view__heading">Mon</div>
-        <div class="c-month-view__heading">Tue</div>
-        <div class="c-month-view__heading">Wed</div>
-        <div class="c-month-view__heading">Thu</div>
-        <div class="c-month-view__heading">Fri</div>
-        <div class="c-month-view__heading">Sat</div>
+        <div class="c-month-view__heading">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
 
         <!-- ---------- days in month: ---------- -->
         <c-month-view-day v-for="(day, index) in daysInMonth" :day="day" :key="index"></c-month-view-day>
@@ -97,17 +100,36 @@
 
     .c-month-view {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);      /* there are 7 days in a week */
-        grid-template-rows: 32px repeat(4, 1fr);    /* there is always the month heading + 4 weeks */
-        grid-auto-rows: 1fr;                        /* if there are more than 4 weeks in a month, each row will have height of 1fr */
+        grid-template-columns: repeat(7, 1fr);      // there are 7 days in a week
+        grid-template-rows: 40px repeat(4, 1fr);    // there is always the month heading + 4 weeks
+        grid-auto-rows: 1fr;                        // if there are more than 4 weeks in a month, each row will have height of 1fr
         grid-gap: 1px;
         justify-items: stretch;
-        min-height: 100vh;
         background: @calendar-border-color;
-        cursor: pointer;                            /* prevents cursor from reverting when hovering over grid gaps */
+        cursor: pointer;                            // prevents cursor from reverting when hovering over grid gaps
+        min-height: 100vh;
+        max-width: 1800px;
 
         &__heading {
+            grid-row: ~"1/2";
+            grid-column: ~"1/8";
             background: white;
+            display: grid;
+            grid-gap: 1px;
+            grid-template-rows: 100%;
+            grid-template-columns: repeat(7, 1fr);
+            justify-items: end;
+            cursor: default;
+            color: @font-color-highlight;
+
+            & > * {
+                padding: @calendar-cell-padding;
+            }
+        }
+
+        // the router-link (<a> tag) is grid-item:
+        a {
+            overflow: hidden;   // prevents content from exceeding grid-item's width; this ensures equal width calendar cells
         }
     }
 </style>

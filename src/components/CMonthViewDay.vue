@@ -1,5 +1,5 @@
 <template>
-    <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } } ">
+    <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } }">
         <div :class="monthViewDayStyles" @click="dayClicked">
             <div class="c-month-view-day__date-heading">
                 <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
@@ -93,7 +93,7 @@
         width: 100%;
         height: 100%;
         background: white;
-        padding: 8px;
+        padding: @calendar-cell-padding;
 
         &&--muted {
             background: @calendar-muted-bg-color;
@@ -122,7 +122,10 @@
         }
     }
 
+    /* TODO: how to make event tag take up full width of cell but also keep the cells evenly spaced? */
     .event {
-
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

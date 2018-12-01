@@ -9,7 +9,6 @@
             <button @click="nextMonthHandler" type="button">&gt;</button>
         </div>
     </div>
-
 </template>
 
 

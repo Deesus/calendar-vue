@@ -32,7 +32,7 @@ export default new Vuex.Store({
             // TODO: replace dummy data:
             // TODO: need to validate start/end dates
             { id: 484371, name: 'vacation', startTime: moment(), endTime: moment().add(5, 'days'), notes: '', label: 'yellow' },
-            { id: 18358328, name: 'vacation 2', startTime: moment(), endTime: moment().add(5, 'days'), notes: '', label: 'red' },
+            { id: 18358328, name: 'Molestias aperiam sit veniam asperiores quis. Minima aliquid autem sed fugit voluptatibus nisi temporibus quae', startTime: moment(), endTime: moment().add(3, 'days'), notes: '', label: 'red' },
             { id: 852202, name: 'meeting',  startTime: moment().subtract(8, 'days').add(3, 'hours'), endTime: moment().subtract(8, 'days').add(6, 'hours'), notes: '', label: 'green' },
             { id: 3473275, name: 'one more', startTime: moment().subtract(8, 'days').add(5, 'hours'), endTime: moment().subtract(8, 'days').add(10, 'hours'), notes: '', label: 'blue' }
         ]
