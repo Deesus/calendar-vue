@@ -1,5 +1,5 @@
-import CMonthView from './components/CMonthView.vue';
-import CDayView from './components/CDayView.vue';
+import CMonthView from '../components/CMonthView.vue';
+import CDayView from '../components/CDayView.vue';
 
 
 export default [

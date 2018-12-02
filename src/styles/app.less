@@ -1,44 +1,11 @@
 /**
  *  Main Less style sheet used for App
  *
- * TODO: separate into smaller partials if this file becomes large
+ * TODO: separate into smaller partials if this file becomes large; or create Vue components (e.g. for c-input)
  */
 
 @import "base/_constants";
 @import "base/_resets";
-
-
-// ==================================================
-// mixins:
-// ==================================================
-
-.c-mixin-inputs {
-    border: 0;
-    border-bottom: 1px solid @accent-color-medium-gray;
-    background: transparent;
-    transition: 225ms ease-in;
-    transition-property: border-bottom-color;
-
-    &:focus {
-        border-bottom-color: @accent-color-red;
-    }
-}
-
-
-// ==================================================
-// app styles:
-// ==================================================
-
-.c-input {
-    &:extend(.c-mixin-inputs all);
-    height: 44px;
-}
-
-.c-textarea {
-    &:extend(.c-mixin-inputs all);
-    resize: none;
-    height:72px;
-}
 
 
 // ==================================================

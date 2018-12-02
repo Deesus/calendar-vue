@@ -12,7 +12,7 @@ import store from './store';
 import VueRouter from 'vue-router';
 Vue.use (VueRouter);
 
-import routes from './vueRoutes';
+import routes from './router/routes';
 const router = new VueRouter({
    routes
 });

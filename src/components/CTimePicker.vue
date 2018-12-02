@@ -1,10 +1,10 @@
 <template>
-    <div class="c-time-picker"><!--
+    <span class="c-time-picker"><!--
     --><input class="c-time-picker__input c-time-picker__input--hours" type="text" v-model="hoursInput" @blur="formattedHoursInput" name="hours" placeholder="--"><!--
     --><span class="c-time-picker__colon">:</span><!--
     --><input class="c-time-picker__input c-time-picker__input--minutes" type="text" v-model="minutesInput" @blur="formattedMinutesInput" name="minutes" placeholder="--"><!--
     --><span class="c-time-picker__meridiem" @click="toggleMeridiemClicked">{{ meridiemValue }}</span>
-    </div>
+    </span>
 </template>
 
 
@@ -98,13 +98,22 @@
 
     .c-time-picker {
         display: inline-block;
-        background: transparent;
+        background: @input-bg-color;
+        height: 44px;
+        padding-left: 8px;
+        padding-right: 8px;
+
+        & > * {
+            height: 44px;
+            padding: 0.95rem 0;
+            color: @font-color-bold;
+            background: transparent;
+        }
 
         &__input {
             display: inline-block;
             width: 24px;
             border: none;
-            background: white;
             text-align: center;
         }
 
