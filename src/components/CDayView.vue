@@ -2,46 +2,44 @@
     <div class="c-day-view">
 
         <!-- ---------- header: ---------- -->
-        <div class="c-day-view__heading">
-            <div>{{ formattedFullDate }}</div>
-            <router-link :to="{name: 'month-view' }" @click.native="returnToMonthViewLinkClicked">back to month view</router-link>
-        </div>
-        <div>
-            <!-- TODO: replace with svg icon: -->
-            <span @click="toggleShowEventControlsClicked">+</span>
+        <div class="c-day-view__header c-day-header">
+            <router-link class="c-day-header__return-lnk" :to="{name: 'month-view' }" @click.native="returnToMonthViewLinkClicked"><chevron-left-icon class="icon cursor-pointer"></chevron-left-icon></router-link>
+            <div>
+                <div class="c-day-header__text c-day-header__text c-day-header__text--month">{{ getFullMonthText }}</div>
+                <div class="c-day-header__text c-day-header__text c-day-header__text--year">{{ getFullYearText }}</div>
+            </div>
+            <span class="c-day-header__action">
+                <span v-if="!shouldShowEventControls">
+                    <plus-icon class="cursor-pointer" @click="toggleShowEventControlsClicked"></plus-icon>
+                </span>
+                <span v-else>
+                    <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add</button>
+                </span>
+            </span>
         </div>
 
         <!-- ---------- add event: ---------- -->
-        <form v-if="shouldShowEventControls">
+        <form class="c-day-view__add-event" v-if="shouldShowEventControls">
+            <label><input id="addEventNameElementId" class="c-input" maxlength="100" placeholder="Name" :name="addEventNameElementId" type="text" v-model.trim="newEventName"></label>
+
             <div>
-                <label :for="addEventNameElementId">Name:</label>
-                <input id="addEventNameElementId" :name="addEventNameElementId" type="text" v-model.trim="newEventName">
-            </div>
-            <div>
-                <label>Start time:</label>
+                <label>Starts</label>
                 <c-time-picker v-on:timePickerUpdated="updateStartTimeData"></c-time-picker>
-                <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add Event</button>
             </div>
-            <div>
-                <label :for="addEventNotesElementId">Notes:</label>
-                <textarea :id="addEventNotesElementId" :name="addEventNotesElementId" v-model.trim="newEventNotes"></textarea>
-            </div>
+
+            <label><textarea :id="addEventNotesElementId" class="c-textarea" maxlength="2000" placeholder="Notes" :name="addEventNotesElementId" v-model.trim="newEventNotes"></textarea></label>
         </form>
 
         <!-- ---------- list of events: ---------- -->
-        <ul>
-            <li v-for="event in eventsInDay" :key="event.id">
-                <div>
-                    <div>
-                        {{ event.startTime.format('h:mma') }}
-                        {{ event.name }}
-
-                        <!-- TODO: replace with svg icon: -->
-                        <i class="icon icon--close" @click="deleteEventClicked(event.id)">X</i>
-                    </div>
-                    <div>
-                        {{ event.notes }}
-                    </div>
+        <ul class="c-day-view__event-list">
+            <li class="c-event" v-for="event in eventsInDay" :key="event.id">
+                <div class="c-event__info c-event-info">
+                    <span class="c-event-info__start-time">{{ event.startTime.format('h:mma') }}</span>
+                    <span class="c-event-info__name">{{ event.name }}</span>
+                    <span class="c-event-info__close"><x-icon class="cursor-pointer" @click="deleteEventClicked(event.id)"></x-icon></span>
+                </div>
+                <div class="c-event__notes">
+                    {{ event.notes }}
                 </div>
             </li>
         </ul>
@@ -51,8 +49,7 @@
 
 
 <script>
-    import { createMomentObjectFromYearMonthDay,
-             createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
+    import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
              createUniqueId
            } from '../utils/utils';
     import { ADD_EVENT_TO_CALENDAR_MUTATION,
@@ -60,10 +57,19 @@
              SHOW_CONFIRM_MODAL_MUTATION
            } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
+    import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
 
 
     export default {
         name: 'CDayView',
+
+
+        components: {
+            CTimePicker,
+            PlusIcon,
+            XIcon,
+            ChevronLeftIcon
+        },
 
 
         data() {
@@ -151,10 +157,6 @@
                 });
             },
 
-            formattedFullDate() {
-                return `${this.$store.state.selectedDay}/${this.$store.state.selectedMonth+1}/${this.$store.state.selectedYear}`;
-            },
-
             isFormValid() {
                 let validationErrors = [];
 
@@ -166,25 +168,107 @@
 
                 // form is valid if # of errors is zero:
                 return validationErrors.length === 0;
+            },
+
+            getFullMonthText() {
+                return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
+            },
+
+            getFullYearText() {
+                return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
             }
-        },
-
-
-        components: {
-            CTimePicker
         }
     }
 </script>
 
 
 <style lang="less" scoped>
-    li {
-        border-top: 1px solid silver;
-        margin: 0;
-        padding: 12px 0;
+    @import "../styles/base/_constants";
+
+    @day-view-border-radius: 4px;
+    @day-view-padding: 16px;
+
+
+    .c-day-view {
+        background: white;
+        margin: 24px auto;
+        width: 600px;
+        max-width: 100%;
+        border-radius: @day-view-border-radius;
+        border: 1px solid @accent-color-medium-gray;
+        min-height: calc(~"100vh - 48px");
+
+        &__header {
+            padding: @day-view-padding;
+        }
+
+        &__add-event {
+            padding: 0 @day-view-padding @day-view-padding @day-view-padding;
+            display: flex;
+            flex-direction: column;
+
+            & > * {
+                display: inline-block;
+                &:not(:first-child) {
+                    margin-top: 12px;
+                }
+            }
+        }
+
+        &__event-list {
+        }
     }
 
-    .icon--close {
-        cursor: pointer;
+    .c-day-header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        &__text--month {
+            color: @font-color-bold;
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+
+        &__text--year {
+            color: @accent-color-red;
+            font-size: 3.6rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        &__action {
+            flex-grow: 1;
+            text-align: right;
+        }
+    }
+
+    .c-event {
+        border-top: 1px solid @accent-color-medium-gray;
+        margin: 0;
+        padding: @day-view-padding;
+
+        &:last-child {
+            border-bottom: 1px solid @accent-color-medium-gray;
+        }
+
+        &__info {
+            display: flex;
+        }
+    }
+
+    .c-event-info {
+        &__start-time {
+            min-width: 80px;
+        }
+
+        &__name {
+            flex-grow: 1;
+        }
+
+        &__close {
+            min-width: 36px;
+            text-align: right;
+        }
     }
 </style>

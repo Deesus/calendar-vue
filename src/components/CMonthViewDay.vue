@@ -4,7 +4,7 @@
             <div class="c-month-view-day__date-heading">
                 <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
             </div>
-            <div class="event" v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
+            <div class="c-event-label" v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
         </div>
     </router-link>
 </template>
@@ -27,8 +27,8 @@
 
         props: {
             day: {
-                type:       Object,   // we could have also imported moment and specified that as the type
-                required:   true
+                type:     Object,   // we could have also imported moment and specified that as the type
+                required: true
             }
         },
 
@@ -61,8 +61,8 @@
                 let isNotCurrentMonth = this.day.month() !== this.$store.state.selectedMonth;
 
                 return {
-                    'c-month-view-day':         true,
-                    'c-month-view-day--muted':  isNotCurrentMonth,
+                    'c-month-view-day':        true,
+                    'c-month-view-day--muted': isNotCurrentMonth,
                 };
             },
 
@@ -74,20 +74,21 @@
 
             dateNumberStyle() {
                 let isToday = this.day.isSame(this.$moment(), 'day');
+                let isNotCurrentMonth = (this.day.month() !== this.$store.state.selectedMonth) && (!isToday);   // n.b. `isToday` styles take priority; hence the check for `!isToday`
 
                 return {
-                    'date-number':        true,
-                    'date-number--today': isToday
+                    'date-number': true,
+                    'date-number--today': isToday,
+                    'date-number--not-current-month': isNotCurrentMonth
                 }
             }
         }
-
     }
 </script>
 
 
 <style lang="less" scoped>
-    @import "../styles/base/_constants.less";
+    @import "../styles/base/_constants";
 
     .c-month-view-day {
         width: 100%;
@@ -117,13 +118,16 @@
 
         &&--today {
             color: white;
-            background: #1EAAFC;
+            background: #fc3144;
             border-radius: 50%;
+        }
+
+        &&--not-current-month {
+            color: @font-color-muted;
         }
     }
 
-    /* TODO: how to make event tag take up full width of cell but also keep the cells evenly spaced? */
-    .event {
+    .c-event-label {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

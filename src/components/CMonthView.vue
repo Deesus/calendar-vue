@@ -5,13 +5,13 @@
 
         <!-- --------- month heading: ---------- -->
         <div class="c-month-view__heading">
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
+            <div>SUN</div>
+            <div>MON</div>
+            <div>TUE</div>
+            <div>WED</div>
+            <div>THU</div>
+            <div>FRI</div>
+            <div>SAT</div>
         </div>
 
         <!-- ---------- days in month: ---------- -->
@@ -96,7 +96,7 @@
 
 
 <style lang="less" scoped>
-    @import "../styles/base/_constants.less";
+    @import "../styles/base/_constants";
 
     .c-month-view {
         display: grid;

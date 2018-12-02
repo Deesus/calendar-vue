@@ -94,20 +94,26 @@
 
 
 <style lang="less" scoped>
+    @import "../styles/base/_constants";
+
     .c-time-picker {
-        border: 1px solid rgb(200, 200, 230);
-        border-radius: 3px;
         display: inline-block;
+        background: transparent;
+
+        &__input {
+            display: inline-block;
+            width: 24px;
+            border: none;
+            background: white;
+            text-align: center;
+        }
+
+        &__meridiem {
+            display: inline-block;
+            width: 26px;
+            cursor: pointer;
+        }
     }
 
-    .c-time-picker__input {
-        width: 25px;
-        border: none;
-        background: white;
-        text-align: center;
-    }
 
-    .c-time-picker__meridiem {
-        cursor: pointer;
-    }
 </style>

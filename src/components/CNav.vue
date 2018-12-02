@@ -61,7 +61,7 @@
 
 
 <style lang="less" scoped>
-    @import "../styles/base/_constants.less";
+    @import "../styles/base/_constants";
 
     .c-nav {
         width: 100%;
