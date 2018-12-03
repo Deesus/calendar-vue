@@ -38,6 +38,9 @@
                 <span class="c-event__close"><x-icon class="cursor-pointer" @click="deleteEventClicked(event.id)"></x-icon></span>
                 <span class="c-event__notes">{{ event.notes }}</span>
             </li>
+            <li v-if="eventsInDay.length === 0" class="c-event c-event--no-event">
+                no events
+            </li>
         </ul>
 
     </div>
@@ -305,6 +308,16 @@
         grid-template-areas:
         "event-time event-name event-close"
         "event-time event-notes event-close";
+
+        &&--no-event {
+            &:first-child,
+            &:last-child {
+                border-bottom: 0;
+            }
+            padding: 52px;
+            display: flex;
+            justify-content: center;
+        }
 
         &:not(:first-child) {
             border-top: 1px solid @accent-color-medium-gray;

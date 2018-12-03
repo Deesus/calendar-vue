@@ -15,6 +15,8 @@
              SET_CURRENT_MONTH_MUTATION,
              SET_CURRENT_YEAR_MUTATION
            } from '../store/mutation-types';
+    import { DATE_ENUM } from '../appConstants';
+
 
     export default {
         name: 'CMonthViewDay',
@@ -58,11 +60,11 @@
             },
 
             monthViewDayStyles() {
-                let isNotCurrentMonth = this.day.month() !== this.$store.state.selectedMonth;
+                let isWeekend = (this.day.day() === DATE_ENUM.SUNDAY) || (this.day.day() === DATE_ENUM.SATURDAY);
 
                 return {
                     'c-month-view-day':        true,
-                    'c-month-view-day--muted': isNotCurrentMonth,
+                    'c-month-view-day--muted': isWeekend,
                 };
             },
 
@@ -115,6 +117,7 @@
         text-align: center;
         align-items: center;
         line-height: 1;
+        color: @font-color-bold;
 
         &&--today {
             color: white;
