@@ -119,6 +119,10 @@
                     notes:      this.newEventNotes,
                     label:      this.newEventLabel
                 });
+
+                // after successful store commit, reset fields:
+                this.newEventName = '';
+                this.newEventNotes = '';
             },
 
             toggleShowEventControlsClicked() {
@@ -275,6 +279,7 @@
             align-items: center;
 
             & > svg {
+                margin-left: -12px;
                 width: auto;
                 height:48px;
                 color: @accent-color-medium-gray;

@@ -5,13 +5,10 @@
         <router-view></router-view>
 
         <!-- modals: -->
-        <c-modal v-if="shouldShowConfirmModal">
-            <template slot="modal-header">Delete Event?</template>
-            <template slot="modal-footer">
-                <button type="button" @click="onCancelClicked">Cancel</button>
-                <button type="button" @click="onDeleteClicked">Delete</button>
-            </template>
-        </c-modal>
+        <c-confirmation-modal v-if="shouldShowConfirmModal"
+                              v-on:cancel-clicked="onCancelClicked"
+                              v-on:confirm-clicked="onDeleteClicked"
+                              message="Delete Event?" />
 
     </div>
 </template>
@@ -19,7 +16,7 @@
 
 
 <script>
-    import CModal from './components/CModal.vue';
+    import CConfirmationModal from './components/CConfirmationModal.vue';
     import { REMOVE_EVENT_FROM_CALENDAR_MUTATION,
              SHOW_CONFIRM_MODAL_MUTATION
            } from './store/mutation-types';
@@ -53,7 +50,7 @@
 
 
         components: {
-            CModal
+            CConfirmationModal
         }
     }
 </script>
