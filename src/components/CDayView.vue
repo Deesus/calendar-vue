@@ -17,7 +17,7 @@
                     <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
                 </span>
                 <span v-else>
-                    <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add</button>
+                    <a @click="addEventSubmitted" :class="addEventLinkStyles">Add</a>
                 </span>
             </span>
         </div>
@@ -177,6 +177,14 @@
                 return validationErrors.length === 0;
             },
 
+            addEventLinkStyles() {
+                return {
+                    'c-link':           true,
+                    'c-link--red':      this.isFormValid === true,
+                    'c-link--disabled': this.isFormValid === false
+                };
+            },
+
             getFullMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
             },
@@ -308,6 +316,26 @@
         &:first-child,
         &:last-child {
             border-bottom: 0;
+        }
+    }
+
+    .c-link {
+        text-decoration: none;
+        color: @font-color-default;
+        cursor: pointer;
+
+        &:hover,
+        &:active {
+            color: @font-color-default;
+        }
+
+        &&--red {
+            color: @accent-color-red;
+        }
+
+        &&--disabled {
+            pointer-events: none;
+            color: @font-color-muted;
         }
     }
 </style>
