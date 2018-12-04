@@ -144,7 +144,7 @@
             width: auto;
             padding: 8px;
             cursor: pointer;
-            color: white;
+            color: @font-color-white;
             position: fixed;
             right: 44px;
             top: 44px;

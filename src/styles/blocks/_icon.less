@@ -1,0 +1,43 @@
+@import "../base/_constants";
+
+
+.icon {
+    vertical-align: middle;
+    height: auto;
+
+    // ---------- icon sizes: ----------
+    &&--x-sm {
+        width: 1.2rem;
+    }
+    &&--sm {
+        width: 1.8rem;
+    }
+    &&--med {
+        width: 2.4rem;
+    }
+    &&--lg {
+        width: 3.0rem;
+    }
+    &&--x-lg {
+        width: 4.0rem;
+    }
+
+    // ---------- icon colors: ----------
+    &&--white {
+        color: @font-color-white;
+    }
+    &&--muted {
+        color: @font-color-muted;
+    }
+    &&--black {
+        color: @font-color-bold;
+    }
+
+    // ---------- state: ----------
+    &&--pointer {
+        cursor: pointer;
+    }
+    &&--disabled {
+        cursor: default;
+    }
+}

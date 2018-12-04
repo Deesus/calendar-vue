@@ -1,13 +1,13 @@
 <template>
     <div class="c-nav">
-        <h1 class="c-nav-header">
-            <span class="c-nav-header__month">{{ navHeaderMonthText }}</span>
-            <span class="c-nav-header__year">{{ navHeaderYearText }}</span>
+
+        <chevron-left-icon class="icon icon--pointer icon--white icon--med" @click="previousMonthHandler"/>
+        <h1 class="c-heading-text c-nav__heading-text">
+            <span class="c-heading-text c-heading-text--month">{{ navHeaderMonthText }}</span>
+            <span class="c-heading-text c-heading-text--year">{{ navHeaderYearText }}</span>
         </h1>
-        <div class="c-month-view__controls">
-            <button @click="previousMonthHandler" type="button">&lt;</button>
-            <button @click="nextMonthHandler" type="button">&gt;</button>
-        </div>
+        <chevron-right-icon class="icon icon--pointer icon--white icon--med" @click="nextMonthHandler"/>
+
     </div>
 </template>
 
@@ -15,13 +15,23 @@
 <script>
     import { DATE_ENUM } from '../appConstants';
     import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/mutation-types';
+    import { ChevronLeftIcon, ChevronRightIcon } from 'vue-feather-icons';
+
 
     export default {
         name: 'CNav',
 
+
+        components: {
+            ChevronLeftIcon,
+            ChevronRightIcon
+        },
+
+
         data() {
             return {};
         },
+
 
         methods: {
             // TODO: can we replace `this.$store.state` and `this.$store.commit` with aliases?
@@ -47,6 +57,7 @@
             }
         },
 
+
         computed: {
             navHeaderMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
@@ -62,17 +73,24 @@
 
 <style lang="less" scoped>
     @import "../styles/base/_constants";
+    @import "../styles/blocks/_heading-text";
+    @import "../styles/blocks/_icon";
 
+    /* TODO: need media query for mobile screens: */
     .c-nav {
+        background: @accent-color-black;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        padding: @page-top-padding 20px 20px 20px;
-    }
+        padding: 12px;
+        cursor: default;
 
-    .c-nav-header__month {
-        color: @font-color-default;
-    }
-
-    .c-nav-header__year {
-        color: @accent-color-red;
+        &__heading-text {
+            width: 260px;
+            text-align: center;
+        }
     }
 </style>

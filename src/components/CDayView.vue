@@ -2,15 +2,19 @@
     <div class="c-day-view">
 
         <!-- ---------- header: ---------- -->
-        <div class="c-day-view__header c-day-header">
-            <router-link class="c-day-header__return-link" :to="{name: 'month-view' }" @click.native="returnToMonthViewLinkClicked"><chevron-left-icon class="icon cursor-pointer"></chevron-left-icon></router-link>
+        <div class="c-day-view__header c-day-header"><!--
+            --><router-link class="c-day-header__return-link"
+                            :to="{name: 'month-view' }"
+                            @click.native="returnToMonthViewLinkClicked"><!--
+                --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
+            --></router-link>
             <div>
                 <div class="c-day-header__text c-day-header__text c-day-header__text--month">{{ getFullMonthText }}</div>
                 <div class="c-day-header__text c-day-header__text c-day-header__text--year">{{ getFullYearText }}</div>
             </div>
             <span class="c-day-header__action">
                 <span v-if="!shouldShowEventControls">
-                    <plus-icon class="cursor-pointer" @click="toggleShowEventControlsClicked"></plus-icon>
+                    <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
                 </span>
                 <span v-else>
                     <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add</button>
@@ -20,14 +24,25 @@
 
         <!-- ---------- add event: ---------- -->
         <form class="c-add-event c-day-view__add-event" v-if="shouldShowEventControls">
-            <input id="addEventNameElementId" class="c-add-event__field c-add-event__field--input" maxlength="100" placeholder="Name" :name="addEventNameElementId" type="text" v-model.trim="newEventName">
+            <input id="addEventNameElementId"
+                   class="c-add-event__field c-add-event__field--input"
+                   :name="addEventNameElementId"
+                   v-model.trim="newEventName"
+                   maxlength="100"
+                   placeholder="Name"
+                   type="text">
 
             <label class="c-add-event__label">Starts</label>
             <div class="c-add-event__field c-add-event__field--time-picker">
-                <c-time-picker v-on:timePickerUpdated="updateStartTimeData"></c-time-picker>
+                <c-time-picker v-on:timePickerUpdated="updateStartTimeData"/>
             </div>
 
-            <textarea :id="addEventNotesElementId" class="c-add-event__field c-add-event__field--textarea" maxlength="2000" placeholder="Notes" :name="addEventNotesElementId" v-model.trim="newEventNotes"></textarea>
+            <textarea :id="addEventNotesElementId"
+                      class="c-add-event__field c-add-event__field--textarea"
+                      :name="addEventNotesElementId"
+                      v-model.trim="newEventNotes"
+                      maxlength="2000"
+                      placeholder="Notes"></textarea>
         </form>
 
         <!-- ---------- list of events: ---------- -->
@@ -35,7 +50,9 @@
             <li class="c-event" v-for="event in eventsInDay" :key="event.id">
                 <span class="c-event__start-time">{{ event.startTime.format('h:mma') }}</span>
                 <span class="c-event__name">{{ event.name }}</span>
-                <span class="c-event__close"><x-icon class="cursor-pointer" @click="deleteEventClicked(event.id)"></x-icon></span>
+                <span class="c-event__close">
+                    <x-icon @click="deleteEventClicked(event.id)" class="icon icon--pointer icon--med"/>
+                </span>
                 <span class="c-event__notes">{{ event.notes }}</span>
             </li>
             <li v-if="eventsInDay.length === 0" class="c-event c-event--no-event">
@@ -187,6 +204,7 @@
 
 <style lang="less" scoped>
     @import "../styles/base/_constants";
+    @import "../styles/blocks/_icon";
     @import (reference) "../styles/mixins/_mixins";
 
     @day-view-border-radius: 4px;
@@ -341,6 +359,10 @@
             grid-area: event-close;
             min-width: 36px;
             text-align: right;
+
+            .icon {
+                padding: 3px;   // added padding to increase tap target area
+            }
         }
 
         &__notes {

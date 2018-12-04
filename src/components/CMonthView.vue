@@ -1,10 +1,10 @@
 <template>
-    <!-- TODO: the c-nav component is really part of the Month view, so it shouldn't be a separate component; it creates an extra div in DOM -->
-    <!--<c-nav></c-nav>-->
     <div class="c-month-view">
+        <!-- ---------- header/nav: ---------- -->
+        <c-month-view-nav class="c-month-view__nav"/>
 
-        <!-- --------- month heading: ---------- -->
-        <div class="c-month-view__heading">
+        <!-- --------- days-of-week heading: ---------- -->
+        <div class="c-month-view__days-of-week">
             <div>SUN</div>
             <div>MON</div>
             <div>TUE</div>
@@ -20,11 +20,10 @@
 </template>
 
 
-
 <script>
     import { createMomentObjectFromYearMonthDay } from '../utils/utils';
     import { DATE_ENUM } from '../appConstants';
-    import CNav from './CNav.vue';
+    import CMonthViewNav from './CMonthViewNav.vue';
     import CMonthViewDay from './CMonthViewDay.vue';
 
     export default {
@@ -89,7 +88,7 @@
 
         components: {
             CMonthViewDay,
-            CNav
+            CMonthViewNav
         }
     }
 </script>
@@ -100,18 +99,23 @@
 
     .c-month-view {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);      // there are 7 days in a week
-        grid-template-rows: 40px repeat(4, 1fr);    // there is always the month heading + 4 weeks
-        grid-auto-rows: 1fr;                        // if there are more than 4 weeks in a month, each row will have height of 1fr
+        grid-template-columns: repeat(7, 1fr);          // there are 7 days in a week
+        grid-template-rows: auto 40px repeat(4, 1fr);   // there is always the month heading + 4 weeks
+        grid-auto-rows: 1fr;                            // if there are more than 4 weeks in a month, each row will have height of 1fr
         grid-gap: 1px;
         justify-items: stretch;
         background: @calendar-border-color;
-        cursor: pointer;                            // prevents cursor from reverting when hovering over grid gaps
+        cursor: pointer;            // prevents cursor from reverting when hovering over grid gaps
         min-height: 100vh;
         max-width: 1800px;
 
-        &__heading {
+        &__nav {
             grid-row: ~"1/2";
+            grid-column: ~"1/8";
+        }
+
+        &__days-of-week {
+            grid-row: ~"2/3";
             grid-column: ~"1/8";
             background: white;
             display: grid;
