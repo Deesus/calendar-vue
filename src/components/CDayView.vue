@@ -13,7 +13,7 @@
                     <plus-icon class="cursor-pointer" @click="toggleShowEventControlsClicked"></plus-icon>
                 </span>
                 <span v-else>
-                    <button type="button" @click="addEventSubmitted" :disabled="isFormValid === false">Add</button>
+                    <a @click="addEventSubmitted" :class="addEventLinkStyles">Add</a>
                 </span>
             </span>
         </div>
@@ -168,6 +168,14 @@
 
                 // form is valid if # of errors is zero:
                 return validationErrors.length === 0;
+            },
+
+            addEventLinkStyles() {
+                return {
+                    'c-link':           true,
+                    'c-link--red':      this.isFormValid === true,
+                    'c-link--disabled': this.isFormValid === false
+                };
             },
 
             getFullMonthText() {
@@ -332,6 +340,26 @@
 
         &__notes {
             grid-area: event-notes;
+            color: @font-color-muted;
+        }
+    }
+
+    .c-link {
+        text-decoration: none;
+        color: @font-color-default;
+        cursor: pointer;
+
+        &:hover,
+        &:active {
+            color: @font-color-default;
+        }
+
+        &&--red {
+            color: @accent-color-red;
+        }
+
+        &&--disabled {
+            pointer-events: none;
             color: @font-color-muted;
         }
     }
