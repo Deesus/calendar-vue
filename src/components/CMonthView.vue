@@ -30,11 +30,15 @@
         name: 'CMonthView',
 
 
+        components: {
+            CMonthViewDay,
+            CMonthViewNav
+        },
+
+
         data() {
             return {};
         },
-
-        methods: {},
 
 
         computed: {
@@ -83,13 +87,7 @@
 
                 return days;
             }
-        }, // computed
-
-
-        components: {
-            CMonthViewDay,
-            CMonthViewNav
-        }
+        } // computed
     }
 </script>
 

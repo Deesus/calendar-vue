@@ -1,0 +1,138 @@
+<template>
+    <li :class="eventListItemStyles">
+        <span class="c-event-list-item__start-time">{{ event.startTime.format('h:mma') }}</span>
+        <span class="c-event-list-item__name">{{ event.name }}</span>
+        <span class="c-event-list-item__close">
+            <x-icon @click="deleteEventClicked(event.id)" class="icon icon--pointer icon--med"/>
+        </span>
+        <span class="c-event-list-item__notes">{{ event.notes }}</span>
+    </li>
+</template>
+
+
+<script>
+    import { XIcon } from 'vue-feather-icons';
+    import { SELECT_EVENT_ID_MUTATION, SHOW_CONFIRM_MODAL_MUTATION } from '../store/mutation-types';
+    import { LABEL_COLORS } from '../appConstants';
+
+    export default {
+        name: 'CEventListItem',
+
+
+        components: {
+            XIcon
+        },
+
+
+        props: {
+            event: {
+                required: true
+            }
+        },
+
+
+        data() {
+            return {};
+        },
+
+
+        methods: {
+            deleteEventClicked(id) {
+                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, true);
+                this.$store.commit(SELECT_EVENT_ID_MUTATION, id);
+            }
+        },
+
+
+        computed: {
+            eventListItemStyles() {
+                return {
+                    'c-event-list-item':         true,
+                    'c-event-list-item--blue':   this.event.label === LABEL_COLORS.BLUE,
+                    'c-event-list-item--green':  this.event.label === LABEL_COLORS.GREEN,
+                    'c-event-list-item--purple': this.event.label === LABEL_COLORS.PURPLE,
+                    'c-event-list-item--yellow': this.event.label === LABEL_COLORS.YELLOW
+                }
+            }
+        }
+    }
+</script>
+
+
+<style scoped lang="less">
+    @import "../styles/base/_constants";
+    @import "../styles/blocks/_icon";
+
+    @event-list-item-color-tab-width: 5px;
+
+
+    .c-event-list-item {
+        border-left: @event-list-item-color-tab-width solid transparent;
+        margin: 0;
+        padding: @day-view-padding @day-view-padding @day-view-padding (@day-view-padding - @event-list-item-color-tab-width);
+        display: grid;
+        grid-template-columns: 80px 1fr 36px;
+        grid-template-areas:
+            "event-time event-name event-close"
+            "event-time event-notes event-close";
+
+        &:not(:first-child) {
+            border-top: 1px solid @accent-color-medium-gray;
+        }
+
+        &:last-child {
+            border-bottom: 1px solid @accent-color-medium-gray;
+        }
+
+        &&--blue {
+            border-left-color: @label-color-blue;
+        }
+
+        &&--green {
+            border-left-color: @label-color-green;
+        }
+
+        &&--purple {
+            border-left-color: @label-color-purple;
+        }
+
+        &&--yellow {
+            border-left-color: @label-color-yellow;
+        }
+
+        &&--no-event {
+            &:first-child,
+            &:last-child {
+                border-bottom: 0;
+            }
+            padding: 52px;
+            display: flex;
+            justify-content: center;
+        }
+
+        &__start-time {
+            grid-area: event-time;
+        }
+
+        &__name {
+            grid-area: event-name;
+            flex-grow: 1;
+            color: @font-color-bold;
+        }
+
+        &__close {
+            grid-area: event-close;
+            min-width: 36px;
+            text-align: right;
+
+            .icon {
+                padding: 3px;   // added padding to increase tap target area
+            }
+        }
+
+        &__notes {
+            grid-area: event-notes;
+            color: @font-color-muted;
+        }
+    }
+</style>

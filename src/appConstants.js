@@ -25,7 +25,15 @@ const DATE_ENUM = Object.freeze({
     DECEMBER: 11
 });
 
+const LABEL_COLORS = Object.freeze({
+    BLUE:   'BLUE',
+    GREEN:  'GREEN',
+    PURPLE: 'PURPLE',
+    YELLOW: 'YELLOW'
+});
+
 
 export {
-    DATE_ENUM
+    DATE_ENUM,
+    LABEL_COLORS
 }

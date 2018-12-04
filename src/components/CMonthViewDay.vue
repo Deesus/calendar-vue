@@ -4,7 +4,7 @@
             <div class="c-month-view-day__date-heading">
                 <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
             </div>
-            <div class="c-event-label" v-for="event in eventsInDay" :key="event.id">{{ event.name }}</div>
+            <c-label class="c-month-view-day__event" v-for="event in eventsInDay" :key="event.id" :color="event.label" :message="event.name"/>
         </div>
     </router-link>
 </template>
@@ -16,14 +16,15 @@
              SET_CURRENT_YEAR_MUTATION
            } from '../store/mutation-types';
     import { DATE_ENUM } from '../appConstants';
+    import CLabel from '../components/CLabel.vue';
 
 
     export default {
         name: 'CMonthViewDay',
 
 
-        data() {
-            return {};
+        components: {
+            CLabel
         },
 
 
@@ -32,6 +33,11 @@
                 type:     Object,   // we could have also imported moment and specified that as the type
                 required: true
             }
+        },
+
+        
+        data() {
+            return {};
         },
 
 
@@ -107,6 +113,10 @@
             justify-content: flex-end;
             padding-bottom: 4px;
         }
+
+        &__event + &__event {
+            margin-top: 4px;
+        }
     }
 
     .date-number {
@@ -128,11 +138,5 @@
         &&--not-current-month {
             color: @font-color-muted;
         }
-    }
-
-    .c-event-label {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
     }
 </style>

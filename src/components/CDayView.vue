@@ -47,14 +47,9 @@
 
         <!-- ---------- list of events: ---------- -->
         <ul class="c-day-view__event-list">
-            <li class="c-event" v-for="event in eventsInDay" :key="event.id">
-                <span class="c-event__start-time">{{ event.startTime.format('h:mma') }}</span>
-                <span class="c-event__name">{{ event.name }}</span>
-                <span class="c-event__close">
-                    <x-icon @click="deleteEventClicked(event.id)" class="icon icon--pointer icon--med"/>
-                </span>
-                <span class="c-event__notes">{{ event.notes }}</span>
-            </li>
+            <c-event-list-item v-for="event in eventsInDay"
+                               :key="event.id"
+                               :event="event" />
             <li v-if="eventsInDay.length === 0" class="c-event c-event--no-event">
                 no events
             </li>
@@ -65,14 +60,11 @@
 
 
 <script>
-    import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
-             createUniqueId
-           } from '../utils/utils';
-    import { ADD_EVENT_TO_CALENDAR_MUTATION,
-             SELECT_EVENT_ID_MUTATION,
-             SHOW_CONFIRM_MODAL_MUTATION
-           } from '../store/mutation-types';
+    import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem, createUniqueId, randomSample } from '../utils/utils';
+    import { LABEL_COLORS } from '../appConstants';
+    import { ADD_EVENT_TO_CALENDAR_MUTATION } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
+    import CEventListItem from './CEventListItem.vue';
     import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
 
 
@@ -81,6 +73,7 @@
 
 
         components: {
+            CEventListItem,
             CTimePicker,
             PlusIcon,
             XIcon,
@@ -93,8 +86,7 @@
                 addEventNameElementId:  'add-event-name',
                 addEventNotesElementId: 'add-notes-textarea',
 
-                // TODO: replace dummy event name, and event label:
-                newEventLabel: 'yellow',
+                newEventLabel: '',
                 newEventName: '',
                 newEventNotes: '',
 
@@ -137,7 +129,7 @@
                     startTime:  momentObj,
                     endTime:    momentObj,
                     notes:      this.newEventNotes,
-                    label:      this.newEventLabel
+                    label:      randomSample(Object.keys(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
                 });
 
                 // after successful store commit, reset fields:
@@ -152,12 +144,7 @@
 
             returnToMonthViewLinkClicked() {
                 // n.b. this is a placeholder in case we need to extend the functionality of the component
-            },
-
-            deleteEventClicked(id) {
-                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, true);
-                this.$store.commit(SELECT_EVENT_ID_MUTATION, id);
-            },
+            }
         },
 
 
@@ -206,10 +193,6 @@
     @import "../styles/base/_constants";
     @import "../styles/blocks/_icon";
     @import (reference) "../styles/mixins/_mixins";
-
-    @day-view-border-radius: 4px;
-    @day-view-padding: 16px;
-    @day-view-header-bg-color: #fbfbfb;
 
 
     .c-day-view {
@@ -314,60 +297,6 @@
         &__action {
             flex-grow: 1;
             text-align: right;
-        }
-    }
-
-    /* TODO: move `c-event` into separate component: */
-    .c-event {
-        margin: 0;
-        padding: @day-view-padding;
-        display: grid;
-        grid-template-columns: 80px 1fr 36px;
-        grid-template-areas:
-        "event-time event-name event-close"
-        "event-time event-notes event-close";
-
-        &&--no-event {
-            &:first-child,
-            &:last-child {
-                border-bottom: 0;
-            }
-            padding: 52px;
-            display: flex;
-            justify-content: center;
-        }
-
-        &:not(:first-child) {
-            border-top: 1px solid @accent-color-medium-gray;
-        }
-
-        &:last-child {
-            border-bottom: 1px solid @accent-color-medium-gray;
-        }
-
-        &__start-time {
-            grid-area: event-time;
-        }
-
-        &__name {
-            grid-area: event-name;
-            flex-grow: 1;
-            color: @font-color-bold;
-        }
-
-        &__close {
-            grid-area: event-close;
-            min-width: 36px;
-            text-align: right;
-
-            .icon {
-                padding: 3px;   // added padding to increase tap target area
-            }
-        }
-
-        &__notes {
-            grid-area: event-notes;
-            color: @font-color-muted;
         }
     }
 </style>

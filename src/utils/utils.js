@@ -76,6 +76,17 @@ function createUniqueId() {
 }
 
 
+/**
+ * Return a random element from an array
+ *
+ * @param arr {Array}
+ * @returns {*}: an Array element
+ */
+function randomSample(arr) {
+    // n.b. `Math.random()` never returns exactly `1`
+    return arr[Math.floor( Math.random() * arr.length )];
+}
+
 
 // ==================================================
 // exports:
@@ -84,5 +95,6 @@ function createUniqueId() {
 export {
     createMomentObjectFromYearMonthDay,
     createMomentObjectFromYearMonthDayHoursMinutesMeridiem,
-    createUniqueId
+    createUniqueId,
+    randomSample
 };
