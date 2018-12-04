@@ -4,7 +4,11 @@
             <div class="c-month-view-day__date-heading">
                 <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
             </div>
-            <c-label class="c-month-view-day__event" v-for="event in eventsInDay" :key="event.id" :color="event.label" :message="event.name"/>
+            <c-label class="c-month-view-day__event"
+                     v-for="event in eventsInDay"
+                     :key="event.id" :color="event.label"
+                     :message="event.name"
+                     :blockLevel="'block'"/>
         </div>
     </router-link>
 </template>
@@ -35,7 +39,7 @@
             }
         },
 
-        
+
         data() {
             return {};
         },

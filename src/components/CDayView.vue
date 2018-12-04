@@ -50,7 +50,7 @@
             <c-event-list-item v-for="event in eventsInDay"
                                :key="event.id"
                                :event="event" />
-            <li v-if="eventsInDay.length === 0" class="c-event c-event--no-event">
+            <li v-if="eventsInDay.length === 0" class="no-events">
                 no events
             </li>
         </ul>
@@ -297,6 +297,17 @@
         &__action {
             flex-grow: 1;
             text-align: right;
+        }
+    }
+
+    .no-events {
+        padding: 48px;
+        display: flex;
+        justify-content: center;
+
+        &:first-child,
+        &:last-child {
+            border-bottom: 0;
         }
     }
 </style>

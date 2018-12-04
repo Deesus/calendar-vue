@@ -100,16 +100,6 @@
             border-left-color: @label-color-yellow;
         }
 
-        &&--no-event {
-            &:first-child,
-            &:last-child {
-                border-bottom: 0;
-            }
-            padding: 52px;
-            display: flex;
-            justify-content: center;
-        }
-
         &__start-time {
             grid-area: event-time;
         }

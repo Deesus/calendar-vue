@@ -19,6 +19,12 @@
             message: {
                 type: String,
                 required: true
+            },
+
+            // accepts either 'inline' or 'block':
+            blockLevel: {
+                type: String,
+                default: 'inline'
             }
         },
 
@@ -32,6 +38,8 @@
             eventLabelStyles() {
                 return {
                     'c-label': true,
+                    'c-label--block':  this.blockLevel === 'block',
+                    'c-label--inline': this.blockLevel === 'inline',
                     'c-label--blue':   this.color === LABEL_COLORS.BLUE,
                     'c-label--green':  this.color === LABEL_COLORS.GREEN,
                     'c-label--purple': this.color === LABEL_COLORS.PURPLE,
@@ -47,7 +55,6 @@
     @import "../styles/base/_constants";
 
     .c-label {
-        display: inline-block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -55,6 +62,14 @@
         border-radius: 3px;
         color: @font-color-bold;
         font-size: 1.25rem;
+
+        &&--inline {
+            display: inline-block;
+        }
+
+        &&--block {
+            display: block;
+        }
 
         &&--blue {
             background: @label-color-blue;
