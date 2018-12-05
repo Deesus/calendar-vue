@@ -76,7 +76,7 @@
     @import "../styles/blocks/_heading-text";
     @import "../styles/blocks/_icon";
 
-    /* TODO: need media query for mobile screens: */
+
     .c-nav {
         background: @accent-color-black;
         display: flex;
@@ -91,6 +91,7 @@
         &__heading-text {
             width: 260px;
             text-align: center;
+            line-height: 1;
         }
     }
 </style>
