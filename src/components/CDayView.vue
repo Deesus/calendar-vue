@@ -1,63 +1,64 @@
 <template>
-    <div class="c-day-view">
+    <div>
+        <div class="c-day-view">
 
-        <!-- ---------- header: ---------- -->
-        <div class="c-day-view__header c-day-header"><!--
-            --><router-link class="c-day-header__return-link"
-                            :to="{ name: 'month-view' }"
-                            @click.native="returnToMonthViewLinkClicked"><!--
-                --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
-            --></router-link>
-            <div class="c-day-header-text c-day-header__text">
-                <div class="c-day-header-text c-day-header-text__primary">{{ getDayOfWeekAndMonthText }}</div>
-                <div class="c-day-header-text__auxiliary">
-                    <div class="c-day-header-text c-day-header-text--bold">{{ getFullMonthText }}</div>
-                    <div class="c-day-header-text c-day-header-text--muted">{{ getFullYearText }}</div>
+            <!-- ---------- header: ---------- -->
+            <div class="c-day-view__header c-day-header"><!--
+                --><router-link class="c-day-header__return-link"
+                                :to="{ path: '/' }"
+                                @click.native="returnToMonthViewLinkClicked"><!--
+                    --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
+                --></router-link>
+                <div class="c-day-header-text c-day-header__text">
+                    <div class="c-day-header-text c-day-header-text__primary">{{ getDayOfWeekAndMonthText }}</div>
+                    <div class="c-day-header-text__auxiliary">
+                        <div class="c-day-header-text c-day-header-text--bold">{{ getFullMonthText }}</div>
+                        <div class="c-day-header-text c-day-header-text--muted">{{ getFullYearText }}</div>
+                    </div>
                 </div>
+                <span class="c-day-header__action">
+                    <span v-if="!shouldShowEventControls">
+                        <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
+                    </span>
+                    <span v-else>
+                        <a @click="addEventSubmitted" :class="addEventLinkStyles">Add</a>
+                    </span>
+                </span>
             </div>
-            <span class="c-day-header__action">
-                <span v-if="!shouldShowEventControls">
-                    <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
-                </span>
-                <span v-else>
-                    <a @click="addEventSubmitted" :class="addEventLinkStyles">Add</a>
-                </span>
-            </span>
+
+            <!-- ---------- add event: ---------- -->
+            <form class="c-add-event c-day-view__add-event" v-if="shouldShowEventControls">
+                <input id="addEventNameElementId"
+                       class="c-add-event__field c-add-event__field--input"
+                       :name="addEventNameElementId"
+                       v-model.trim="newEventName"
+                       maxlength="100"
+                       placeholder="Name"
+                       type="text">
+
+                <label class="c-add-event__label">Starts</label>
+                <div class="c-add-event__field c-add-event__field--time-picker">
+                    <c-time-picker v-on:timePickerUpdated="updateStartTimeData"/>
+                </div>
+
+                <textarea :id="addEventNotesElementId"
+                          class="c-add-event__field c-add-event__field--textarea"
+                          :name="addEventNotesElementId"
+                          v-model.trim="newEventNotes"
+                          maxlength="2000"
+                          placeholder="Notes"></textarea>
+            </form>
+
+            <!-- ---------- list of events: ---------- -->
+            <ul class="c-day-view__event-list">
+                <c-event-list-item v-for="event in eventsInDay"
+                                   :key="event.id"
+                                   :event="event" />
+                <li v-if="eventsInDay.length === 0" class="no-events">
+                    no events
+                </li>
+            </ul>
         </div>
-
-        <!-- ---------- add event: ---------- -->
-        <form class="c-add-event c-day-view__add-event" v-if="shouldShowEventControls">
-            <input id="addEventNameElementId"
-                   class="c-add-event__field c-add-event__field--input"
-                   :name="addEventNameElementId"
-                   v-model.trim="newEventName"
-                   maxlength="100"
-                   placeholder="Name"
-                   type="text">
-
-            <label class="c-add-event__label">Starts</label>
-            <div class="c-add-event__field c-add-event__field--time-picker">
-                <c-time-picker v-on:timePickerUpdated="updateStartTimeData"/>
-            </div>
-
-            <textarea :id="addEventNotesElementId"
-                      class="c-add-event__field c-add-event__field--textarea"
-                      :name="addEventNotesElementId"
-                      v-model.trim="newEventNotes"
-                      maxlength="2000"
-                      placeholder="Notes"></textarea>
-        </form>
-
-        <!-- ---------- list of events: ---------- -->
-        <ul class="c-day-view__event-list">
-            <c-event-list-item v-for="event in eventsInDay"
-                               :key="event.id"
-                               :event="event" />
-            <li v-if="eventsInDay.length === 0" class="no-events">
-                no events
-            </li>
-        </ul>
-
     </div>
 </template>
 
@@ -65,7 +66,7 @@
 <script>
     import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem, createUniqueId, randomSample } from '../utils/utils';
     import { LABEL_COLORS } from '../appConstants';
-    import { ADD_EVENT_TO_CALENDAR_MUTATION } from '../store/mutation-types';
+    import { ADD_EVENT_TO_CALENDAR_MUTATION, SHOW_MONTH_VIEW_BG_OVERLAY } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
     import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
@@ -199,6 +200,18 @@
             getDayOfWeekAndMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('dd D');
             }
+        }, // /computed
+
+
+        mounted() {
+            // when component is mounted, show the bg overlay:
+            this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, true);
+        },
+
+
+        destroyed() {
+            // when component is destroyed, hide the bg overlay:
+            this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, false);
         }
     }
 </script>
@@ -211,13 +224,19 @@
 
 
     .c-day-view {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 220;
         background: white;
-        margin: 24px auto;
+        margin: 0;
         width: 600px;
         max-width: 100%;
         border-radius: @day-view-border-radius;
         border: 1px solid @accent-color-medium-gray;
-        min-height: calc(~"100vh - 48px");
+        min-height: 200px;
+        box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
 
         &__header {
             padding: @day-view-padding;
@@ -324,8 +343,9 @@
     }
 
     .no-events {
-        padding: 48px;
+        min-height: 60px;
         display: flex;
+        align-items: center;
         justify-content: center;
 
         &:first-child,

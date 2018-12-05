@@ -13,6 +13,7 @@ const SET_CURRENT_DAY_MUTATION            = 'setCurrentDay';
 const SET_CURRENT_MONTH_MUTATION          = 'setCurrentMonth';
 const SET_CURRENT_YEAR_MUTATION           = 'setCurrentYear';
 const SHOW_CONFIRM_MODAL_MUTATION         = 'showConfirmModal';
+const SHOW_MONTH_VIEW_BG_OVERLAY          = 'showMonthViewBgOverlay';
 
 
 export {
@@ -22,5 +23,6 @@ export {
     SET_CURRENT_DAY_MUTATION,
     SET_CURRENT_MONTH_MUTATION,
     SET_CURRENT_YEAR_MUTATION,
-    SHOW_CONFIRM_MODAL_MUTATION
+    SHOW_CONFIRM_MODAL_MUTATION,
+    SHOW_MONTH_VIEW_BG_OVERLAY
 }

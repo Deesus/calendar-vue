@@ -12,7 +12,8 @@ import { ADD_EVENT_TO_CALENDAR_MUTATION,
          SET_CURRENT_DAY_MUTATION,
          SET_CURRENT_MONTH_MUTATION,
          SET_CURRENT_YEAR_MUTATION,
-         SHOW_CONFIRM_MODAL_MUTATION
+         SHOW_CONFIRM_MODAL_MUTATION,
+         SHOW_MONTH_VIEW_BG_OVERLAY
        } from './mutation-types';
 
 
@@ -25,6 +26,7 @@ export default new Vuex.Store({
         selectedDay:    moment().date(),
         selectedEventId: null,
         shouldShowConfirmModal: false,
+        shouldShowMonthViewBgOverlay: false,
 
         // n.b. if we were more concerned about performance, we should replace the events array with an object/hash
         // so that we select and delete at O(1) instead of doing Array.filter:
@@ -70,6 +72,10 @@ export default new Vuex.Store({
 
         [SHOW_CONFIRM_MODAL_MUTATION](state, shouldShowModal) {
             state.shouldShowConfirmModal = shouldShowModal;
+        },
+
+        [SHOW_MONTH_VIEW_BG_OVERLAY](state, shouldShowOverlay) {
+            state.shouldShowMonthViewBgOverlay = shouldShowOverlay;
         }
     },
 

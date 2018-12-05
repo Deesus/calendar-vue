@@ -1,22 +1,31 @@
 <template>
-    <div class="c-month-view">
-        <!-- ---------- header/nav: ---------- -->
-        <c-month-view-nav class="c-month-view__nav"/>
+    <div>
+        <div :class="monthViewStyles">
+            <!-- ---------- header/nav: ---------- -->
+            <c-month-view-nav class="c-month-view__nav"/>
 
-        <!-- --------- days-of-week heading: ---------- -->
-        <div class="c-month-view__days-of-week">
-            <div>SUN</div>
-            <div>MON</div>
-            <div>TUE</div>
-            <div>WED</div>
-            <div>THU</div>
-            <div>FRI</div>
-            <div>SAT</div>
+            <!-- --------- days-of-week heading: ---------- -->
+            <div class="c-month-view__days-of-week">
+                <div>SUN</div>
+                <div>MON</div>
+                <div>TUE</div>
+                <div>WED</div>
+                <div>THU</div>
+                <div>FRI</div>
+                <div>SAT</div>
+            </div>
+
+            <!-- ---------- days in month: ---------- -->
+            <c-month-view-day v-for="(day, index) in daysInMonth" :day="day" :key="index"/>
         </div>
 
-        <!-- ---------- days in month: ---------- -->
-        <c-month-view-day v-for="(day, index) in daysInMonth" :day="day" :key="index"></c-month-view-day>
+        <!-- ---------- month-view overlay: ---------- -->
+        <div class="c-month-view__overlay" v-if="shouldShowMonthViewBgOverlay"></div>
+
+        <!-- ---------- day view (modal): ---------- -->
+        <router-view></router-view>
     </div>
+
 </template>
 
 
@@ -86,6 +95,17 @@
                 }
 
                 return days;
+            },
+
+            shouldShowMonthViewBgOverlay() {
+                return this.$store.state.shouldShowMonthViewBgOverlay;
+            },
+
+            monthViewStyles() {
+                return {
+                    'c-month-view': true,
+                    'c-month-view--unfocus': this.$store.state.shouldShowMonthViewBgOverlay === true
+                }
             }
         } // computed
     }
@@ -107,6 +127,11 @@
         min-height: 100vh;
         max-width: 1800px;
 
+
+        &&--unfocus {
+            filter: blur(4px) grayscale(.7);
+        }
+
         &__nav {
             grid-row: ~"1/2";
             grid-column: ~"1/8";
@@ -127,6 +152,16 @@
             & > * {
                 padding: @calendar-cell-padding;
             }
+        }
+
+        &__overlay {
+            z-index: 30;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            background: rgba(0, 0, 0, 0.3);
         }
 
         // the router-link (<a> tag) is grid-item:

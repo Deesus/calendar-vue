@@ -1,8 +1,8 @@
 <template>
     <div id="app">
 
-        <!-- main layout: -->
-        <router-view></router-view>
+        <!-- main layout (month view): -->
+        <c-month-view></c-month-view>
 
         <!-- modals: -->
         <c-confirmation-modal v-if="shouldShowConfirmModal"
@@ -16,6 +16,7 @@
 
 
 <script>
+    import CMonthView from './components/CMonthView.vue';
     import CConfirmationModal from './components/CConfirmationModal.vue';
     import { REMOVE_EVENT_FROM_CALENDAR_MUTATION,
              SHOW_CONFIRM_MODAL_MUTATION
@@ -23,6 +24,12 @@
 
     export default {
         name: 'App',
+
+
+        components: {
+            CConfirmationModal,
+            CMonthView
+        },
 
 
         data() {
@@ -46,11 +53,6 @@
             onCancelClicked() {
                 this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
             }
-        },
-
-
-        components: {
-            CConfirmationModal
         }
     }
 </script>
