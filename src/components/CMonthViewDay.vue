@@ -135,7 +135,7 @@
 
         &&--today {
             color: white;
-            background: #fc3144;
+            background: @accent-color-red;
             border-radius: 50%;
         }
 

@@ -102,6 +102,7 @@
         height: 44px;
         padding-left: 8px;
         padding-right: 8px;
+        border-radius: @input-border-radius;
 
         & > * {
             height: 44px;

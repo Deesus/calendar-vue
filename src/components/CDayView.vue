@@ -4,13 +4,16 @@
         <!-- ---------- header: ---------- -->
         <div class="c-day-view__header c-day-header"><!--
             --><router-link class="c-day-header__return-link"
-                            :to="{name: 'month-view' }"
+                            :to="{ name: 'month-view' }"
                             @click.native="returnToMonthViewLinkClicked"><!--
                 --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
             --></router-link>
-            <div>
-                <div class="c-day-header__text c-day-header__text c-day-header__text--month">{{ getFullMonthText }}</div>
-                <div class="c-day-header__text c-day-header__text c-day-header__text--year">{{ getFullYearText }}</div>
+            <div class="c-day-header-text c-day-header__text">
+                <div class="c-day-header-text c-day-header-text__primary">{{ getDayOfWeekAndMonthText }}</div>
+                <div class="c-day-header-text__auxiliary">
+                    <div class="c-day-header-text c-day-header-text--bold">{{ getFullMonthText }}</div>
+                    <div class="c-day-header-text c-day-header-text--muted">{{ getFullYearText }}</div>
+                </div>
             </div>
             <span class="c-day-header__action">
                 <span v-if="!shouldShowEventControls">
@@ -179,9 +182,9 @@
 
             addEventLinkStyles() {
                 return {
-                    'c-link':           true,
-                    'c-link--red':      this.isFormValid === true,
-                    'c-link--disabled': this.isFormValid === false
+                    'c-link':            true,
+                    'c-link--highlight': this.isFormValid === true,
+                    'c-link--disabled':  this.isFormValid === false
                 };
             },
 
@@ -191,6 +194,10 @@
 
             getFullYearText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
+            },
+
+            getDayOfWeekAndMonthText() {
+                return this.$store.getters.getMomentObjectFromSelectedDate.format('dd D');
             }
         }
     }
@@ -263,6 +270,29 @@
         }
     }
 
+    .c-day-header-text {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+
+
+        &&--bold {
+            font-weight: bold;
+            color: @font-color-bold;
+        }
+
+        &__primary {
+            font-size: 3.1rem;
+        }
+
+        &__auxiliary {
+            padding: 0 12px;
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+    }
+
     .c-day-header {
         display: flex;
         flex-direction: row;
@@ -270,21 +300,6 @@
         background: @day-view-header-bg-color;
         border-top-left-radius: @day-view-border-radius;
         border-top-right-radius: @day-view-border-radius;
-
-        &__text {
-            &--month {
-                color: @font-color-bold;
-                font-size: 2rem;
-                line-height: 1;
-            }
-
-            &--year {
-                color: @accent-color-red;
-                font-size: 3.6rem;
-                font-weight: bold;
-                line-height: 1;
-            }
-        }
 
         &__return-link {
             display: flex;
@@ -329,7 +344,7 @@
             color: @font-color-default;
         }
 
-        &&--red {
+        &&--highlight {
             color: @accent-color-red;
         }
 
