@@ -2,22 +2,20 @@ const path              = require('path');
 const webpack           = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin   = require('vue-loader/lib/plugin');
+const MiniCSSExtractPlugin      = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin   = require('optimize-css-assets-webpack-plugin');
+const BabelMinifyPlugin         = require('babel-minify-webpack-plugin');
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: {
-        // this is the same as `import` statements in `web.entry.js`:
-        // n.b. order matters (e.g. web entry needs to be loaded last):
-        main: [
-            'babel-runtime/regenerator',
-            'webpack-hot-middleware/client?reload=true',    // creates websocket connection (and reloading on change)
-            './src/web.entry.js'
-        ]
+        main: ['./src/web.entry.js']
     },
 
 
-    mode: 'development',
+    mode: 'production',
 
 
     output: {
@@ -30,20 +28,6 @@ module.exports = {
     },
 
 
-    devServer: {
-        contentBase: 'dist',    // everything will be served from this directory
-        overlay: true,          // console errors are displayed in browser (as well as terminal)
-        stats: {
-            colors: true        // adds colors to terminal text
-        }
-    },
-
-
-    // we can use DevTools (only in Chromium) to debug both client and server Webpack code;
-    // add breakpoints in your code with the keyword `debugger`:
-    devtool: "source-map",      // add source-maps for bundles
-
-
     module: {
         // rules that webpack uses when it encounters various file types:
         rules: [
@@ -51,10 +35,7 @@ module.exports = {
             // see <https://vue-loader.vuejs.org/options.html>
             {
                 test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    hotReload: true
-                }
+                loader: 'vue-loader'
             },
 
             // ---------- JS: ----------
@@ -89,8 +70,8 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: [
-                    'vue-style-loader',
-                    'css-loader',           // style-loader is responsible for injecting the css into the html
+                    MiniCSSExtractPlugin.loader,
+                    'css-loader',
                     'less-loader'
                 ]
             },
@@ -102,8 +83,8 @@ module.exports = {
 
                 // specify loaders:
                 use: [
-                    'vue-style-loader',
-                    'style-loader',         // style-loader is responsible for injecting the css into the html
+                    MiniCSSExtractPlugin.loader,
+                    // 'style-loader',         // style-loader is responsible for injecting the css into the html // TODO: test style-loader vs traditional .css
                     'css-loader'
                 ]
             },
@@ -147,16 +128,25 @@ module.exports = {
     },
 
 
+    // n.b. loaders apply a task one-at-a-time while plugins apply to all files:
     plugins: [
+
+        // TODO: uncomment if we don't want to use `cross-env` in npm script:
+        // // n.b. Webpack does't recognize environment variables (e.g. in npm scripts) unless we explicitly define them;
+        // // this adds the variable to all code during compilation:
+        // new webpack.DefinePlugin({
+        //     'process.env': {
+        //         'NODE_ENV': JSON.stringify('production')
+        //     }
+        // }),
+
+        new OptimizeCssAssetsPlugin(),
+        new MiniCSSExtractPlugin(),
         new VueLoaderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
         new HTMLWebpackPlugin({
-            template: './src/index.html'
-        })
+            template: './src/index.html',    // n.b. this can be `.html`, `.ejs`, etc.
+            inject:   true,
+        }),
+        new BabelMinifyPlugin()
     ]
 };
-
-
-if (process.env.NODE_ENV === 'development') {
-    console.log('---------- Running in development mode ----------');
-}

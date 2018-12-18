@@ -4,18 +4,19 @@
   "description": "a vue calendar",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config=config/webpack.dev.js",
     "dev": "cross-env NODE_ENV=development nodemon --inspect --watch config --watch src/server src/server/main.js --hide-modules",
-    "production": ""
+    "build": "cross-env NODE_ENV=production webpack --config=config/webpack.prod.js",
+    "prod": "cross-env NODE_ENV=production node src/server/main.js"
   },
   "keywords": [
     "vue calendar"
   ],
-  "author": "Dee Reddy | Ди Редди",
-  "devDependencies": {
+  "author": "Dee Reddy (Ди Редди)",
+  "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -29,23 +30,25 @@
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "nodemon": "^1.18.5",
+    "mini-css-extract-plugin": "^0.5.0",
+    "moment-timezone": "^0.5.23",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "style-loader": "^0.23.1",
+    "vue": "^2.5.17",
+    "vue-feather-icons": "^4.7.1",
     "vue-loader": "^15.4.2",
+    "vue-router": "^3.0.1",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.5.17",
+    "vuex": "^3.0.1",
     "webpack": "^4.23.0",
-    "webpack-cli": "^3.1.2",
+    "webpack-cli": "^3.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.10",
     "webpack-hot-middleware": "^2.24.3"
-  },
-  "dependencies": {
-    "moment-timezone": "^0.5.23",
-    "vue": "^2.5.17",
-    "vue-feather-icons": "^4.7.1",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",
