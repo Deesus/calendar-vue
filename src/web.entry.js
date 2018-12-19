@@ -27,7 +27,7 @@ Object.defineProperty(Vue.prototype,
 // vue instance:
 // ==================================================
 
-// TODO: we get `[Vue warn]: Cannot find element: #app' unless we use `window.onload`; need to fix something in Webpack
+// TODO: we could use `<script defer>` in `index.html` so that Vue can find the #app element to mount onto (otherwise the new Vue instance would have to be wrapped in an onload/DOMContentLoaded handler:
 window.onload = function() {
     new Vue({
         el: '#app',
@@ -36,9 +36,9 @@ window.onload = function() {
             moment
         },
 
-        store: store,
+        store,
 
-        router: router,
+        router,
 
         render(h) {
             return h(App);
