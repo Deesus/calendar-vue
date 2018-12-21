@@ -1,5 +1,6 @@
 # Vue.js Calendar
-Features a month-by-month overview; the ability to add events and notes; and a day-view to check out events on a given day.
+# Demo: http://calendar.deepankara.com
+A monthly calendar where users can add custom events, times, and event notes.
 
 ###### Utilizes:
 - Vue
