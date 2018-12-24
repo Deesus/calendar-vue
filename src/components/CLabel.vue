@@ -43,6 +43,7 @@
                     'c-label--blue':   this.color === LABEL_COLORS.BLUE,
                     'c-label--green':  this.color === LABEL_COLORS.GREEN,
                     'c-label--purple': this.color === LABEL_COLORS.PURPLE,
+                    'c-label--red':    this.color === LABEL_COLORS.RED,
                     'c-label--yellow': this.color === LABEL_COLORS.YELLOW
                 }
             }
@@ -81,6 +82,10 @@
 
         &&--purple {
             background: @label-color-purple;
+        }
+
+        &&--red {
+            background: @label-color-red;
         }
 
         &&--yellow {

@@ -31,12 +31,40 @@ export default new Vuex.Store({
         // n.b. if we were more concerned about performance, we should replace the events array with an object/hash
         // so that we select and delete at O(1) instead of doing Array.filter:
         eventsInCalendar: [
-            // TODO: replace dummy data:
+            // TODO: replace dummy data before deploying to production:
             // TODO: need to validate start/end dates
-            { id: 484371, name: 'vacation', startTime: moment(), endTime: moment().add(5, 'days'), notes: '', label: 'YELLOW' },
-            { id: 18358328, name: 'Molestias aperiam sit veniam asperiores quis. Minima aliquid autem sed fugit voluptatibus nisi temporibus quae', startTime: moment(), endTime: moment().add(3, 'days'), notes: '', label: 'BLUE' },
-            { id: 852202, name: 'meeting',  startTime: moment().subtract(8, 'days').add(3, 'hours'), endTime: moment().subtract(8, 'days').add(6, 'hours'), notes: '', label: 'GREEN' },
-            { id: 3473275, name: 'one more', startTime: moment().subtract(8, 'days').add(5, 'hours'), endTime: moment().subtract(8, 'days').add(10, 'hours'), notes: '', label: 'BLUE' }
+            {
+                id: 484371,
+                name: 'Vacation',
+                startTime: moment(),
+                endTime: moment().add(2, 'days'),
+                notes: '',
+                label: 'YELLOW'
+            },
+            {
+                id: 18358328,
+                name: 'Pick up laptop',
+                startTime: moment().add(5, 'days'),
+                endTime: moment().add(5, 'days'),
+                notes: 'Pick up repaired laptop from Galeria Mall.',
+                label: 'RED'
+            },
+            {
+                id: 852202,
+                name: 'Meeting with Yana',
+                startTime: moment().subtract(14, 'days').add(3, 'hours'),
+                endTime: moment().subtract(14, 'days').add(6, 'hours'),
+                notes: 'At the coffee shop on 14/3 Nevsky Prospect.',
+                label: 'GREEN'
+            },
+            {
+                id: 3473275,
+                name: 'Dentist appointment',
+                startTime: moment().subtract(5, 'days').add(5, 'hours'),
+                endTime: moment().subtract(5, 'days').add(10, 'hours'),
+                notes: 'Plan to leave at least 30 minutes ahead to avoid traffic.',
+                label: 'BLUE'
+            }
         ]
     },
 

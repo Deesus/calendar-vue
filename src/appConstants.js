@@ -29,6 +29,7 @@ const LABEL_COLORS = Object.freeze({
     BLUE:   'BLUE',
     GREEN:  'GREEN',
     PURPLE: 'PURPLE',
+    RED:    'RED',
     YELLOW: 'YELLOW'
 });
 

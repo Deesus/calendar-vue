@@ -51,6 +51,7 @@
                     'c-event-list-item--blue':   this.event.label === LABEL_COLORS.BLUE,
                     'c-event-list-item--green':  this.event.label === LABEL_COLORS.GREEN,
                     'c-event-list-item--purple': this.event.label === LABEL_COLORS.PURPLE,
+                    'c-event-list-item--red':    this.event.label === LABEL_COLORS.RED,
                     'c-event-list-item--yellow': this.event.label === LABEL_COLORS.YELLOW
                 }
             }
@@ -94,6 +95,10 @@
 
         &&--purple {
             border-left-color: @label-color-purple;
+        }
+
+        &&--red {
+            border-left-color: @label-color-red;
         }
 
         &&--yellow {
