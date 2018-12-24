@@ -1,13 +1,20 @@
 <template>
     <div class="c-nav">
-
         <chevron-left-icon class="icon icon--pointer icon--white icon--med" @click="previousMonthHandler"/>
-        <h1 class="c-heading-text c-nav__heading-text">
-            <span class="c-heading-text c-heading-text--month">{{ navHeaderMonthText }}</span>
-            <span class="c-heading-text c-heading-text--year">{{ navHeaderYearText }}</span>
-        </h1>
-        <chevron-right-icon class="icon icon--pointer icon--white icon--med" @click="nextMonthHandler"/>
 
+        <transition
+                name="fade-slide"
+                mode="out-in"
+                :enter-active-class="headerTransitionEnterClasses"
+                :leave-active-class="headerTransitionLeaveClasses"
+        >
+            <h1 class="c-heading-text c-nav__heading-text" :key="navHeaderMonthText" >
+                <span class="c-heading-text c-heading-text--month">{{ navHeaderMonthText }}</span>
+                <span class="c-heading-text c-heading-text--year">{{ navHeaderYearText }}</span>
+            </h1>
+        </transition>
+
+        <chevron-right-icon class="icon icon--pointer icon--white icon--med" @click="nextMonthHandler"/>
     </div>
 </template>
 
@@ -16,6 +23,9 @@
     import { DATE_ENUM } from '../appConstants';
     import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/mutation-types';
     import { ChevronLeftIcon, ChevronRightIcon } from 'vue-feather-icons';
+
+    const HEADER_TRANSITION_DIRECTION_NEXT_NAME = 'NEXT';
+    const HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME = 'PREVIOUS';
 
 
     export default {
@@ -29,7 +39,9 @@
 
 
         data() {
-            return {};
+            return {
+                headerTransitionDirection: ''
+            };
         },
 
 
@@ -37,6 +49,11 @@
             // TODO: can we replace `this.$store.state` and `this.$store.commit` with aliases?
 
             previousMonthHandler() {
+                // update state (for animation classes):
+                this.headerTransitionDirection = HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME;
+
+
+                // update selected month and year:
                 if (this.$store.state.selectedMonth === DATE_ENUM.JANUARY) {
                     this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.DECEMBER);
                     this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear - 1);
@@ -47,6 +64,11 @@
             },
 
             nextMonthHandler() {
+                // update state (for animation classes):
+                this.headerTransitionDirection = HEADER_TRANSITION_DIRECTION_NEXT_NAME;
+
+
+                // update selected month and year:
                 if (this.$store.state.selectedMonth === DATE_ENUM.DECEMBER) {
                     this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.JANUARY);
                     this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear + 1);
@@ -65,6 +87,32 @@
 
             navHeaderYearText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
+            },
+
+            headerTransitionEnterClasses() {
+                let transitionClasses = '';
+
+                if (this.headerTransitionDirection === HEADER_TRANSITION_DIRECTION_NEXT_NAME) {
+                    transitionClasses = 'fade-slide-in-left animate-200';
+                }
+                else if (this.headerTransitionDirection ===  HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME) {
+                    transitionClasses = 'fade-slide-in-right animate-200';
+                }
+
+                return transitionClasses;
+            },
+
+            headerTransitionLeaveClasses() {
+                let transitionClasses = '';
+
+                if (this.headerTransitionDirection === HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME) {
+                    transitionClasses = 'fade-slide-out-left animate-200';
+                }
+                else if (this.headerTransitionDirection === HEADER_TRANSITION_DIRECTION_NEXT_NAME) {
+                    transitionClasses = 'fade-slide-out-right animate-200';
+                }
+
+                return transitionClasses;
             }
         }
     }
@@ -75,6 +123,7 @@
     @import "../styles/base/_constants";
     @import "../styles/blocks/_heading-text";
     @import "../styles/blocks/_icon";
+    @import "../styles/utils/_animations";
 
 
     .c-nav {
