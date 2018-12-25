@@ -35,6 +35,7 @@
     import CMonthViewNav from './CMonthViewNav.vue';
     import CMonthViewDay from './CMonthViewDay.vue';
 
+
     export default {
         name: 'CMonthView',
 
@@ -115,6 +116,7 @@
 <style lang="less" scoped>
     @import "../styles/base/_constants";
 
+
     .c-month-view {
         display: grid;
         grid-template-columns: repeat(7, 1fr);          // there are 7 days in a week
@@ -126,7 +128,7 @@
         cursor: pointer;            // prevents cursor from reverting when hovering over grid gaps
         min-height: 100vh;
         max-width: 1800px;
-
+        transition: filter linear 200ms;
 
         &&--unfocus {
             filter: blur(4px) grayscale(.7);
