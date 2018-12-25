@@ -16,6 +16,7 @@
 
 
 <script>
+    import { KEY_CODES } from '../appConstants';
     import { SHOW_CONFIRM_MODAL_MUTATION } from '../store/mutation-types';
     import { XIcon } from 'vue-feather-icons';
 
@@ -59,6 +60,16 @@
             confirmButtonClicked() {
                 this.$emit('confirm-clicked', 'confirmed');
             }
+        },
+
+
+        mounted() {
+            // when 'escape' key is pressed, close the 'confirmation modal' (and return to month view -- which is done by `CDayView.vue`):
+            window.addEventListener('keydown', (event) => {
+                if (event.keyCode === KEY_CODES.ESCAPE) {
+                    this.cancelButtonClicked();
+                }
+            });
         }
     }
 </script>
