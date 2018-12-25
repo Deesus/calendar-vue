@@ -65,7 +65,7 @@
 
 <script>
     import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem, createUniqueId, randomSample } from '../utils/utils';
-    import { LABEL_COLORS } from '../appConstants';
+    import { LABEL_COLORS, KEY_CODES } from '../appConstants';
     import { ADD_EVENT_TO_CALENDAR_MUTATION, SHOW_MONTH_VIEW_BG_OVERLAY } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
@@ -205,7 +205,20 @@
 
         mounted() {
             // when component is mounted, show the bg overlay:
-            this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, true);
+            {
+                this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, true);
+            }
+
+            // when 'escape' key is pressed, close and return to month view:
+            {
+                // normal HTML tags don't dispatch global keypress events <https://github.com/vuejs/vue/issues/1250#issuecomment-137492490>
+                window.addEventListener('keydown', (event) => {
+                    if (event.keyCode === KEY_CODES.ESCAPE) {
+                        this.$router.push('/');
+                    }
+                });
+            }
+
         },
 
 

@@ -33,8 +33,14 @@ const LABEL_COLORS = Object.freeze({
     YELLOW: 'YELLOW'
 });
 
+// `keyup` and `keydown` codes (but NOT `keypress`):
+const KEY_CODES = Object.freeze({
+    ESCAPE: 27
+});
+
 
 export {
     DATE_ENUM,
+    KEY_CODES,
     LABEL_COLORS
 }
