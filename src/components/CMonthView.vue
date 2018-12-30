@@ -127,7 +127,7 @@
         background: @calendar-border-color;
         cursor: pointer;            // prevents cursor from reverting when hovering over grid gaps
         min-height: 100vh;
-        max-width: 1800px;
+        max-width: 100%;
         transition: filter linear 200ms;
 
         &&--unfocus {
