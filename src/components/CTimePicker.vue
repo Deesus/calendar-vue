@@ -89,7 +89,9 @@
 
 
         mounted() {
-            // as soon as the component is mounted, it emits the default time-picker values to parent:
+            // as soon as the component is mounted, ensure the date is formatted (if existing event),
+            // then emit the default time-picker values to parent:
+            this.formattedMinutesInput();
             this.emitTimePickerData();
         }
     }
