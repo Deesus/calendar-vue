@@ -13,12 +13,15 @@
         name: 'CTimePicker',
 
 
+        props: ['eventStartTime'],
+
+
         data() {
             return {
                 // n.b. these are default time-picker values:
-                hoursInput:     '12',
-                minutesInput:   '00',
-                meridiemValue:  'AM'
+                hoursInput:     this.eventStartTime.hours       || '12',
+                minutesInput:   this.eventStartTime.minutes     || '00',
+                meridiemValue:  this.eventStartTime.meridiem    || 'AM'
             };
         },
 

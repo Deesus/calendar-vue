@@ -7,6 +7,7 @@ import moment from 'moment-timezone';
 import { createMomentObjectFromYearMonthDay } from '../utils/utils';
 
 import { ADD_EVENT_TO_CALENDAR_MUTATION,
+         EDIT_EVENT_IN_CALENDAR_MUTATION,
          REMOVE_EVENT_FROM_CALENDAR_MUTATION,
          SELECT_EVENT_ID_MUTATION,
          SET_CURRENT_DAY_MUTATION,
@@ -36,7 +37,7 @@ export default new Vuex.Store({
             {
                 id: 484371,
                 name: 'Vacation',
-                startTime: moment(),
+                startTime: moment().add(34, 'minutes'),
                 endTime: moment().add(2, 'days'),
                 notes: '',
                 label: 'YELLOW'
@@ -44,8 +45,8 @@ export default new Vuex.Store({
             {
                 id: 18358328,
                 name: 'Pick up laptop',
-                startTime: moment().add(5, 'days'),
-                endTime: moment().add(5, 'days'),
+                startTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
+                endTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
                 notes: 'Pick up repaired laptop from Galeria Mall.',
                 label: 'RED'
             },
@@ -60,8 +61,8 @@ export default new Vuex.Store({
             {
                 id: 3473275,
                 name: 'Dentist appointment',
-                startTime: moment().subtract(5, 'days').add(5, 'hours'),
-                endTime: moment().subtract(5, 'days').add(10, 'hours'),
+                startTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
+                endTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
                 notes: 'Plan to leave at least 30 minutes ahead to avoid traffic.',
                 label: 'BLUE'
             }
@@ -85,6 +86,11 @@ export default new Vuex.Store({
         // TODO: this should be an async Vuex action:
         [ADD_EVENT_TO_CALENDAR_MUTATION](state, event) {
             state.eventsInCalendar.push(event);
+        },
+
+        [EDIT_EVENT_IN_CALENDAR_MUTATION](state, editedEvent) {
+            let indexOfEvent = state.eventsInCalendar.findIndex( (item) => item.id === editedEvent.id);
+            state.eventsInCalendar.splice(indexOfEvent, 1, editedEvent);
         },
 
         // TODO: this should be an async Vuex action:

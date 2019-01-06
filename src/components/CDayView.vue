@@ -31,20 +31,20 @@
                 <input id="addEventNameElementId"
                        class="c-add-event__field c-add-event__field--input"
                        :name="addEventNameElementId"
-                       v-model.trim="newEventName"
+                       v-model.trim="calendarEventName"
                        maxlength="100"
                        placeholder="Name"
                        type="text">
 
                 <label class="c-add-event__label">Starts</label>
                 <div class="c-add-event__field c-add-event__field--time-picker">
-                    <c-time-picker v-on:timePickerUpdated="updateStartTimeData"/>
+                    <c-time-picker v-on:timePickerUpdated="updateStartTimeData" :eventStartTime="calendarEventStartTime" />
                 </div>
 
                 <textarea :id="addEventNotesElementId"
                           class="c-add-event__field c-add-event__field--textarea"
                           :name="addEventNotesElementId"
-                          v-model.trim="newEventNotes"
+                          v-model.trim="calendarEventNotes"
                           maxlength="2000"
                           placeholder="Notes"></textarea>
             </form>
@@ -53,7 +53,8 @@
             <ul class="c-day-view__event-list">
                 <c-event-list-item v-for="event in eventsInDay"
                                    :key="event.id"
-                                   :event="event" />
+                                   :event="event"
+                                   @click.native="existingEventItemClicked(event)"/>
                 <li v-if="eventsInDay.length === 0" class="no-events">
                     no events
                 </li>
@@ -66,7 +67,11 @@
 <script>
     import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem, createUniqueId, randomSample } from '../utils/utils';
     import { LABEL_COLORS, KEY_CODES } from '../appConstants';
-    import { ADD_EVENT_TO_CALENDAR_MUTATION, SHOW_MONTH_VIEW_BG_OVERLAY } from '../store/mutation-types';
+    import {
+        ADD_EVENT_TO_CALENDAR_MUTATION,
+        SHOW_MONTH_VIEW_BG_OVERLAY,
+        EDIT_EVENT_IN_CALENDAR_MUTATION
+    } from '../store/mutation-types';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
     import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
@@ -90,12 +95,13 @@
                 addEventNameElementId:  'add-event-name',
                 addEventNotesElementId: 'add-notes-textarea',
 
-                newEventLabel: '',
-                newEventName: '',
-                newEventNotes: '',
+                calendarEventLabel: '',
+                calendarEventName: '',
+                calendarEventNotes: '',
+                calendarEventId: null,
 
                 // n.b. default values get updated as soon as the time-picker component has mounted:
-                newEventStartTime: {
+                calendarEventStartTime: {
                     hours:      null,
                     minutes:    null,
                     meridiem:   null
@@ -106,11 +112,22 @@
 
 
         methods: {
+            getHoursMinutesMeridiumFromMomentObject(momentObj) {
+                let hours = momentObj.hours();
+                let minutes = momentObj.minutes();
+
+                return {
+                    hours:      hours <= 12 ? hours : hours - 12,
+                    minutes:    minutes,
+                    meridiem:   hours < 12 ? 'AM' : 'PM'
+                }
+            },
+
             // when time-picker updates its internal state (e.g. onblur), we update the CDayView's data:
             updateStartTimeData(payload) {
-                this.newEventStartTime.hours    = payload.hoursInput;
-                this.newEventStartTime.minutes  = payload.minutesInput;
-                this.newEventStartTime.meridiem = payload.meridiemValue;
+                this.calendarEventStartTime.hours    = payload.hoursInput;
+                this.calendarEventStartTime.minutes  = payload.minutesInput;
+                this.calendarEventStartTime.meridiem = payload.meridiemValue;
             },
 
             addEventSubmitted() {
@@ -122,23 +139,38 @@
                 let momentObj = createMomentObjectFromYearMonthDayHoursMinutesMeridiem(this.$store.state.selectedYear,
                                                                                        this.$store.state.selectedMonth,
                                                                                        this.$store.state.selectedDay,
-                                                                                       this.newEventStartTime.hours,
-                                                                                       this.newEventStartTime.minutes,
-                                                                                       this.newEventStartTime.meridiem);
+                                                                                       this.calendarEventStartTime.hours,
+                                                                                       this.calendarEventStartTime.minutes,
+                                                                                       this.calendarEventStartTime.meridiem);
 
-                // TODO: should change from mutation to action:
-                this.$store.commit(ADD_EVENT_TO_CALENDAR_MUTATION, {
-                    id:         createUniqueId(),
-                    name:       this.newEventName,
-                    startTime:  momentObj,
-                    endTime:    momentObj,
-                    notes:      this.newEventNotes,
-                    label:      randomSample(Object.keys(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
-                });
+                if (this.calendarEventId === null) {
+                    // TODO: should change from mutation to action:
+                    this.$store.commit(ADD_EVENT_TO_CALENDAR_MUTATION, {
+                        id:         createUniqueId(),
+                        name:       this.calendarEventName,
+                        startTime:  momentObj,
+                        endTime:    momentObj,
+                        notes:      this.calendarEventNotes,
+                        label:      randomSample(Object.keys(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
+                    });
+                }
+                // ---------- if editing an existing event (`calendarEventId` will not be null): ----------
+                else {
+                    // this is the same as 'add event,' except the event id is already given, plus we're calling to EDIT_EVENT_IN_CALENDAR_MUTATION:
+                    this.$store.commit(EDIT_EVENT_IN_CALENDAR_MUTATION, {
+                        id:         this.calendarEventId,
+                        name:       this.calendarEventName,
+                        startTime:  momentObj,
+                        endTime:    momentObj,
+                        notes:      this.calendarEventNotes,
+                        label:      randomSample(Object.keys(LABEL_COLORS))
+                    });
+                }
 
-                // after successful store commit, reset fields:
-                this.newEventName = '';
-                this.newEventNotes = '';
+                // ---------- after successful store commit, reset fields: ----------
+                this.calendarEventName = '';
+                this.calendarEventNotes = '';
+                this.calendarEventId = null;
             },
 
             toggleShowEventControlsClicked() {
@@ -148,6 +180,20 @@
 
             returnToMonthViewLinkClicked() {
                 // n.b. this is a placeholder in case we need to extend the functionality of the component
+            },
+
+            existingEventItemClicked(calendarEvent) {
+                this.shouldShowEventControls = true;
+
+                let eventStartTime = this.getHoursMinutesMeridiumFromMomentObject(calendarEvent.startTime);
+
+                this.calendarEventLabel              = calendarEvent.label;
+                this.calendarEventName               = calendarEvent.name;
+                this.calendarEventNotes              = calendarEvent.notes;
+                this.calendarEventId                 = calendarEvent.id;
+                this.calendarEventStartTime.hours    = eventStartTime.hours;
+                this.calendarEventStartTime.minutes  = eventStartTime.minutes;
+                this.calendarEventStartTime.meridiem = eventStartTime.meridiem;
             }
         },
 
@@ -173,7 +219,7 @@
 
                 // check various form fields:
                 // n.b. right now, this error list doesn't do much; but we'll need it if we want to extend the validation (e.g. add error styles to inputs):
-                if (this.newEventName === '') {
+                if (this.calendarEventName === '') {
                     validationErrors.push(this.addEventNameElementId);
                 }
 

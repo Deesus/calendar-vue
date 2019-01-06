@@ -7,6 +7,7 @@
 
 
 const ADD_EVENT_TO_CALENDAR_MUTATION      = 'addEventToCalendar';
+const EDIT_EVENT_IN_CALENDAR_MUTATION     = 'editEventInCalendar';
 const REMOVE_EVENT_FROM_CALENDAR_MUTATION = 'removeEventFromCalendar';
 const SELECT_EVENT_ID_MUTATION            = 'selectEventId';
 const SET_CURRENT_DAY_MUTATION            = 'setCurrentDay';
@@ -18,6 +19,7 @@ const SHOW_MONTH_VIEW_BG_OVERLAY          = 'showMonthViewBgOverlay';
 
 export {
     ADD_EVENT_TO_CALENDAR_MUTATION,
+    EDIT_EVENT_IN_CALENDAR_MUTATION,
     REMOVE_EVENT_FROM_CALENDAR_MUTATION,
     SELECT_EVENT_ID_MUTATION,
     SET_CURRENT_DAY_MUTATION,

@@ -70,6 +70,7 @@
     .c-event-list-item {
         border-left: @event-list-item-color-tab-width solid transparent;
         margin: 0;
+        cursor: pointer;
         padding: @day-view-padding @day-view-padding @day-view-padding (@day-view-padding - @event-list-item-color-tab-width);
         display: grid;
         grid-template-columns: 80px 1fr 36px;
