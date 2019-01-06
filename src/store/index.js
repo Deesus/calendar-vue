@@ -38,8 +38,24 @@ export default new Vuex.Store({
                 id: 484371,
                 name: 'Vacation',
                 startTime: moment().add(34, 'minutes'),
-                endTime: moment().add(2, 'days'),
+                endTime: moment().add(34, 'minutes'),
+                notes: 'First day of vacation. Enjoy!',
+                label: 'YELLOW'
+            },
+            {
+                id: 3428574,
+                name: 'Vacation',
+                startTime: moment().add(1, 'days'),
+                endTime: moment().add(1, 'days'),
                 notes: '',
+                label: 'YELLOW'
+            },
+            {
+                id: 242973,
+                name: 'Vacation',
+                startTime: moment().add(2, 'days'),
+                endTime: moment().add(2, 'days'),
+                notes: 'Last day of vacation.',
                 label: 'YELLOW'
             },
             {
