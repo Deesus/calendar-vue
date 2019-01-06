@@ -21,28 +21,28 @@
                         <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
                     </span>
                     <span v-else>
-                        <a @click="addEventSubmitted" :class="addEventLinkStyles">Add</a>
+                        <a @click="saveEventSubmitted" :class="saveEventLinkStyles">Save</a>
                     </span>
                 </span>
             </div>
 
             <!-- ---------- add event: ---------- -->
-            <form class="c-add-event c-day-view__add-event" v-if="shouldShowEventControls">
+            <form class="c-event-add c-day-view__add-event" v-if="shouldShowEventControls">
                 <input id="addEventNameElementId"
-                       class="c-add-event__field c-add-event__field--input"
+                       class="c-event-add__field c-event-add__field--input"
                        :name="addEventNameElementId"
                        v-model.trim="calendarEventName"
                        maxlength="100"
                        placeholder="Name"
                        type="text">
 
-                <label class="c-add-event__label">Starts</label>
-                <div class="c-add-event__field c-add-event__field--time-picker">
+                <label class="c-event-add__label">Starts</label>
+                <div class="c-event-add__field c-event-add__field--time-picker">
                     <c-time-picker v-on:timePickerUpdated="updateStartTimeData" :eventStartTime="calendarEventStartTime" />
                 </div>
 
                 <textarea :id="addEventNotesElementId"
-                          class="c-add-event__field c-add-event__field--textarea"
+                          class="c-event-add__field c-event-add__field--textarea"
                           :name="addEventNotesElementId"
                           v-model.trim="calendarEventNotes"
                           maxlength="2000"
@@ -130,7 +130,7 @@
                 this.calendarEventStartTime.meridiem = payload.meridiemValue;
             },
 
-            addEventSubmitted() {
+            saveEventSubmitted() {
                 // check if form fields are valid:
                 if (this.isFormValid === false) {
                     return;
@@ -227,7 +227,7 @@
                 return validationErrors.length === 0;
             },
 
-            addEventLinkStyles() {
+            saveEventLinkStyles() {
                 return {
                     'c-link':            true,
                     'c-link--highlight': this.isFormValid === true,
@@ -318,7 +318,7 @@
         }
     }
 
-    .c-add-event {
+    .c-event-add {
         display: grid;
         grid-template-columns: 85px 1fr;
 

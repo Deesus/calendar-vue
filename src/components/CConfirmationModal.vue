@@ -64,7 +64,7 @@
 
 
         mounted() {
-            // when 'escape' key is pressed, close the 'confirmation modal' (and return to month view -- which is done by `CDayView.vue`):
+            // when 'escape' key is pressed, close the 'confirmation modal' (and return to month view -- which is done by `TheDayView.vue`):
             window.addEventListener('keydown', (event) => {
                 if (event.keyCode === KEY_CODES.ESCAPE) {
                     this.cancelButtonClicked();

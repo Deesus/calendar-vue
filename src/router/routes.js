@@ -1,4 +1,4 @@
-import CDayView from '../components/CDayView.vue';
+import CDayView from '../components/TheDayView.vue';
 
 
 export default [

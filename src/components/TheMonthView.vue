@@ -32,7 +32,7 @@
 <script>
     import { createMomentObjectFromYearMonthDay } from '../utils/utils';
     import { DATE_ENUM } from '../appConstants';
-    import CMonthViewNav from './CMonthViewNav.vue';
+    import CMonthViewNav from './TheMonthViewNav.vue';
     import CMonthViewDay from './CMonthViewDay.vue';
 
 
