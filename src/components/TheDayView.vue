@@ -156,14 +156,14 @@
                 }
                 // ---------- if editing an existing event (`calendarEventId` will not be null): ----------
                 else {
-                    // this is the same as 'add event,' except the event id is already given, plus we're calling to EDIT_EVENT_IN_CALENDAR_MUTATION:
+                    // this is the same as 'add event,' except the event id and label are already given, plus we're calling to EDIT_EVENT_IN_CALENDAR_MUTATION:
                     this.$store.commit(EDIT_EVENT_IN_CALENDAR_MUTATION, {
                         id:         this.calendarEventId,
                         name:       this.calendarEventName,
                         startTime:  momentObj,
                         endTime:    momentObj,
                         notes:      this.calendarEventNotes,
-                        label:      randomSample(Object.keys(LABEL_COLORS))
+                        label:      this.calendarEventLabel
                     });
                 }
 
