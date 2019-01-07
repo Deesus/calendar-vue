@@ -99,17 +99,17 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
 
     .c-month-view-day {
         width: 100%;
         height: 100%;
         background: white;
-        padding: @calendar-cell-padding;
+        padding: $calendar-cell-padding;
 
-        &&--muted {
-            background: @calendar-muted-bg-color;
+        &--muted {
+            background: $calendar-muted-bg-color;
         }
 
         &__date-heading {
@@ -131,16 +131,16 @@
         text-align: center;
         align-items: center;
         line-height: 1;
-        color: @font-color-bold;
+        color: $font-color-bold;
 
-        &&--today {
+        &--today {
             color: white;
-            background: @accent-color-red;
+            background: $accent-color-red;
             border-radius: 50%;
         }
 
-        &&--not-current-month {
-            color: @font-color-muted;
+        &--not-current-month {
+            color: $font-color-muted;
         }
     }
 </style>

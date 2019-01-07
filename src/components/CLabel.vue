@@ -52,7 +52,7 @@
 </script>
 
 
-<style scoped lang="less">
+<style scoped lang="scss">
     @import "../styles/base/_constants";
 
     .c-label {
@@ -61,35 +61,35 @@
         text-overflow: ellipsis;
         padding: 2px 4px;
         border-radius: 3px;
-        color: @font-color-bold;
+        color: $font-color-bold;
         font-size: 1.25rem;
 
-        &&--inline {
+        &--inline {
             display: inline-block;
         }
 
-        &&--block {
+        &--block {
             display: block;
         }
 
-        &&--blue {
-            background: @label-color-blue;
+        &--blue {
+            background: $label-color-blue;
         }
 
-        &&--green {
-            background: @label-color-green;
+        &--green {
+            background: $label-color-green;
         }
 
-        &&--purple {
-            background: @label-color-purple;
+        &--purple {
+            background: $label-color-purple;
         }
 
-        &&--red {
-            background: @label-color-red;
+        &--red {
+            background: $label-color-red;
         }
 
-        &&--yellow {
-            background: @label-color-yellow;
+        &--yellow {
+            background: $label-color-yellow;
         }
     }
 </style>

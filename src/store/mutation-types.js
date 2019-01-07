@@ -1,5 +1,5 @@
 /**
- * Constant names for Veux/store mutations
+ * Constant names for Vuex/store mutations
  *
  * See <https://vuex.vuejs.org/guide/mutations.html#using-constants-for-mutation-types>
  */

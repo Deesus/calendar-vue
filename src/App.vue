@@ -58,7 +58,7 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     #app {
         min-height: 100vh;
         display: flex;

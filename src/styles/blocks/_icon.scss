@@ -6,38 +6,38 @@
     height: auto;
 
     // ---------- icon sizes: ----------
-    &&--x-sm {
+    &--x-sm {
         width: 1.2rem;
     }
-    &&--sm {
+    &--sm {
         width: 1.8rem;
     }
-    &&--med {
+    &--med {
         width: 2.4rem;
     }
-    &&--lg {
+    &--lg {
         width: 3.0rem;
     }
-    &&--x-lg {
+    &--x-lg {
         width: 4.0rem;
     }
 
     // ---------- icon colors: ----------
-    &&--white {
-        color: @font-color-white;
+    &--white {
+        color: $font-color-white;
     }
-    &&--muted {
-        color: @font-color-muted;
+    &--muted {
+        color: $font-color-muted;
     }
-    &&--black {
-        color: @font-color-bold;
+    &--black {
+        color: $font-color-bold;
     }
 
     // ---------- state: ----------
-    &&--pointer {
+    &--pointer {
         cursor: pointer;
     }
-    &&--disabled {
+    &--disabled {
         cursor: default;
     }
 }

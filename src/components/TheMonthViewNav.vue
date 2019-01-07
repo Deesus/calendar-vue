@@ -119,7 +119,7 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
     @import "../styles/blocks/_heading-text";
     @import "../styles/blocks/_icon";
@@ -127,7 +127,7 @@
 
 
     .c-nav {
-        background: @accent-color-black;
+        background: $accent-color-black;
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;

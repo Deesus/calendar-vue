@@ -66,13 +66,13 @@ module.exports = {
                 ]
             },
 
-            // ---------- Less: ----------
+            // ---------- Sass: ----------
             {
-                test: /\.less$/,
+                test: /\.scss$/,
                 use: [
                     MiniCSSExtractPlugin.loader,
                     'css-loader',
-                    'less-loader'
+                    'sass-loader'
                 ]
             },
 

@@ -7,7 +7,7 @@ import moment from 'moment-timezone';
 // ==================================================
 
 /**
- * Creates a Momemt.js object from given year-month-day
+ * Creates a Moment.js object from given year-month-day
  *
  * Applies the month offset and specifies correct format.
  *
@@ -36,7 +36,7 @@ function createMomentObjectFromYearMonthDay(year, month, day) {
 
 
 /**
- * Creates a Momemt.js object from given year-month-day
+ * Creates a Moment.js object from given year-month-day
  *
  * Applies the month offset and specifies correct format.
  *

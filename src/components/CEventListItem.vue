@@ -60,18 +60,18 @@
 </script>
 
 
-<style scoped lang="less">
+<style scoped lang="scss">
     @import "../styles/base/_constants";
     @import "../styles/blocks/_icon";
 
-    @event-list-item-color-tab-width: 5px;
+    $event-list-item-color-tab-width: 5px;
 
 
     .c-event-list-item {
-        border-left: @event-list-item-color-tab-width solid transparent;
+        border-left: $event-list-item-color-tab-width solid transparent;
         margin: 0;
         cursor: pointer;
-        padding: @day-view-padding @day-view-padding @day-view-padding (@day-view-padding - @event-list-item-color-tab-width);
+        padding: $day-view-padding $day-view-padding $day-view-padding ($day-view-padding - $event-list-item-color-tab-width);
         display: grid;
         grid-template-columns: 80px 1fr 36px;
         grid-template-areas:
@@ -79,31 +79,31 @@
             "event-time event-notes event-close";
 
         &:not(:first-child) {
-            border-top: 1px solid @accent-color-medium-gray;
+            border-top: 1px solid $accent-color-medium-gray;
         }
 
         &:last-child {
-            border-bottom: 1px solid @accent-color-medium-gray;
+            border-bottom: 1px solid $accent-color-medium-gray;
         }
 
-        &&--blue {
-            border-left-color: @label-color-blue;
+        &--blue {
+            border-left-color: $label-color-blue;
         }
 
-        &&--green {
-            border-left-color: @label-color-green;
+        &--green {
+            border-left-color: $label-color-green;
         }
 
-        &&--purple {
-            border-left-color: @label-color-purple;
+        &--purple {
+            border-left-color: $label-color-purple;
         }
 
-        &&--red {
-            border-left-color: @label-color-red;
+        &--red {
+            border-left-color: $label-color-red;
         }
 
-        &&--yellow {
-            border-left-color: @label-color-yellow;
+        &--yellow {
+            border-left-color: $label-color-yellow;
         }
 
         &__start-time {
@@ -113,7 +113,7 @@
         &__name {
             grid-area: event-name;
             flex-grow: 1;
-            color: @font-color-bold;
+            color: $font-color-bold;
         }
 
         &__close {
@@ -128,7 +128,7 @@
 
         &__notes {
             grid-area: event-notes;
-            color: @font-color-muted;
+            color: $font-color-muted;
         }
     }
 </style>

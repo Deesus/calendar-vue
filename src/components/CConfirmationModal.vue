@@ -75,11 +75,11 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
 
-    @modal-padding: 16px;
-    @modal-border-radius: 3px;
+    $modal-padding: 16px;
+    $modal-border-radius: 3px;
 
     .c-confirmation-modal {
         position: fixed;
@@ -88,18 +88,18 @@
         transform: translate(-50%, -50%);
         width: 280px;
         min-height: 144px;
-        color: @font-color-default;
+        color: $font-color-default;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         z-index: 250;
         background: white;
-        border-radius: @modal-border-radius;
+        border-radius: $modal-border-radius;
         box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
 
 
         &__message {
-            padding: @modal-padding;
+            padding: $modal-padding;
             text-align: center;
         }
 
@@ -120,8 +120,8 @@
 
             // confirm button:
             /* TODO: we should have the props define the styling of the buttons: */
-            &&--confirm {
-                border-radius: 0 0 @modal-border-radius 0;
+            &--confirm {
+                border-radius: 0 0 $modal-border-radius 0;
                 background-color: #f16265;
 
                 &:hover {
@@ -130,8 +130,8 @@
             }
 
             // cancel button:
-            &&--cancel {
-                border-radius: 0 0 0 @modal-border-radius;
+            &--cancel {
+                border-radius: 0 0 0 $modal-border-radius;
                 background-color: #9eaaa8;
 
                 &:hover {
@@ -155,7 +155,7 @@
             width: auto;
             padding: 8px;
             cursor: pointer;
-            color: @font-color-white;
+            color: $font-color-white;
             position: fixed;
             right: 44px;
             top: 44px;

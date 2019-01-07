@@ -85,13 +85,13 @@ module.exports = {
                 ]
             },
 
-            // ---------- Less: ----------
+            // ---------- Sass: ----------
             {
-                test: /\.less$/,
+                test: /\.scss$/,
                 use: [
                     'vue-style-loader',
                     'css-loader',           // style-loader is responsible for injecting the css into the html
-                    'less-loader'
+                    'sass-loader'
                 ]
             },
 

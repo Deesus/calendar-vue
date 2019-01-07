@@ -113,7 +113,7 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
 
 
@@ -124,24 +124,24 @@
         grid-auto-rows: 1fr;                            // if there are more than 4 weeks in a month, each row will have height of 1fr
         grid-gap: 1px;
         justify-items: stretch;
-        background: @calendar-border-color;
+        background: $calendar-border-color;
         cursor: pointer;            // prevents cursor from reverting when hovering over grid gaps
         min-height: 100vh;
         max-width: 100%;
         transition: filter linear 200ms;
 
-        &&--unfocus {
+        &--unfocus {
             filter: blur(4px) grayscale(.7);
         }
 
         &__nav {
-            grid-row: ~"1/2";
-            grid-column: ~"1/8";
+            grid-row: 1/2;
+            grid-column: 1/8;
         }
 
         &__days-of-week {
-            grid-row: ~"2/3";
-            grid-column: ~"1/8";
+            grid-row: 2/3;
+            grid-column: 1/8;
             background: white;
             display: grid;
             grid-gap: 1px;
@@ -149,10 +149,10 @@
             grid-template-columns: repeat(7, 1fr);
             justify-items: end;
             cursor: default;
-            color: @font-color-highlight;
+            color: $font-color-highlight;
 
             & > * {
-                padding: @calendar-cell-padding;
+                padding: $calendar-cell-padding;
             }
         }
 

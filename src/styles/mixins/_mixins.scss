@@ -1,11 +1,11 @@
 @import "../base/_constants";
 
 
-.c-mixin-field {
+@mixin mixin-input-field {
     padding: 12px 8px;
-    background: @input-bg-color;
+    background: $input-bg-color;
     border: 1px solid transparent;
-    border-radius: @input-border-radius;
+    border-radius: $input-border-radius;
     transition: 225ms ease-in;
     transition-property: border-color;
 

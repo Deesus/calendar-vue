@@ -276,10 +276,10 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
     @import "../styles/blocks/_icon";
-    @import (reference) "../styles/mixins/_mixins";
+    @import "../styles/mixins/_mixins";
 
 
     .c-day-view {
@@ -292,18 +292,18 @@
         margin: 0;
         width: 600px;
         max-width: 100%;
-        border-radius: @day-view-border-radius;
-        border: 1px solid @accent-color-medium-gray;
+        border-radius: $day-view-border-radius;
+        border: 1px solid $accent-color-medium-gray;
         min-height: 200px;
         box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
 
         &__header {
-            padding: @day-view-padding;
+            padding: $day-view-padding;
         }
 
         &__add-event {
-            padding: 0 @day-view-padding @day-view-padding @day-view-padding;
-            background: @day-view-header-bg-color;
+            padding: 0 $day-view-padding $day-view-padding $day-view-padding;
+            background: $day-view-header-bg-color;
 
             & > * {
                 display: inline-block;
@@ -314,7 +314,7 @@
         }
 
         &__event-list {
-            border-top: 1px solid @accent-color-medium-gray;
+            border-top: 1px solid $accent-color-medium-gray;
         }
     }
 
@@ -323,19 +323,19 @@
         grid-template-columns: 85px 1fr;
 
         &__field {
-            &&--time-picker {
-                grid-column: ~"2/3";
+            &--time-picker {
+                grid-column: 2/3;
             }
 
-            &&--input {
-                grid-column: ~"1/3";
-                &:extend(.c-mixin-field all);
+            &--input {
+                grid-column: 1/3;
+                @include mixin-input-field();
                 height: 44px;
             }
 
-            &&--textarea {
-                grid-column: ~"1/3";
-                &:extend(.c-mixin-field all);
+            &--textarea {
+                grid-column: 1/3;
+                @include mixin-input-field();
                 resize: none;
                 height:72px;
             }
@@ -344,7 +344,7 @@
         &__label {
             padding-left: 8px;
             padding-top: 10px;
-            grid-column: ~"1/2";
+            grid-column: 1/2;
         }
     }
 
@@ -355,9 +355,9 @@
         align-items: center;
 
 
-        &&--bold {
+        &--bold {
             font-weight: bold;
-            color: @font-color-bold;
+            color: $font-color-bold;
         }
 
         &__primary {
@@ -375,9 +375,9 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        background: @day-view-header-bg-color;
-        border-top-left-radius: @day-view-border-radius;
-        border-top-right-radius: @day-view-border-radius;
+        background: $day-view-header-bg-color;
+        border-top-left-radius: $day-view-border-radius;
+        border-top-right-radius: $day-view-border-radius;
 
         &__return-link {
             display: flex;
@@ -387,10 +387,10 @@
                 margin-left: -12px;
                 width: auto;
                 height:48px;
-                color: @accent-color-medium-gray;
+                color: $accent-color-medium-gray;
 
                 &:hover {
-                    color: @accent-color-dark-gray;
+                    color: $accent-color-dark-gray;
                 }
             }
         }
@@ -415,21 +415,21 @@
 
     .c-link {
         text-decoration: none;
-        color: @font-color-default;
+        color: $font-color-default;
         cursor: pointer;
 
         &:hover,
         &:active {
-            color: @font-color-default;
+            color: $font-color-default;
         }
 
-        &&--highlight {
-            color: @accent-color-red;
+        &--highlight {
+            color: $accent-color-red;
         }
 
-        &&--disabled {
+        &--disabled {
             pointer-events: none;
-            color: @font-color-muted;
+            color: $font-color-muted;
         }
     }
 </style>

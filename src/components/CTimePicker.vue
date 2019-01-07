@@ -98,21 +98,21 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
     @import "../styles/base/_constants";
 
     .c-time-picker {
         display: inline-block;
-        background: @input-bg-color;
+        background: $input-bg-color;
         height: 44px;
         padding-left: 8px;
         padding-right: 8px;
-        border-radius: @input-border-radius;
+        border-radius: $input-border-radius;
 
         & > * {
             height: 44px;
             padding: 0.95rem 0;
-            color: @font-color-bold;
+            color: $font-color-bold;
             background: transparent;
         }
 
