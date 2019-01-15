@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :class="monthViewStyles">
+        <div :class="cssClassesForMonthView">
             <!-- ---------- header/nav: ---------- -->
             <c-month-view-nav class="c-month-view__nav"/>
 
@@ -46,16 +46,12 @@
         },
 
 
-        data() {
-            return {};
-        },
-
-
+        // ==================== computed: ====================
         computed: {
             /**
              * Generates a list of days in month-view for the selected (currently viewing) month
              *
-             * @returns {Array}: list of moment date object
+             * @returns {Array}: list of moment date objects
              */
             daysInMonth() {
                 let days = [];  // list of days we will display in a month-view
@@ -98,11 +94,21 @@
                 return days;
             },
 
+            /**
+             * Determines if background overlay should be shown (e.g. for modals)
+             *
+             * @returns {Boolean}: true if background is shown; false otherwise
+             */
             shouldShowMonthViewBgOverlay() {
                 return this.$store.state.shouldShowMonthViewBgOverlay;
             },
 
-            monthViewStyles() {
+            /**
+             * Dynamically computed css classes for the month-view component
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForMonthView() {
                 return {
                     'c-month-view': true,
                     'c-month-view--unfocus': this.$store.state.shouldShowMonthViewBgOverlay === true

@@ -1,12 +1,13 @@
 <template>
-    <router-link :to="{ name: 'day-view', params: { timeStamp: dayTimeStamp } }">
-        <div :class="monthViewDayStyles" @click="dayClicked">
+    <router-link :to="{ name: 'day-view', params: { timeStamp: dateTimeStamp } }">
+        <div :class="cssClassesForMonthViewDay" @click="dayClicked">
             <div class="c-month-view-day__date-heading">
-                <div :class="dateNumberStyle"><span>{{ day.date() }}</span></div>
+                <div :class="cssClassesForDateNumber"><span>{{ day.date() }}</span></div>
             </div>
             <c-label class="c-month-view-day__event"
                      v-for="event in eventsInDay"
-                     :key="event.id" :color="event.label"
+                     :key="event.id"
+                     :color="event.label"
                      :message="event.name"
                      :blockLevel="'block'"/>
         </div>
@@ -27,24 +28,25 @@
         name: 'CMonthViewDay',
 
 
+        // ==================== components: ====================
         components: {
             CLabel
         },
 
 
+        // ==================== props: ====================
         props: {
+            /**
+             * Moment object's 'day' property
+             */
             day: {
-                type:     Object,   // we could have also imported moment and specified that as the type
+                type:     Object,   // TODO: can we we specify that it should be a Moment type?
                 required: true
             }
         },
 
 
-        data() {
-            return {};
-        },
-
-
+        // ==================== methods: ====================
         methods: {
             // TODO: we want to redirect to the month user was previously viewing rather than the clicked month
             // since we commit the the 'current date', if we select days from next/previous month,
@@ -57,19 +59,14 @@
         },
 
 
+        // ==================== computed: ====================
         computed: {
-            // TODO: same function in DayView; place function in utils
-            eventsInDay() {
-
-                let listOfEvents = this.$store.state.eventsInCalendar;
-
-                return listOfEvents.filter((event) => {
-                    return (this.day.isSameOrAfter(event.startTime, 'day')) &&
-                           (this.day.isSameOrBefore(event.endTime,  'day'));
-                });
-            },
-
-            monthViewDayStyles() {
+            /**
+             * Dynamically computed css classes for the component
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForMonthViewDay() {
                 let isWeekend = (this.day.day() === DATE_ENUM.SUNDAY) || (this.day.day() === DATE_ENUM.SATURDAY);
 
                 return {
@@ -78,21 +75,48 @@
                 };
             },
 
-            dayTimeStamp() {
-                // TODO: can we place this function in utils module?
-                // n.b. we offset month value by 1:
-                return `${this.day.date()}-${this.day.month()+1}-${this.day.year()}`;
-            },
-
-            dateNumberStyle() {
+            /**
+             * Dynamically computed css classes for the component
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForDateNumber() {
                 let isToday = this.day.isSame(this.$moment(), 'day');
-                let isNotCurrentMonth = (this.day.month() !== this.$store.state.selectedMonth) && (!isToday);   // n.b. `isToday` styles take priority; hence the check for `!isToday`
+                // n.b. `isToday` styles take priority; hence the check for `!isToday`:
+                let isNotCurrentMonth = (this.day.month() !== this.$store.state.selectedMonth) && (!isToday);
 
                 return {
                     'date-number': true,
                     'date-number--today': isToday,
                     'date-number--not-current-month': isNotCurrentMonth
                 }
+            },
+
+            /**
+             * Creates date stamp (day-month-year) for current date
+             *
+             * @returns {string}: formatted day-month-year string
+             */
+            dateTimeStamp() {
+                // TODO: can we place this function in utils module?
+                // n.b. we offset month value by 1:
+                return `${this.day.date()}-${this.day.month()+1}-${this.day.year()}`;
+            },
+
+            // TODO: same function in DayView; place function in utils
+            /**
+             * Checks for all events whose start time and end time fall within the current day
+             *
+             * @returns {Array}: list of events
+             */
+            eventsInDay() {
+
+                let listOfEvents = this.$store.state.eventsInCalendar;
+
+                return listOfEvents.filter((event) => {
+                    return (this.day.isSameOrAfter(event.startTime, 'day')) &&
+                        (this.day.isSameOrBefore(event.endTime,  'day'));
+                });
             }
         }
     }
@@ -101,6 +125,7 @@
 
 <style lang="scss" scoped>
     @import "../styles/base/_constants";
+
 
     .c-month-view-day {
         width: 100%;

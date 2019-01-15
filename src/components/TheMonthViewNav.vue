@@ -1,12 +1,12 @@
 <template>
     <div class="c-nav">
-        <chevron-left-icon class="icon icon--pointer icon--white icon--med" @click="previousMonthHandler"/>
+        <chevron-left-icon class="icon icon--pointer icon--white icon--med" @click="handlePreviousMonthClick"/>
 
         <transition
                 name="fade-slide"
                 mode="out-in"
-                :enter-active-class="headerTransitionEnterClasses"
-                :leave-active-class="headerTransitionLeaveClasses"
+                :enter-active-class="cssClassesForHeaderTransitionEnter"
+                :leave-active-class="cssClassesForHeaderTransitionLeave"
         >
             <h1 class="c-heading-text c-nav__heading-text" :key="navHeaderMonthText" >
                 <span class="c-heading-text c-heading-text--month">{{ navHeaderMonthText }}</span>
@@ -14,7 +14,7 @@
             </h1>
         </transition>
 
-        <chevron-right-icon class="icon icon--pointer icon--white icon--med" @click="nextMonthHandler"/>
+        <chevron-right-icon class="icon icon--pointer icon--white icon--med" @click="handleNextMonthClick"/>
     </div>
 </template>
 
@@ -38,6 +38,7 @@
         },
 
 
+        // ==================== data/state: ====================
         data() {
             return {
                 headerTransitionDirection: ''
@@ -45,10 +46,14 @@
         },
 
 
+        // ==================== methods: ====================
         methods: {
             // TODO: can we replace `this.$store.state` and `this.$store.commit` with aliases?
 
-            previousMonthHandler() {
+            /**
+             * Handle event: when 'previous month' button is clicked, change the selected month to the previous moth
+             */
+            handlePreviousMonthClick() {
                 // update state (for animation classes):
                 this.headerTransitionDirection = HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME;
 
@@ -63,7 +68,10 @@
                 }
             },
 
-            nextMonthHandler() {
+            /**
+             * Handle event: when 'next month' button is clicked, change selected month to the next month
+             */
+            handleNextMonthClick() {
                 // update state (for animation classes):
                 this.headerTransitionDirection = HEADER_TRANSITION_DIRECTION_NEXT_NAME;
 
@@ -80,16 +88,34 @@
         },
 
 
+        // ==================== computed:  ====================
         computed: {
+            // TODO: replace with filter?
+            /**
+             * Get formatted selected month text
+             *
+             * @returns {String} formatted selected month
+             */
             navHeaderMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
             },
 
+            // TODO: replace with filter?
+            /**
+             * Get formatted selected year text
+             *
+             * @returns {String} formatted year text
+             */
             navHeaderYearText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
             },
 
-            headerTransitionEnterClasses() {
+            /**
+             * Dynamically computed css classes for transitions between header month text
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForHeaderTransitionEnter() {
                 let transitionClasses = '';
 
                 if (this.headerTransitionDirection === HEADER_TRANSITION_DIRECTION_NEXT_NAME) {
@@ -102,7 +128,12 @@
                 return transitionClasses;
             },
 
-            headerTransitionLeaveClasses() {
+            /**
+             * Dynamically computed css classes for transitions between header month text
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForHeaderTransitionLeave() {
                 let transitionClasses = '';
 
                 if (this.headerTransitionDirection === HEADER_TRANSITION_DIRECTION_PREVIOUS_NAME) {

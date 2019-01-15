@@ -1,11 +1,7 @@
 import moment from 'moment-timezone';
 
 
-
-// ==================================================
-// functions:
-// ==================================================
-
+// ==================== functions: ====================
 /**
  * Creates a Moment.js object from given year-month-day
  *
@@ -88,10 +84,8 @@ function randomSample(arr) {
 }
 
 
-// ==================================================
-// exports:
-// ==================================================
 
+// ==================== exports: ====================
 export {
     createMomentObjectFromYearMonthDay,
     createMomentObjectFromYearMonthDayHoursMinutesMeridiem,

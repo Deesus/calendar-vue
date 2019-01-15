@@ -3,7 +3,7 @@
     --><input class="c-time-picker__input c-time-picker__input--hours" type="text" v-model="hoursInput" @blur="formattedHoursInput" name="hours" placeholder="--"><!--
     --><span class="c-time-picker__colon">:</span><!--
     --><input class="c-time-picker__input c-time-picker__input--minutes" type="text" v-model="minutesInput" @blur="formattedMinutesInput" name="minutes" placeholder="--"><!--
-    --><span class="c-time-picker__meridiem" @click="toggleMeridiemClicked">{{ meridiemValue }}</span>
+    --><span class="c-time-picker__meridiem" @click="handleToggleMeridiemClick">{{ meridiemValue }}</span>
     </span>
 </template>
 
@@ -13,9 +13,18 @@
         name: 'CTimePicker',
 
 
-        props: ['eventStartTime'],
+        props: {
+            /**
+             * Moment object of the event's start time, if supplied
+             */
+            eventStartTime: {
+                type: Object,
+                required: false
+            }
+        },
 
 
+        // ==================== data/state: ====================
         data() {
             return {
                 // n.b. these are default time-picker values:
@@ -26,7 +35,11 @@
         },
 
 
+        // ==================== methods: ====================
         methods: {
+            /**
+             * Helper method for emitting to parent component
+             */
             emitTimePickerData() {
                 this.$emit('timePickerUpdated', {
                     hoursInput:     this.hoursInput,
@@ -35,6 +48,10 @@
                 });
             },
 
+            // TODO: can we change formatted input methods into filters?
+            /**
+             * Format component's hour input value to fit within range of hours
+             */
             formattedHoursInput() {
                 let inputValue = parseInt(this.hoursInput, 10);
 
@@ -55,6 +72,9 @@
                 this.emitTimePickerData();
             },
 
+            /**
+             * Format component's minute input value to fit within range of minutes
+             */
             formattedMinutesInput() {
                 let inputValue = parseInt(this.minutesInput, 10);
 
@@ -75,7 +95,10 @@
                 this.emitTimePickerData();
             },
 
-            toggleMeridiemClicked() {
+            /**
+             * Handle event: when user clicks the meridiem label, toggle state from AM/PM
+             */
+            handleToggleMeridiemClick() {
                 if (this.meridiemValue === 'AM') {
                     this.meridiemValue = 'PM';
                 }
@@ -88,6 +111,7 @@
         }, // /methods
 
 
+        // ==================== life cycle hooks: ====================
         mounted() {
             // as soon as the component is mounted, ensure the date is formatted (if existing event),
             // then emit the default time-picker values to parent:
@@ -100,6 +124,7 @@
 
 <style lang="scss" scoped>
     @import "../styles/base/_constants";
+
 
     .c-time-picker {
         display: inline-block;
@@ -129,6 +154,4 @@
             cursor: pointer;
         }
     }
-
-
 </style>

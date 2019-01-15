@@ -6,8 +6,8 @@
 
         <!-- modals: -->
         <c-confirmation-modal v-if="shouldShowConfirmModal"
-                              v-on:cancel-clicked="onCancelClicked"
-                              v-on:confirm-clicked="onDeleteClicked"
+                              v-on:cancel-clicked="handleConfirmationModalCancelClick"
+                              v-on:confirm-clicked="handleConfirmationModalDeleteClick"
                               message="Delete Event?" />
 
     </div>
@@ -22,6 +22,7 @@
              SHOW_CONFIRM_MODAL_MUTATION
            } from './store/mutation-types';
 
+
     export default {
         name: 'App',
 
@@ -32,11 +33,7 @@
         },
 
 
-        data() {
-            return {};
-        },
-
-
+        // ==================== computed: ====================
         computed: {
             shouldShowConfirmModal() {
                 return this.$store.state.shouldShowConfirmModal;
@@ -44,13 +41,21 @@
         },
 
 
+        // ==================== methods: ====================
         methods: {
-            onDeleteClicked() {
+
+            /**
+             * Handle event: when user clicks the delete button on the confirmation modal, delete calendar event from store and close modal
+             */
+            handleConfirmationModalDeleteClick() {
                 this.$store.commit(REMOVE_EVENT_FROM_CALENDAR_MUTATION, this.$store.state.selectedEventId);
                 this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
             },
 
-            onCancelClicked() {
+            /**
+             * Handle event: when user clicks the cancel button on the confirmation modal, just close the modal
+             */
+            handleConfirmationModalCancelClick() {
                 this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
             }
         }

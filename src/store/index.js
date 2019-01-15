@@ -5,7 +5,6 @@ Vue.use(Vuex);
 
 import moment from 'moment-timezone';
 import { createMomentObjectFromYearMonthDay } from '../utils/utils';
-
 import { ADD_EVENT_TO_CALENDAR_MUTATION,
          EDIT_EVENT_IN_CALENDAR_MUTATION,
          REMOVE_EVENT_FROM_CALENDAR_MUTATION,
@@ -20,6 +19,7 @@ import { ADD_EVENT_TO_CALENDAR_MUTATION,
 
 export default new Vuex.Store({
 
+    // ==================== state: ====================
     state: {
         // n.b. these are numbers:
         selectedYear:   moment().year(),
@@ -40,7 +40,7 @@ export default new Vuex.Store({
                 startTime: moment().add(34, 'minutes'),
                 endTime: moment().add(34, 'minutes'),
                 notes: 'First day of vacation. Enjoy!',
-                label: 'YELLOW'
+                label: 'yellow'
             },
             {
                 id: 3428574,
@@ -48,7 +48,7 @@ export default new Vuex.Store({
                 startTime: moment().add(1, 'days'),
                 endTime: moment().add(1, 'days'),
                 notes: '',
-                label: 'YELLOW'
+                label: 'yellow'
             },
             {
                 id: 242973,
@@ -56,7 +56,7 @@ export default new Vuex.Store({
                 startTime: moment().add(2, 'days'),
                 endTime: moment().add(2, 'days'),
                 notes: 'Last day of vacation.',
-                label: 'YELLOW'
+                label: 'yellow'
             },
             {
                 id: 18358328,
@@ -64,7 +64,7 @@ export default new Vuex.Store({
                 startTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
                 endTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
                 notes: 'Pick up repaired laptop from Galeria Mall.',
-                label: 'RED'
+                label: 'red'
             },
             {
                 id: 852202,
@@ -72,7 +72,7 @@ export default new Vuex.Store({
                 startTime: moment().subtract(14, 'days').add(3, 'hours'),
                 endTime: moment().subtract(14, 'days').add(6, 'hours'),
                 notes: 'At the coffee shop on 14/3 Nevsky Prospect.',
-                label: 'GREEN'
+                label: 'green'
             },
             {
                 id: 3473275,
@@ -80,12 +80,13 @@ export default new Vuex.Store({
                 startTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
                 endTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
                 notes: 'Plan to leave at least 30 minutes ahead to avoid traffic.',
-                label: 'BLUE'
+                label: 'blue'
             }
         ]
     },
 
 
+    // ==================== mutations: ====================
     mutations: {
         [SET_CURRENT_DAY_MUTATION](state, payload) {
             state.selectedDay = payload;
@@ -100,16 +101,35 @@ export default new Vuex.Store({
         },
 
         // TODO: this should be an async Vuex action:
+        /**
+         * Adds event to list of events (`eventsInCalendar`)
+         *
+         * @param state
+         * @param event: e
+         */
         [ADD_EVENT_TO_CALENDAR_MUTATION](state, event) {
             state.eventsInCalendar.push(event);
         },
 
+        /**
+         * Edit an event in the list of events (`eventsInCalendar`)
+         *
+         * @param state
+         * @param editedEvent: event to edit
+         */
         [EDIT_EVENT_IN_CALENDAR_MUTATION](state, editedEvent) {
             let indexOfEvent = state.eventsInCalendar.findIndex( (item) => item.id === editedEvent.id);
             state.eventsInCalendar.splice(indexOfEvent, 1, editedEvent);
         },
 
         // TODO: this should be an async Vuex action:
+        // TODO: make the parameters the same as the
+        /**
+         * Deletes an event from the list of events (`eventsInCalendar`)
+         *
+         * @param state
+         * @param idToRemove {Number}: id of event to delete
+         */
         [REMOVE_EVENT_FROM_CALENDAR_MUTATION](state, idToRemove) {
             state.eventsInCalendar = state.eventsInCalendar.filter( (event)=> {
                 return event.id !== idToRemove;
@@ -130,14 +150,20 @@ export default new Vuex.Store({
     },
 
 
+    // ==================== getters: ====================
     getters: {
+        /**
+         * Creates a moment object given the selected year-month-day
+         *
+         * @param state
+         * @returns {moment}: moment object
+         */
         getMomentObjectFromSelectedDate(state) {
             return createMomentObjectFromYearMonthDay(state.selectedYear, state.selectedMonth, state.selectedDay);
         }
     },
 
 
-    actions: {
-
-    }
+    // ==================== actions: ====================
+    actions: {}
 });

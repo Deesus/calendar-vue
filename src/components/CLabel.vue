@@ -11,30 +11,49 @@
         name: 'CLabel',
 
 
+        // ==================== props: ====================
         props: {
+            /**
+             * Background color of label
+             *
+             * Accepts: 'blue' || 'green' || 'purple' || 'red' || 'yellow'
+             */
             color: {
-                type: String
+                type: String,
+                required: true
             },
 
+            /**
+             * Message/text that the label should display; n.b. labels cannot be empty
+             */
             message: {
                 type: String,
                 required: true
             },
 
-            // accepts either 'inline' or 'block':
+            /**
+             * Determines if label should behave like a span (inline) or a div (block)
+             *
+             * Accepts: 'inline' || 'block'
+             */
             blockLevel: {
                 type: String,
-                default: 'inline'
+                default: 'inline',
+                required: false,
+                validator(value) {
+                    return ['inline', 'block'].indexOf(value) !== -1;
+                }
             }
         },
 
 
-        data() {
-            return {};
-        },
-
-
+        // ==================== computed: ====================
         computed: {
+            /**
+             * Dynamically computed css classes for the component
+             *
+             * @returns {Object}: computed css classes object
+             */
             eventLabelStyles() {
                 return {
                     'c-label': true,
@@ -48,12 +67,14 @@
                 }
             }
         }
+
     }
 </script>
 
 
 <style scoped lang="scss">
     @import "../styles/base/_constants";
+
 
     .c-label {
         white-space: nowrap;

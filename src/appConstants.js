@@ -1,5 +1,3 @@
-// TODO: move file to different folder?
-
 const DATE_ENUM = Object.freeze({
     // ---------- day of week: ----------
     SUNDAY: 0,
@@ -25,13 +23,15 @@ const DATE_ENUM = Object.freeze({
     DECEMBER: 11
 });
 
+
 const LABEL_COLORS = Object.freeze({
-    BLUE:   'BLUE',
-    GREEN:  'GREEN',
-    PURPLE: 'PURPLE',
-    RED:    'RED',
-    YELLOW: 'YELLOW'
+    BLUE:   'blue',
+    GREEN:  'green',
+    PURPLE: 'purple',
+    RED:    'red',
+    YELLOW: 'yellow'
 });
+
 
 // `keyup` and `keydown` codes (but NOT `keypress`):
 const KEY_CODES = Object.freeze({
@@ -39,8 +39,9 @@ const KEY_CODES = Object.freeze({
 });
 
 
+// ==================== exports: ====================
 export {
     DATE_ENUM,
     KEY_CODES,
     LABEL_COLORS
-}
+};

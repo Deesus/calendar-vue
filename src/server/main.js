@@ -5,4 +5,4 @@
 // transforms everything after this import according to babel rules
 // see <https://babeljs.io/docs/en/babel-register/>
 require('babel-register');
-require('./customExpressServer');
+require('./expressServer');

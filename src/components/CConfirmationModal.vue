@@ -1,14 +1,14 @@
 <template>
     <div class="c-confirmation-modal-overlay">
-        <x-icon class="c-confirmation-modal-overlay__x-icon" v-if="showCloseIcon" @click="closeModalClicked"></x-icon>
+        <x-icon class="c-confirmation-modal-overlay__x-icon" v-if="showCloseIcon" @click="handleCloseModalClick"></x-icon>
 
         <div class="c-confirmation-modal">
             <div class="c-confirmation-modal__message">
                 {{ message }}
             </div>
             <div class="c-confirmation-modal__footer">
-                <button class="c-confirmation-modal__button c-confirmation-modal__button--cancel" type="button" @click="cancelButtonClicked">Cancel</button>
-                <button class="c-confirmation-modal__button c-confirmation-modal__button--confirm" type="button" @click="confirmButtonClicked">Delete</button>
+                <button class="c-confirmation-modal__button c-confirmation-modal__button--cancel" type="button" @click="handleModalCancelClick">Cancel</button>
+                <button class="c-confirmation-modal__button c-confirmation-modal__button--confirm" type="button" @click="handleModalConfirmClick">Delete</button>
             </div>
         </div>
     </div>
@@ -24,11 +24,25 @@
         name: 'CModal',
 
 
+        components: {
+            XIcon
+        },
+
+
+        // ==================== props: ====================
         props: {
+            /**
+             * Specifies whether an 'X' icon is shown when modal is shown.
+             * N.b. if false, the modal will still have the cancel button.
+             */
             showCloseIcon: {
                 type:    Boolean,
                 default: true
             },
+
+            /**
+             * Message/text displayed in the modal.
+             */
             message: {
                 type:     String,
                 required: true
@@ -36,38 +50,39 @@
         },
 
 
-        components: {
-            XIcon
-        },
-
-
-        data() {
-            return {};
-        },
-
-
+        // ==================== methods: ====================
         methods: {
-            closeModalClicked() {
+            /**
+             * Handle event: when user clicks to close 'confirmation modal' (e.g. 'X' icon), close the modal
+             */
+            handleCloseModalClick() {
                 this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
             },
 
-            cancelButtonClicked() {
+            /**
+             * Handle event: when user clicks cancel button on the 'confirmation modal', emit `cancel-clicked` event
+             */
+            handleModalCancelClick() {
                 // cancel is same as closing the modal except we emit a 'cancel' event:
-                this.closeModalClicked();
+                this.handleCloseModalClick();
                 this.$emit('cancel-clicked', 'canceled');
             },
 
-            confirmButtonClicked() {
+            /**
+             * Handle event: when user clicks the confirm button on the 'confirmation modal', emit `confirm-clicked` event
+             */
+            handleModalConfirmClick() {
                 this.$emit('confirm-clicked', 'confirmed');
             }
         },
 
 
+        // ==================== life cycle hooks: ====================
         mounted() {
             // when 'escape' key is pressed, close the 'confirmation modal' (and return to month view -- which is done by `TheDayView.vue`):
             window.addEventListener('keydown', (event) => {
                 if (event.keyCode === KEY_CODES.ESCAPE) {
-                    this.cancelButtonClicked();
+                    this.handleModalCancelClick();
                 }
             });
         }

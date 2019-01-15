@@ -18,10 +18,10 @@
                 </div>
                 <span class="c-day-header__action">
                     <span v-if="!shouldShowEventControls">
-                        <plus-icon class="icon icon--pointer icon--med" @click="toggleShowEventControlsClicked"/>
+                        <plus-icon class="icon icon--pointer icon--med" @click="handleShowEventFormFieldsClick"/>
                     </span>
                     <span v-else>
-                        <a @click="saveEventSubmitted" :class="saveEventLinkStyles">Save</a>
+                        <a @click="handleSaveEventClick" :class="cssClassesForSaveEventLink">Save</a>
                     </span>
                 </span>
             </div>
@@ -38,7 +38,7 @@
 
                 <label class="c-event-add__label">Starts</label>
                 <div class="c-event-add__field c-event-add__field--time-picker">
-                    <c-time-picker v-on:timePickerUpdated="updateStartTimeData" :eventStartTime="calendarEventStartTime" />
+                    <c-time-picker v-on:timePickerUpdated="handleStartTimeDataUpdated" :eventStartTime="calendarEventStartTime" />
                 </div>
 
                 <textarea :id="addEventNotesElementId"
@@ -54,7 +54,7 @@
                 <c-event-list-item v-for="event in eventsInDay"
                                    :key="event.id"
                                    :event="event"
-                                   @click.native="existingEventItemClicked(event)"/>
+                                   @click.native="handleExistingEventItemClick(event)"/>
                 <li v-if="eventsInDay.length === 0" class="no-events">
                     no events
                 </li>
@@ -90,6 +90,7 @@
         },
 
 
+        // ==================== data/state: ====================
         data() {
             return {
                 addEventNameElementId:  'add-event-name',
@@ -111,7 +112,14 @@
         },
 
 
+        // ==================== methods: ====================
         methods: {
+            /**
+             * Get formatted hours-minutes-meridiem text from moment object
+             * N.b. formatted time assumes 12-hour clock.
+             *
+             * @returns {Object}: object with properties of hours, minutes, and meridiem
+             */
             getHoursMinutesMeridiumFromMomentObject(momentObj) {
                 let hours = momentObj.hours();
                 let minutes = momentObj.minutes();
@@ -124,13 +132,22 @@
             },
 
             // when time-picker updates its internal state (e.g. onblur), we update the CDayView's data:
-            updateStartTimeData(payload) {
+            /**
+             * Handle event: when child emits event; update component's state when child component's state is updated (e.g. onblur)
+             *
+             * @param payload {Object}: object with values for hours, minutes and meridiem values
+             */
+            handleStartTimeDataUpdated(payload) {
                 this.calendarEventStartTime.hours    = payload.hoursInput;
                 this.calendarEventStartTime.minutes  = payload.minutesInput;
                 this.calendarEventStartTime.meridiem = payload.meridiemValue;
             },
 
-            saveEventSubmitted() {
+            /**
+             * Handle event: when user clicks save event, save event to store
+             * This method handles saving both new events as well as saving an edited event.
+             */
+            handleSaveEventClick() {
                 // check if form fields are valid:
                 if (this.isFormValid === false) {
                     return;
@@ -151,7 +168,7 @@
                         startTime:  momentObj,
                         endTime:    momentObj,
                         notes:      this.calendarEventNotes,
-                        label:      randomSample(Object.keys(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
+                        label:      randomSample(Object.values(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
                     });
                 }
                 // ---------- if editing an existing event (`calendarEventId` will not be null): ----------
@@ -173,7 +190,10 @@
                 this.calendarEventId = null;
             },
 
-            toggleShowEventControlsClicked() {
+            /**
+             * Handle event: when user clicks to add an event, the event's form fields are shown
+             */
+            handleShowEventFormFieldsClick() {
                 // n.b. once we show the 'add event' controls, it is always shown until user leaves day-view:
                 this.shouldShowEventControls = true;
             },
@@ -182,7 +202,12 @@
                 // n.b. this is a placeholder in case we need to extend the functionality of the component
             },
 
-            existingEventItemClicked(calendarEvent) {
+            /**
+             * Handle event: when user clicks existing event item, set state to selected calendar event
+             *
+             * @param calendarEvent {Object}: a calendar event
+             */
+            handleExistingEventItemClick(calendarEvent) {
                 this.shouldShowEventControls = true;
 
                 let eventStartTime = this.getHoursMinutesMeridiumFromMomentObject(calendarEvent.startTime);
@@ -198,6 +223,7 @@
         },
 
 
+        // ==================== computed: ====================
         computed: {
             /**
              * Filters the Vuex store's event list for only the events in the selected day
@@ -214,6 +240,11 @@
                 });
             },
 
+            /**
+             * Validates the input fields in the component
+             *
+             * @returns {boolean}: true if form is valid; false if errors/invalid
+             */
             isFormValid() {
                 let validationErrors = [];
 
@@ -227,7 +258,12 @@
                 return validationErrors.length === 0;
             },
 
-            saveEventLinkStyles() {
+            /**
+             * Dynamically computed css classes for the 'save event' link
+             *
+             * @returns {Object}: computed css classes object
+             */
+            cssClassesForSaveEventLink() {
                 return {
                     'c-link':            true,
                     'c-link--highlight': this.isFormValid === true,
@@ -235,20 +271,39 @@
                 };
             },
 
+            // TODO: replace with filter:
+            /**
+             * Gets formatted selected month text from Vuex store
+             *
+             * @returns {String}: formatted month text
+             */
             getFullMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
             },
 
+            // TODO: replace with filter:
+            /**
+             * Gets formatted selected year text from Vuex store
+             *
+             * @returns {String}: formatted year text
+             */
             getFullYearText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
             },
 
+            // TODO: replace with filter:
+            /**
+             * Gets formatted selected day-of-week text from Vuex store
+             *
+             * @returns {String}: formatted day-of-week text
+             */
             getDayOfWeekAndMonthText() {
                 return this.$store.getters.getMomentObjectFromSelectedDate.format('dd D');
             }
         }, // /computed
 
 
+        // ==================== life cycle hooks: ====================
         mounted() {
             // when component is mounted, show the bg overlay:
             {
