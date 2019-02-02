@@ -1,0 +1,51 @@
+# For production
+#
+# - you can build images by specifying file path:
+# ```
+# $ docker build -f Dockerfile -t USERNAME/REPO:TAG .
+# ```
+#
+# - run the image:
+# ```
+# $ docker run -it -p 8080:80 --rm USERNAME/REPO:TAG
+# ```
+##################################################
+
+
+# ---------- Build Stage: ----------
+# use Node 8.x LTS as base image:
+FROM node:8 as build-stage
+
+# create app directory:
+WORKDIR /app
+
+# install dependencies:
+# copy package.json and package-lock.json (takes advantage of cached Docker layers):
+COPY package*.json ./
+
+RUN npm install
+
+# copy project files/folders to working directory (`/app`):
+COPY . .
+
+# build for production:
+RUN npm run build
+
+
+
+# ---------- Production Stage: ----------
+# use Nginx (1.14.2) to serve for production:
+FROM nginx:stable-alpine as production-step
+
+# add Nginx config:
+COPY src/server/nginx/prod.conf /temp/prod.conf
+RUN envsubst /app < /temp/prod.conf > /etc/nginx/conf.d/default.conf
+
+# copy build files/folders:
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# expose port 80:
+EXPOSE 80
+
+# when we run the image, the container will serve the app using Nginx:
+CMD ["nginx", "-g", "daemon off;"]

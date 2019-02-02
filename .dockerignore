@@ -1,0 +1,16 @@
+# local files/folders:
+local.*
+.directory
+.idea
+.atom
+.vs
+.vscode
+npm-debug.log*
+
+# files that we don't want to copy:
+*.md
+
+# Docker will build these, so they can be ignored:
+dist
+node_modules
+coverage
