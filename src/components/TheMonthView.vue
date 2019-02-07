@@ -29,7 +29,9 @@
 </template>
 
 
+
 <script>
+    import { mapState } from 'vuex';
     import { createMomentObjectFromYearMonthDay } from '../utils/utils';
     import { DATE_ENUM } from '../appConstants';
     import CMonthViewNav from './TheMonthViewNav.vue';
@@ -46,8 +48,12 @@
         },
 
 
-        // ==================== computed: ====================
         computed: {
+            ...mapState([
+                'shouldShowMonthViewBgOverlay',
+            ]),
+
+
             /**
              * Generates a list of days in month-view for the selected (currently viewing) month
              *
@@ -95,28 +101,20 @@
             },
 
             /**
-             * Determines if background overlay should be shown (e.g. for modals)
-             *
-             * @returns {Boolean}: true if background is shown; false otherwise
-             */
-            shouldShowMonthViewBgOverlay() {
-                return this.$store.state.shouldShowMonthViewBgOverlay;
-            },
-
-            /**
-             * Dynamically computed css classes for the month-view component
+             * Dynamically computed css classes for the month-view component.
              *
              * @returns {Object}: computed css classes object
              */
             cssClassesForMonthView() {
                 return {
-                    'c-month-view': true,
-                    'c-month-view--unfocus': this.$store.state.shouldShowMonthViewBgOverlay === true
+                    'c-month-view':          true,
+                    'c-month-view--unfocus': this.shouldShowMonthViewBgOverlay === true
                 }
             }
         } // computed
     }
 </script>
+
 
 
 <style lang="scss" scoped>

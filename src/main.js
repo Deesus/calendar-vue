@@ -5,7 +5,11 @@ import Vue      from 'vue';
 import App      from './App.vue';
 import store    from './store';
 import router   from './router';
+import { formatDateTimeISOToHoursMinutesMeridiem } from './utils/formattingFilters';
 
+
+
+// -------------------- global Vue definitions: --------------------
 
 // by defining a getter property (`$moment`) and then passing it as a `data` property in the Vue instance below,
 // we can use `$moment` in all of our components:
@@ -14,6 +18,10 @@ Object.defineProperty(Vue.prototype,
                       {
                           get() { return this.$root.moment; }
                       });
+
+// add text formatting filter(s):
+Vue.filter('toHoursMinutesMeridiem', formatDateTimeISOToHoursMinutesMeridiem);
+
 
 
 // -------------------- vue instance: --------------------

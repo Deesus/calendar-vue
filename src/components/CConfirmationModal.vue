@@ -15,6 +15,7 @@
 </template>
 
 
+
 <script>
     import { KEY_CODES } from '../appConstants';
     import { SHOW_CONFIRM_MODAL_MUTATION } from '../store/typesMutation';
@@ -29,7 +30,6 @@
         },
 
 
-        // ==================== props: ====================
         props: {
             /**
              * Specifies whether an 'X' icon is shown when modal is shown.
@@ -50,7 +50,6 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
             /**
              * Handle event: when user clicks to close 'confirmation modal' (e.g. 'X' icon), close the modal
@@ -77,7 +76,7 @@
         },
 
 
-        // ==================== life cycle hooks: ====================
+        // -------------------- life cycle hooks: --------------------
         mounted() {
             // when 'escape' key is pressed, close the 'confirmation modal' (and return to month view -- which is done by `TheDayView.vue`):
             window.addEventListener('keydown', (event) => {
@@ -88,6 +87,7 @@
         }
     }
 </script>
+
 
 
 <style lang="scss" scoped>

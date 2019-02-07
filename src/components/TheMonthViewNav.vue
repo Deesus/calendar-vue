@@ -19,6 +19,7 @@
 </template>
 
 
+
 <script>
     import { DATE_ENUM } from '../appConstants';
     import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/typesMutation';
@@ -38,7 +39,6 @@
         },
 
 
-        // ==================== data/state: ====================
         data() {
             return {
                 headerTransitionDirection: ''
@@ -46,7 +46,6 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
             // TODO: can we replace `this.$store.state` and `this.$store.commit` with aliases?
 
@@ -88,7 +87,6 @@
         },
 
 
-        // ==================== computed:  ====================
         computed: {
             // TODO: replace with filter?
             /**
@@ -150,11 +148,12 @@
 </script>
 
 
+
 <style lang="scss" scoped>
-    @import "../styles/base/_constants";
-    @import "../styles/blocks/_heading-text";
-    @import "../styles/blocks/_icon";
-    @import "../styles/utils/_animations";
+    @import "../styles/base/constants";
+    @import "../styles/blocks/heading-text";
+    @import "../styles/blocks/icon";
+    @import "../styles/utils/animations";
 
 
     .c-nav {

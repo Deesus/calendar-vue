@@ -1,80 +1,80 @@
 <template>
-    <div>
-        <div class="c-day-view">
+    <div class="c-day-view">
 
-            <!-- ---------- header: ---------- -->
-            <div class="c-day-view__header c-day-header"><!--
-                --><router-link class="c-day-header__return-link"
-                                :to="{ path: '/' }"
-                                @click.native="returnToMonthViewLinkClicked"><!--
-                    --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
-                --></router-link>
-                <div class="c-day-header-text c-day-header__text">
-                    <div class="c-day-header-text c-day-header-text__primary">{{ getDayOfWeekAndMonthText }}</div>
-                    <div class="c-day-header-text__auxiliary">
-                        <div class="c-day-header-text c-day-header-text--bold">{{ getFullMonthText }}</div>
-                        <div class="c-day-header-text c-day-header-text--muted">{{ getFullYearText }}</div>
-                    </div>
+        <!-- ---------- header: ---------- -->
+        <div class="c-day-view__header c-day-header"><!--
+            --><router-link class="c-day-header__return-link"
+                            :to="{ path: '/' }"><!--
+                --><chevron-left-icon class="icon icon--pointer icon--x-lg"/><!--
+            --></router-link>
+            <div class="c-day-header-text c-day-header__text">
+                <div class="c-day-header-text c-day-header-text__primary">{{ getDayOfWeekAndMonthText }}</div>
+                <div class="c-day-header-text__auxiliary">
+                    <div class="c-day-header-text c-day-header-text--bold">{{ getFullMonthText }}</div>
+                    <div class="c-day-header-text c-day-header-text--muted">{{ getFullYearText }}</div>
                 </div>
-                <span class="c-day-header__action">
-                    <span v-if="!shouldShowEventControls">
-                        <plus-icon class="icon icon--pointer icon--med" @click="handleShowEventFormFieldsClick"/>
-                    </span>
-                    <span v-else>
-                        <a @click="handleSaveEventClick" :class="cssClassesForSaveEventLink">Save</a>
-                    </span>
+            </div>
+            <span class="c-day-header__action">
+                <span v-if="!shouldShowEventControls">
+                    <plus-icon class="icon icon--pointer icon--med" @click="handleShowEventFormFieldsClick"/>
                 </span>
+                <span v-else>
+                    <a @click="handleSaveEventClick" :class="cssClassesForSaveEventLink">Save</a>
+                </span>
+            </span>
+        </div>
+
+        <!-- ---------- add event: ---------- -->
+        <form class="c-event-add c-day-view__add-event" v-if="shouldShowEventControls">
+            <input id="addEventNameElementId"
+                   class="c-event-add__field c-event-add__field--input"
+                   :name="addEventNameElementId"
+                   v-model.trim="calendarEventName"
+                   maxlength="100"
+                   placeholder="Name"
+                   type="text">
+
+            <label class="c-event-add__label">Starts</label>
+            <div class="c-event-add__field c-event-add__field--time-picker">
+                <c-time-picker v-on:timePickerUpdated="handleStartTimeDataUpdated" :eventStartTime="calendarEventStartTime" />
             </div>
 
-            <!-- ---------- add event: ---------- -->
-            <form class="c-event-add c-day-view__add-event" v-if="shouldShowEventControls">
-                <input id="addEventNameElementId"
-                       class="c-event-add__field c-event-add__field--input"
-                       :name="addEventNameElementId"
-                       v-model.trim="calendarEventName"
-                       maxlength="100"
-                       placeholder="Name"
-                       type="text">
+            <textarea :id="addEventNotesElementId"
+                      class="c-event-add__field c-event-add__field--textarea"
+                      :name="addEventNotesElementId"
+                      v-model.trim="calendarEventNotes"
+                      maxlength="2000"
+                      placeholder="Notes"></textarea>
+        </form>
 
-                <label class="c-event-add__label">Starts</label>
-                <div class="c-event-add__field c-event-add__field--time-picker">
-                    <c-time-picker v-on:timePickerUpdated="handleStartTimeDataUpdated" :eventStartTime="calendarEventStartTime" />
-                </div>
-
-                <textarea :id="addEventNotesElementId"
-                          class="c-event-add__field c-event-add__field--textarea"
-                          :name="addEventNotesElementId"
-                          v-model.trim="calendarEventNotes"
-                          maxlength="2000"
-                          placeholder="Notes"></textarea>
-            </form>
-
-            <!-- ---------- list of events: ---------- -->
-            <ul class="c-day-view__event-list">
-                <c-event-list-item v-for="event in eventsInDay"
-                                   :key="event.id"
-                                   :event="event"
-                                   @click.native="handleExistingEventItemClick(event)"/>
-                <li v-if="eventsInDay.length === 0" class="no-events">
-                    no events
-                </li>
-            </ul>
-        </div>
+        <!-- ---------- list of events: ---------- -->
+        <ul class="c-day-view__event-list">
+            <c-event-list-item v-for="event in eventsInDay"
+                               :key="event.id"
+                               :event="event"
+                               @click.native="handleExistingEventItemClick(event)"/>
+            <li v-if="eventsInDay.length === 0" class="no-events">
+                no events
+            </li>
+        </ul>
     </div>
 </template>
 
 
+
 <script>
-    import { createMomentObjectFromYearMonthDayHoursMinutesMeridiem, createUniqueId, randomSample } from '../utils/utils';
+    import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
+    import { mapGetters } from 'vuex';
+    import { createISOStringFromYearMonthDayHoursMinutesMeridiem,
+             getHoursMinutesMeridiumFromISO,
+             createUniqueId,
+             randomSample
+           } from '../utils/utils';
     import { LABEL_COLORS, KEY_CODES } from '../appConstants';
-    import {
-        ADD_EVENT_TO_CALENDAR_MUTATION,
-        SHOW_MONTH_VIEW_BG_OVERLAY,
-        EDIT_EVENT_IN_CALENDAR_MUTATION
-    } from '../store/typesMutation';
+    import * as MUTATION from '../store/typesMutation';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
-    import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';
+
 
 
     export default {
@@ -90,7 +90,6 @@
         },
 
 
-        // ==================== data/state: ====================
         data() {
             return {
                 addEventNameElementId:  'add-event-name',
@@ -112,25 +111,7 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
-            /**
-             * Get formatted hours-minutes-meridiem text from moment object
-             * N.b. formatted time assumes 12-hour clock.
-             *
-             * @returns {Object}: object with properties of hours, minutes, and meridiem
-             */
-            getHoursMinutesMeridiumFromMomentObject(momentObj) {
-                let hours = momentObj.hours();
-                let minutes = momentObj.minutes();
-
-                return {
-                    hours:      hours <= 12 ? hours : hours - 12,
-                    minutes:    minutes,
-                    meridiem:   hours < 12 ? 'AM' : 'PM'
-                }
-            },
-
             // when time-picker updates its internal state (e.g. onblur), we update the CDayView's data:
             /**
              * Handle event: when child emits event; update component's state when child component's state is updated (e.g. onblur)
@@ -153,20 +134,20 @@
                     return;
                 }
 
-                let momentObj = createMomentObjectFromYearMonthDayHoursMinutesMeridiem(this.$store.state.selectedYear,
-                                                                                       this.$store.state.selectedMonth,
-                                                                                       this.$store.state.selectedDay,
-                                                                                       this.calendarEventStartTime.hours,
-                                                                                       this.calendarEventStartTime.minutes,
-                                                                                       this.calendarEventStartTime.meridiem);
+                let isoString = createISOStringFromYearMonthDayHoursMinutesMeridiem(this.$store.state.selectedYear,
+                                                                                    this.$store.state.selectedMonth,
+                                                                                    this.$store.state.selectedDay,
+                                                                                    this.calendarEventStartTime.hours,
+                                                                                    this.calendarEventStartTime.minutes,
+                                                                                    this.calendarEventStartTime.meridiem);
 
                 if (this.calendarEventId === null) {
                     // TODO: should change from mutation to action:
-                    this.$store.commit(ADD_EVENT_TO_CALENDAR_MUTATION, {
+                    this.$store.commit(MUTATION.ADD_EVENT_TO_CALENDAR_MUTATION, {
                         id:         createUniqueId(),
                         name:       this.calendarEventName,
-                        startTime:  momentObj,
-                        endTime:    momentObj,
+                        startTime:  isoString,
+                        endTime:    isoString,
                         notes:      this.calendarEventNotes,
                         label:      randomSample(Object.values(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
                     });
@@ -174,11 +155,11 @@
                 // ---------- if editing an existing event (`calendarEventId` will not be null): ----------
                 else {
                     // this is the same as 'add event,' except the event id and label are already given, plus we're calling to EDIT_EVENT_IN_CALENDAR_MUTATION:
-                    this.$store.commit(EDIT_EVENT_IN_CALENDAR_MUTATION, {
+                    this.$store.commit(MUTATION.EDIT_EVENT_IN_CALENDAR_MUTATION, {
                         id:         this.calendarEventId,
                         name:       this.calendarEventName,
-                        startTime:  momentObj,
-                        endTime:    momentObj,
+                        startTime:  isoString,
+                        endTime:    isoString,
                         notes:      this.calendarEventNotes,
                         label:      this.calendarEventLabel
                     });
@@ -198,10 +179,6 @@
                 this.shouldShowEventControls = true;
             },
 
-            returnToMonthViewLinkClicked() {
-                // n.b. this is a placeholder in case we need to extend the functionality of the component
-            },
-
             /**
              * Handle event: when user clicks existing event item, set state to selected calendar event
              *
@@ -210,35 +187,27 @@
             handleExistingEventItemClick(calendarEvent) {
                 this.shouldShowEventControls = true;
 
-                let eventStartTime = this.getHoursMinutesMeridiumFromMomentObject(calendarEvent.startTime);
+                // convert ISO date-time value to moment object, then we can query hours, minutes, meridiem:
+                const momentEventStartTime = getHoursMinutesMeridiumFromISO(calendarEvent.startTime);
 
                 this.calendarEventLabel              = calendarEvent.label;
                 this.calendarEventName               = calendarEvent.name;
                 this.calendarEventNotes              = calendarEvent.notes;
                 this.calendarEventId                 = calendarEvent.id;
-                this.calendarEventStartTime.hours    = eventStartTime.hours;
-                this.calendarEventStartTime.minutes  = eventStartTime.minutes;
-                this.calendarEventStartTime.meridiem = eventStartTime.meridiem;
+                this.calendarEventStartTime.hours    = momentEventStartTime.hours;
+                this.calendarEventStartTime.minutes  = momentEventStartTime.minutes;
+                this.calendarEventStartTime.meridiem = momentEventStartTime.meridiem;
             }
         },
 
 
-        // ==================== computed: ====================
         computed: {
-            /**
-             * Filters the Vuex store's event list for only the events in the selected day
-             *
-             * @returns {Array}: list of events on the selected date
-             */
-            eventsInDay() {
-                let listOfEvents = this.$store.state.eventsInCalendar;
-                let selectedDate = this.$store.getters.getMomentObjectFromSelectedDate;
-
-                return listOfEvents.filter((event) => {
-                    return (selectedDate.isSameOrAfter(event.startTime, 'day')) &&
-                           (selectedDate.isSameOrBefore(event.endTime,  'day'));
-                });
-            },
+            ...mapGetters([
+                'eventsInDay',
+                'getFullMonthText',
+                'getFullYearText',
+                'getDayOfWeekAndMonthText'
+            ]),
 
             /**
              * Validates the input fields in the component
@@ -269,45 +238,15 @@
                     'c-link--highlight': this.isFormValid === true,
                     'c-link--disabled':  this.isFormValid === false
                 };
-            },
-
-            // TODO: replace with filter:
-            /**
-             * Gets formatted selected month text from Vuex store
-             *
-             * @returns {String}: formatted month text
-             */
-            getFullMonthText() {
-                return this.$store.getters.getMomentObjectFromSelectedDate.format('MMMM');
-            },
-
-            // TODO: replace with filter:
-            /**
-             * Gets formatted selected year text from Vuex store
-             *
-             * @returns {String}: formatted year text
-             */
-            getFullYearText() {
-                return this.$store.getters.getMomentObjectFromSelectedDate.format('YYYY');
-            },
-
-            // TODO: replace with filter:
-            /**
-             * Gets formatted selected day-of-week text from Vuex store
-             *
-             * @returns {String}: formatted day-of-week text
-             */
-            getDayOfWeekAndMonthText() {
-                return this.$store.getters.getMomentObjectFromSelectedDate.format('dd D');
             }
         }, // /computed
 
 
-        // ==================== life cycle hooks: ====================
+        // -------------------- life cycle hooks: --------------------
         mounted() {
             // when component is mounted, show the bg overlay:
             {
-                this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, true);
+                this.$store.commit(MUTATION.SHOW_MONTH_VIEW_BG_OVERLAY, true);
             }
 
             // when 'escape' key is pressed, close and return to month view:
@@ -325,16 +264,17 @@
 
         destroyed() {
             // when component is destroyed, hide the bg overlay:
-            this.$store.commit(SHOW_MONTH_VIEW_BG_OVERLAY, false);
+            this.$store.commit(MUTATION.SHOW_MONTH_VIEW_BG_OVERLAY, false);
         }
     }
 </script>
 
 
+
 <style lang="scss" scoped>
-    @import "../styles/base/_constants";
-    @import "../styles/blocks/_icon";
-    @import "../styles/mixins/_mixins";
+    @import "../styles/base/constants";
+    @import "../styles/blocks/icon";
+    @import "../styles/mixins/mixins";
 
 
     .c-day-view {

@@ -15,6 +15,7 @@
 </template>
 
 
+
 <script>
     import { SET_CURRENT_DAY_MUTATION,
              SET_CURRENT_MONTH_MUTATION,
@@ -28,13 +29,11 @@
         name: 'CMonthViewDay',
 
 
-        // ==================== components: ====================
         components: {
             CLabel
         },
 
 
-        // ==================== props: ====================
         props: {
             /**
              * Moment object's 'day' property
@@ -46,7 +45,6 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
             // TODO: we want to redirect to the month user was previously viewing rather than the clicked month
             // since we commit the the 'current date', if we select days from next/previous month,
@@ -59,7 +57,6 @@
         },
 
 
-        // ==================== computed: ====================
         computed: {
             /**
              * Dynamically computed css classes for the component
@@ -121,6 +118,7 @@
         }
     }
 </script>
+
 
 
 <style lang="scss" scoped>

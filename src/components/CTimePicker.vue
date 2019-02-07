@@ -8,6 +8,7 @@
 </template>
 
 
+
 <script>
     export default {
         name: 'CTimePicker',
@@ -24,7 +25,6 @@
         },
 
 
-        // ==================== data/state: ====================
         data() {
             return {
                 // n.b. these are default time-picker values:
@@ -35,7 +35,6 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
             /**
              * Helper method for emitting to parent component
@@ -111,7 +110,7 @@
         }, // /methods
 
 
-        // ==================== life cycle hooks: ====================
+        // -------------------- life cycle hooks: --------------------
         mounted() {
             // as soon as the component is mounted, ensure the date is formatted (if existing event),
             // then emit the default time-picker values to parent:
@@ -120,6 +119,7 @@
         }
     }
 </script>
+
 
 
 <style lang="scss" scoped>

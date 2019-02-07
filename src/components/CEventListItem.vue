@@ -1,6 +1,6 @@
 <template>
     <li :class="cssClassesForEventListItem">
-        <span class="c-event-list-item__start-time">{{ event.startTime.format('h:mma') }}</span>
+        <span class="c-event-list-item__start-time">{{ event.startTime | toHoursMinutesMeridiem }}</span>
         <span class="c-event-list-item__name">{{ event.name }}</span>
         <span class="c-event-list-item__close">
             <x-icon @click="handleDeleteEventClick(event.id)" class="icon icon--pointer icon--med"/>
@@ -8,6 +8,7 @@
         <span class="c-event-list-item__notes">{{ event.notes }}</span>
     </li>
 </template>
+
 
 
 <script>
@@ -25,7 +26,6 @@
         },
 
 
-        // ==================== props: ====================
         props: {
             /**
              * The 'event' object
@@ -38,19 +38,17 @@
         },
 
 
-        // ==================== methods: ====================
         methods: {
             /**
-             * Handle event: when users clicks delete event icon, delete the event from store
+             * Handle event: when users clicks delete event icon, delete the event from store.
              */
             handleDeleteEventClick(id) {
                 this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, true);
                 this.$store.commit(SELECT_EVENT_ID_MUTATION, id);
             }
-        },
+    },
 
 
-        // ==================== computed: ====================
         computed: {
             /**
              * Dynamically computed css classes for the component
@@ -70,6 +68,7 @@
         }
     }
 </script>
+
 
 
 <style scoped lang="scss">

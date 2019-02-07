@@ -8,66 +8,67 @@ import * as MUTATION from './typesMutation';
 Vue.use(Vuex);
 
 
+
 // We have both named exports and default exports in order to properly mock Vuex for unit testing. See Vuex docs.
+// -------------------- named exports: --------------------
 export const state = {
     // n.b. these are numbers:
     selectedYear:                   moment().year(),
-    selectedMonth:                  moment().month(),     // n.b. month is 0-indexed
+    selectedMonth:                  moment().month(),   // n.b. month is 0-indexed
     selectedDay:                    moment().date(),
     selectedEventId:                null,
     shouldShowConfirmModal:         false,
-    shouldShowMonthViewBgOverlay:   false,
+    shouldShowMonthViewBgOverlay:   false,              // (Boolean) Determines if background overlay should be shown (e.g. for modals)
 
     // n.b. if we were more concerned about performance, we should replace the events array with an object/hash
     // so that we select and delete at O(1) instead of doing Array.filter:
     eventsInCalendar: [
-        // TODO: replace dummy data before deploying to production:
         // TODO: need to validate start/end dates
         {
             id: 484371,
             name: 'Vacation',
-            startTime: moment().add(34, 'minutes'),
-            endTime: moment().add(34, 'minutes'),
+            startTime: "2019-02-06T06:33:08.402Z",
+            endTime: "2019-02-06T06:33:08.402Z",
             notes: 'First day of vacation. Enjoy!',
             label: 'yellow'
         },
         {
             id: 3428574,
             name: 'Vacation',
-            startTime: moment().add(1, 'days'),
-            endTime: moment().add(1, 'days'),
+            startTime: "2019-02-07T06:33:08.404Z",
+            endTime: "2019-02-07T06:33:08.404Z",
             notes: '',
             label: 'yellow'
         },
         {
             id: 242973,
             name: 'Vacation',
-            startTime: moment().add(2, 'days'),
-            endTime: moment().add(2, 'days'),
+            startTime: "2019-02-08T06:33:08.404Z",
+            endTime: "2019-02-08T06:33:08.404Z",
             notes: 'Last day of vacation.',
             label: 'yellow'
         },
         {
             id: 18358328,
             name: 'Pick up laptop',
-            startTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
-            endTime: moment().add(5, 'days').add(12, 'hours').add(10, 'minutes'),
+            startTime: "2019-02-12T18:09:08.404Z",
+            endTime: "2019-02-12T18:09:08.404Z",
             notes: 'Pick up repaired laptop from Galeria Mall.',
             label: 'red'
         },
         {
             id: 852202,
             name: 'Meeting with Yana',
-            startTime: moment().subtract(14, 'days').add(3, 'hours'),
-            endTime: moment().subtract(14, 'days').add(6, 'hours'),
+            startTime: "2019-01-24T08:59:08.405Z",
+            endTime: "2019-01-24T08:59:08.405Z",
             notes: 'At the coffee shop on 14/3 Nevsky Prospect.',
             label: 'green'
         },
         {
             id: 3473275,
             name: 'Dentist appointment',
-            startTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
-            endTime: moment().subtract(5, 'days').add(5, 'hours').add(23, 'minutes'),
+            startTime: "2019-02-02T11:22:08.405Z",
+            endTime: "2019-02-02T11:22:08.405Z",
             notes: 'Plan to leave at least 30 minutes ahead to avoid traffic.',
             label: 'blue'
         }
@@ -77,13 +78,54 @@ export const state = {
 
 export const getters = {
     /**
+     * Filters the Vuex store's event list for only the events in the selected day
+     *
+     * @returns {Array}: list of events on the selected date
+     */
+    eventsInDay(state, getters) {
+        const listOfEvents = state.eventsInCalendar;
+        const selectedDate = getters.getMomentObjectFromSelectedDate;
+
+        return listOfEvents.filter((event) => {
+            return (selectedDate.isSameOrAfter(event.startTime, 'day')) &&
+                   (selectedDate.isSameOrBefore(event.endTime,  'day'));
+        });
+    },
+
+    /**
      * Creates a moment object given the selected year-month-day
      *
-     * @param state
      * @returns {moment}: moment object
      */
     getMomentObjectFromSelectedDate(state) {
         return createMomentObjectFromYearMonthDay(state.selectedYear, state.selectedMonth, state.selectedDay);
+    },
+
+    /**
+     * Gets formatted selected month text from Vuex store
+     *
+     * @returns {String}: formatted month text
+     */
+    getFullMonthText(state, getters) {
+        return getters.getMomentObjectFromSelectedDate.format('MMMM');
+    },
+
+    /**
+     * Gets formatted selected year text from Vuex store
+     *
+     * @returns {String}: formatted year text
+     */
+    getFullYearText(state, getters) {
+        return getters.getMomentObjectFromSelectedDate.format('YYYY');
+    },
+
+    /**
+     * Gets formatted selected day-of-week text from Vuex store
+     *
+     * @returns {String}: formatted day-of-week text
+     */
+    getDayOfWeekAndMonthText(state, getters) {
+        return getters.getMomentObjectFromSelectedDate.format('dd D');
     }
 };
 
@@ -124,7 +166,6 @@ export const mutations = {
     },
 
     // TODO: this should be an async Vuex action:
-    // TODO: make the parameters the same as the
     /**
      * Deletes an event from the list of events (`eventsInCalendar`)
      *
@@ -157,7 +198,7 @@ export const actions = {
 
 
 
-// ==================== default exports: ====================
+// -------------------- default exports: --------------------
 export default new Vuex.Store({
     state,
     getters,

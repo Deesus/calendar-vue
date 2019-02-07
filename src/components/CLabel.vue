@@ -3,6 +3,7 @@
 </template>
 
 
+
 <script>
     import { LABEL_COLORS } from "../appConstants";
 
@@ -11,7 +12,6 @@
         name: 'CLabel',
 
 
-        // ==================== props: ====================
         props: {
             /**
              * Background color of label
@@ -47,7 +47,6 @@
         },
 
 
-        // ==================== computed: ====================
         computed: {
             /**
              * Dynamically computed css classes for the component
@@ -70,6 +69,7 @@
 
     }
 </script>
+
 
 
 <style scoped lang="scss">
