@@ -1,4 +1,4 @@
-const DATE_ENUM = Object.freeze({
+export const DATE_ENUM = Object.freeze({
     // ---------- day of week: ----------
     SUNDAY: 0,
     MONDAY: 1,
@@ -24,7 +24,7 @@ const DATE_ENUM = Object.freeze({
 });
 
 
-const LABEL_COLORS = Object.freeze({
+export const LABEL_COLORS = Object.freeze({
     BLUE:   'blue',
     GREEN:  'green',
     PURPLE: 'purple',
@@ -34,14 +34,6 @@ const LABEL_COLORS = Object.freeze({
 
 
 // `keyup` and `keydown` codes (but NOT `keypress`):
-const KEY_CODES = Object.freeze({
+export const KEY_CODES = Object.freeze({
     ESCAPE: 27
 });
-
-
-// ==================== exports: ====================
-export {
-    DATE_ENUM,
-    KEY_CODES,
-    LABEL_COLORS
-};

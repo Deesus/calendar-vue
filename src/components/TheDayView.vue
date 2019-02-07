@@ -71,7 +71,7 @@
         ADD_EVENT_TO_CALENDAR_MUTATION,
         SHOW_MONTH_VIEW_BG_OVERLAY,
         EDIT_EVENT_IN_CALENDAR_MUTATION
-    } from '../store/mutation-types';
+    } from '../store/typesMutation';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
     import { PlusIcon, XIcon, ChevronLeftIcon } from 'vue-feather-icons';

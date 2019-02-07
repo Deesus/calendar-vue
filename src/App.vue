@@ -20,7 +20,7 @@
     import CConfirmationModal from './components/CConfirmationModal.vue';
     import { REMOVE_EVENT_FROM_CALENDAR_MUTATION,
              SHOW_CONFIRM_MODAL_MUTATION
-           } from './store/mutation-types';
+           } from './store/typesMutation';
 
 
     export default {

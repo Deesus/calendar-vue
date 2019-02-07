@@ -17,7 +17,7 @@
 
 <script>
     import { KEY_CODES } from '../appConstants';
-    import { SHOW_CONFIRM_MODAL_MUTATION } from '../store/mutation-types';
+    import { SHOW_CONFIRM_MODAL_MUTATION } from '../store/typesMutation';
     import { XIcon } from 'vue-feather-icons';
 
     export default {

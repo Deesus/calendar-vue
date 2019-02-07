@@ -7,12 +7,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: {
-        // this is the same as `import` statements in `web.entry.js`:
+        // this is the same as `import` statements in `main.js`:
         // n.b. order matters (e.g. web entry needs to be loaded last):
         main: [
             'babel-runtime/regenerator',
             'webpack-hot-middleware/client?reload=true',    // creates websocket connection (and reloading on change)
-            './src/web.entry.js'
+            './src/main.js'
         ]
     },
 
@@ -151,7 +151,7 @@ module.exports = {
         new VueLoaderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new HTMLWebpackPlugin({
-            template: './src/index.html'
+            template: './src/public/index.html'
         })
     ]
 };

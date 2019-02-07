@@ -11,7 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: {
-        main: ['./src/web.entry.js']
+        main: ['./src/main.js']
     },
 
 
@@ -144,7 +144,7 @@ module.exports = {
         new MiniCSSExtractPlugin(),
         new VueLoaderPlugin(),
         new HTMLWebpackPlugin({
-            template: './src/index.html',    // n.b. this can be `.html`, `.ejs`, etc.
+            template: './src/public/index.html',    // n.b. this can be `.html`, `.ejs`, etc.
             inject:   true,
         }),
         new BabelMinifyPlugin()

@@ -21,7 +21,7 @@
 
 <script>
     import { DATE_ENUM } from '../appConstants';
-    import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/mutation-types';
+    import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/typesMutation';
     import { ChevronLeftIcon, ChevronRightIcon } from 'vue-feather-icons';
 
     const HEADER_TRANSITION_DIRECTION_NEXT_NAME = 'NEXT';

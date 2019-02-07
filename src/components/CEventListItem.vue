@@ -12,7 +12,7 @@
 
 <script>
     import { XIcon } from 'vue-feather-icons';
-    import { SELECT_EVENT_ID_MUTATION, SHOW_CONFIRM_MODAL_MUTATION } from '../store/mutation-types';
+    import { SELECT_EVENT_ID_MUTATION, SHOW_CONFIRM_MODAL_MUTATION } from '../store/typesMutation';
     import { LABEL_COLORS } from '../appConstants';
 
 

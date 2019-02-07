@@ -19,7 +19,7 @@
     import { SET_CURRENT_DAY_MUTATION,
              SET_CURRENT_MONTH_MUTATION,
              SET_CURRENT_YEAR_MUTATION
-           } from '../store/mutation-types';
+           } from '../store/typesMutation';
     import { DATE_ENUM } from '../appConstants';
     import CLabel from '../components/CLabel.vue';
 
