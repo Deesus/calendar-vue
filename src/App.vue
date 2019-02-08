@@ -16,11 +16,11 @@
 
 
 <script>
+    import { mapState } from 'vuex';
     import CMonthView from './components/TheMonthView.vue';
     import CConfirmationModal from './components/CConfirmationModal.vue';
-    import { REMOVE_EVENT_FROM_CALENDAR_MUTATION,
-             SHOW_CONFIRM_MODAL_MUTATION
-           } from './store/typesMutation';
+    import * as MUTATION from './store/typesMutations';
+    import * as ACTION from './store/typesActions';
 
 
     export default {
@@ -33,30 +33,48 @@
         },
 
 
-        // ==================== computed: ====================
         computed: {
-            shouldShowConfirmModal() {
-                return this.$store.state.shouldShowConfirmModal;
-            }
+            ...mapState([
+                'fbInstance',
+                'shouldShowConfirmModal',
+                'selectedEventId'
+            ])
         },
 
 
-        // ==================== methods: ====================
         methods: {
-
             /**
              * Handle event: when user clicks the delete button on the confirmation modal, delete calendar event from store and close modal
              */
             handleConfirmationModalDeleteClick() {
-                this.$store.commit(REMOVE_EVENT_FROM_CALENDAR_MUTATION, this.$store.state.selectedEventId);
-                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
+                this.$store.dispatch(ACTION.DELETE_EVENT, this.selectedEventId);
+                this.$store.commit(MUTATION.SHOW_CONFIRM_MODAL, false);
             },
 
             /**
              * Handle event: when user clicks the cancel button on the confirmation modal, just close the modal
              */
             handleConfirmationModalCancelClick() {
-                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
+                this.$store.commit(MUTATION.SHOW_CONFIRM_MODAL, false);
+            }
+        },
+
+
+        // -------------------- life cycle hooks: --------------------
+        mounted() {
+            // fetch 'events in calendar' data:
+
+            // we can't have more than one connection Firebase's server;
+            // thus, only fetch data if a Firebase instance doesn't already exist:
+            if (!this.fbInstance) {
+                this.$store
+                    // establish Firebase connection:
+                    .dispatch(ACTION.INSTANTIATE_FIREBASE)
+
+                    // get initial data:
+                    .then( () => {
+                        this.$store.dispatch(ACTION.GET_INITIAL_DATA);
+                    });
             }
         }
     }

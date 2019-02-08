@@ -1,8 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import Firebase from 'firebase/app';
+import 'firebase/database';
+import firebaseSecrets from '../../SECRETS.FIREBASE';
 import moment from 'moment-timezone';
 import { createMomentObjectFromYearMonthDay } from '../utils/utils';
-import * as MUTATION from './typesMutation';
+import * as MUTATION from './typesMutations';
+import * as ACTION from './typesActions';
+import * as CONST from '../appConstants';
 
 
 Vue.use(Vuex);
@@ -19,61 +24,13 @@ export const state = {
     selectedEventId:                null,
     shouldShowConfirmModal:         false,
     shouldShowMonthViewBgOverlay:   false,              // (Boolean) Determines if background overlay should be shown (e.g. for modals)
+    fbInstance:                     null,
 
     // n.b. if we were more concerned about performance, we should replace the events array with an object/hash
     // so that we select and delete at O(1) instead of doing Array.filter:
-    eventsInCalendar: [
-        // TODO: need to validate start/end dates
-        {
-            id: 484371,
-            name: 'Vacation',
-            startTime: "2019-02-06T06:33:08.402Z",
-            endTime: "2019-02-06T06:33:08.402Z",
-            notes: 'First day of vacation. Enjoy!',
-            label: 'yellow'
-        },
-        {
-            id: 3428574,
-            name: 'Vacation',
-            startTime: "2019-02-07T06:33:08.404Z",
-            endTime: "2019-02-07T06:33:08.404Z",
-            notes: '',
-            label: 'yellow'
-        },
-        {
-            id: 242973,
-            name: 'Vacation',
-            startTime: "2019-02-08T06:33:08.404Z",
-            endTime: "2019-02-08T06:33:08.404Z",
-            notes: 'Last day of vacation.',
-            label: 'yellow'
-        },
-        {
-            id: 18358328,
-            name: 'Pick up laptop',
-            startTime: "2019-02-12T18:09:08.404Z",
-            endTime: "2019-02-12T18:09:08.404Z",
-            notes: 'Pick up repaired laptop from Galeria Mall.',
-            label: 'red'
-        },
-        {
-            id: 852202,
-            name: 'Meeting with Yana',
-            startTime: "2019-01-24T08:59:08.405Z",
-            endTime: "2019-01-24T08:59:08.405Z",
-            notes: 'At the coffee shop on 14/3 Nevsky Prospect.',
-            label: 'green'
-        },
-        {
-            id: 3473275,
-            name: 'Dentist appointment',
-            startTime: "2019-02-02T11:22:08.405Z",
-            endTime: "2019-02-02T11:22:08.405Z",
-            notes: 'Plan to leave at least 30 minutes ahead to avoid traffic.',
-            label: 'blue'
-        }
-    ]
+    eventsInCalendar: []
 };
+
 
 
 export const getters = {
@@ -95,7 +52,7 @@ export const getters = {
     /**
      * Creates a moment object given the selected year-month-day
      *
-     * @returns {moment}: moment object
+     * @returns {Object}: moment object
      */
     getMomentObjectFromSelectedDate(state) {
         return createMomentObjectFromYearMonthDay(state.selectedYear, state.selectedMonth, state.selectedDay);
@@ -130,70 +87,178 @@ export const getters = {
 };
 
 
+
 export const mutations = {
-    [MUTATION.SET_CURRENT_DAY_MUTATION](state, selectedDay) {
+    [MUTATION.SET_CURRENT_DAY](state, selectedDay) {
         state.selectedDay = selectedDay;
     },
 
-    [MUTATION.SET_CURRENT_MONTH_MUTATION](state, selectedMonth) {
+    [MUTATION.SET_CURRENT_MONTH](state, selectedMonth) {
         state.selectedMonth = selectedMonth;
     },
 
-    [MUTATION.SET_CURRENT_YEAR_MUTATION](state, selectedYear) {
+    [MUTATION.SET_CURRENT_YEAR](state, selectedYear) {
         state.selectedYear = selectedYear;
     },
 
-    // TODO: this should be an async Vuex action:
-    /**
-     * Adds event to list of events (`eventsInCalendar`)
-     *
-     * @param state
-     * @param event: e
-     */
-    [MUTATION.ADD_EVENT_TO_CALENDAR_MUTATION](state, event) {
+    [MUTATION.ADD_EVENT](state, event) {
         state.eventsInCalendar.push(event);
     },
 
-    /**
-     * Edit an event in the list of events (`eventsInCalendar`)
-     *
-     * @param state
-     * @param editedEvent: event to edit
-     */
-    [MUTATION.EDIT_EVENT_IN_CALENDAR_MUTATION](state, editedEvent) {
-        let indexOfEvent = state.eventsInCalendar.findIndex( (item) => item.id === editedEvent.id);
-        state.eventsInCalendar.splice(indexOfEvent, 1, editedEvent);
+    [MUTATION.EDIT_EVENT](state, updatedEvent) {
+        const arr = [...state.eventsInCalendar];
+
+        // modify only the event whose object we updated:
+        state.eventsInCalendar = arr.map((event) => {
+            if (event.id === updatedEvent.id) {
+                return updatedEvent;
+            }
+            else {
+                return event;
+            }
+        });
     },
 
-    // TODO: this should be an async Vuex action:
-    /**
-     * Deletes an event from the list of events (`eventsInCalendar`)
-     *
-     * @param state
-     * @param idToRemove {Number}: id of event to delete
-     */
-    [MUTATION.REMOVE_EVENT_FROM_CALENDAR_MUTATION](state, idToRemove) {
+    [MUTATION.DELETE_EVENT](state, idToRemove) {
         state.eventsInCalendar = state.eventsInCalendar.filter( (event)=> {
             return event.id !== idToRemove;
         });
     },
 
-    [MUTATION.SELECT_EVENT_ID_MUTATION](state, eventId) {
+    [MUTATION.SELECT_EVENT_ID](state, eventId) {
         state.selectedEventId = eventId;
     },
 
-    [MUTATION.SHOW_CONFIRM_MODAL_MUTATION](state, shouldShowModal) {
+    [MUTATION.SHOW_CONFIRM_MODAL](state, shouldShowModal) {
         state.shouldShowConfirmModal = shouldShowModal;
     },
 
     [MUTATION.SHOW_MONTH_VIEW_BG_OVERLAY](state, shouldShowOverlay) {
         state.shouldShowMonthViewBgOverlay = shouldShowOverlay;
+    },
+
+    [MUTATION.UPDATE_ALL_EVENTS](state, eventsInCalendar) {
+        state.eventsInCalendar = eventsInCalendar;
+    },
+
+    [MUTATION.INSTANTIATE_FIREBASE](state, fbInstance) {
+        state.fbInstance = fbInstance;
     }
 };
 
 
-export const actions = {
 
+export const actions = {
+    /**
+     * Gets all events in calendar.
+     * Typically this is best used when app is initially loaded/mounted.
+     *
+     * @param commit
+     * @param state
+     */
+    [ACTION.GET_INITIAL_DATA]({ commit, state }) {
+        state.fbInstance
+            .ref(CONST.FIREBASE.REFERENCE_NODE)
+            .once('value')
+            .then((snapshot) => {
+                const calendarDataJSON = snapshot.val();
+
+                // convert data to array of entries (removing the redundant, top-level id/key from resulting array):
+                const arr = [];
+                for (const [key, val] of Object.entries(calendarDataJSON)) {
+                    arr.push(val);
+                }
+
+                commit(MUTATION.UPDATE_ALL_EVENTS, arr);
+            })
+            .catch((error) => {
+                // TODO: gracefully handle error
+            });
+    },
+
+    /**
+     * Instantiates connection to Firebase realtime database.
+     *
+     * @param commit
+     * @param state
+     */
+    [ACTION.INSTANTIATE_FIREBASE]({ commit, state }) {
+        const fb = Firebase.initializeApp(firebaseSecrets)
+                           .database();
+
+        commit(MUTATION.INSTANTIATE_FIREBASE, fb);
+    },
+
+    /**
+     * Saves new events to Firebase store then pushes to event list (Vuex).
+     *
+     * @param commit
+     * @param state
+     * @param postData {Object}: Event object containing all the properties needed for a calendar event
+     */
+    [ACTION.ADD_EVENT]({ commit, state }, postData) {
+        // the Firebase key for new/existing post is the event's id:
+        const postKey = postData.id;
+
+        state.fbInstance
+             .ref(CONST.FIREBASE.REFERENCE_NODE)
+             .child(postKey)
+             .update(postData)
+             // after successful Firebase update, push event to event list (in Vuex):
+             // TODO: perhaps we should ensure that Vuex and Firebase are synced: re-fetch data?
+             .then(() => {
+                commit(MUTATION.ADD_EVENT, postData);
+             })
+             .catch((error) => {
+                // TODO: gracefully handle error
+             });
+    },
+
+
+    /**
+     * Updates an exiting event in Firebase.
+     *
+     * @param commit
+     * @param state
+     * @param postData {Object}: Event object containing updated properties
+     */
+    [ACTION.EDIT_EVENT]({ commit, state }, postData) {
+        // the Firebase key for new/existing post is the event's id:
+        const postKey = postData.id;
+
+        state.fbInstance
+             .ref(CONST.FIREBASE.REFERENCE_NODE)
+             .child(postKey)
+             .update(postData)
+             .then(() => {
+                commit(MUTATION.EDIT_EVENT, postData);
+             })
+             .catch((error) => {
+                // TODO: gracefully handle error
+             });
+    },
+
+    /**
+     * Deletes event from Firebase as well as Vuex's list of events.
+     *
+     * @param commit
+     * @param state
+     * @param eventId {Number}: event's id property; the event to be deleted
+     * TODO: change method signature to reference event object rather than the event's id directly.
+     */
+    [ACTION.DELETE_EVENT]({ commit, state }, eventId) {
+        state.fbInstance
+             .ref(CONST.FIREBASE.REFERENCE_NODE)
+             .child(eventId)
+             .remove()
+             // after successful removal of event from Firebase, remove event from Vuex store as well:
+             .then(() => {
+                commit(MUTATION.DELETE_EVENT, eventId);
+             })
+             .catch((error) => {
+                // TODO: gracefully handle error
+             });
+    }
 };
 
 

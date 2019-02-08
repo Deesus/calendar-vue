@@ -13,7 +13,7 @@
 
 <script>
     import { XIcon } from 'vue-feather-icons';
-    import { SELECT_EVENT_ID_MUTATION, SHOW_CONFIRM_MODAL_MUTATION } from '../store/typesMutation';
+    import { SELECT_EVENT_ID, SHOW_CONFIRM_MODAL } from '../store/typesMutations';
     import { LABEL_COLORS } from '../appConstants';
 
 
@@ -43,8 +43,8 @@
              * Handle event: when users clicks delete event icon, delete the event from store.
              */
             handleDeleteEventClick(id) {
-                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, true);
-                this.$store.commit(SELECT_EVENT_ID_MUTATION, id);
+                this.$store.commit(SHOW_CONFIRM_MODAL, true);
+                this.$store.commit(SELECT_EVENT_ID, id);
             }
     },
 
@@ -58,11 +58,11 @@
             cssClassesForEventListItem() {
                 return {
                     'c-event-list-item':         true,
-                    'c-event-list-item--blue':   this.event.label === LABEL_COLORS.BLUE,
-                    'c-event-list-item--green':  this.event.label === LABEL_COLORS.GREEN,
-                    'c-event-list-item--purple': this.event.label === LABEL_COLORS.PURPLE,
-                    'c-event-list-item--red':    this.event.label === LABEL_COLORS.RED,
-                    'c-event-list-item--yellow': this.event.label === LABEL_COLORS.YELLOW
+                    'c-event-list-item--blue':   this.event.labelColor === LABEL_COLORS.BLUE,
+                    'c-event-list-item--green':  this.event.labelColor === LABEL_COLORS.GREEN,
+                    'c-event-list-item--purple': this.event.labelColor === LABEL_COLORS.PURPLE,
+                    'c-event-list-item--red':    this.event.labelColor === LABEL_COLORS.RED,
+                    'c-event-list-item--yellow': this.event.labelColor === LABEL_COLORS.YELLOW
                 }
             }
         }

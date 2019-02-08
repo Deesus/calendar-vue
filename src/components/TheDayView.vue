@@ -71,7 +71,8 @@
              randomSample
            } from '../utils/utils';
     import { LABEL_COLORS, KEY_CODES } from '../appConstants';
-    import * as MUTATION from '../store/typesMutation';
+    import * as MUTATION from '../store/typesMutations';
+    import * as ACTION from '../store/typesActions';
     import CTimePicker from './CTimePicker.vue';
     import CEventListItem from './CEventListItem.vue';
 
@@ -96,9 +97,9 @@
                 addEventNotesElementId: 'add-notes-textarea',
 
                 calendarEventLabel: '',
-                calendarEventName: '',
+                calendarEventName:  '',
                 calendarEventNotes: '',
-                calendarEventId: null,
+                calendarEventId:    null,
 
                 // n.b. default values get updated as soon as the time-picker component has mounted:
                 calendarEventStartTime: {
@@ -143,32 +144,32 @@
 
                 if (this.calendarEventId === null) {
                     // TODO: should change from mutation to action:
-                    this.$store.commit(MUTATION.ADD_EVENT_TO_CALENDAR_MUTATION, {
+                    this.$store.dispatch(ACTION.ADD_EVENT, {
                         id:         createUniqueId(),
                         name:       this.calendarEventName,
                         startTime:  isoString,
                         endTime:    isoString,
                         notes:      this.calendarEventNotes,
-                        label:      randomSample(Object.values(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
+                        labelColor: randomSample(Object.values(LABEL_COLORS))     // TODO: replace random label color with ability to pick color
                     });
                 }
                 // ---------- if editing an existing event (`calendarEventId` will not be null): ----------
                 else {
-                    // this is the same as 'add event,' except the event id and label are already given, plus we're calling to EDIT_EVENT_IN_CALENDAR_MUTATION:
-                    this.$store.commit(MUTATION.EDIT_EVENT_IN_CALENDAR_MUTATION, {
+                    // this is the same as 'add event,' except the event id and label are already given, plus we're calling to EDIT_EVENT_IN_CALENDAR:
+                    this.$store.dispatch(ACTION.EDIT_EVENT, {
                         id:         this.calendarEventId,
                         name:       this.calendarEventName,
                         startTime:  isoString,
                         endTime:    isoString,
                         notes:      this.calendarEventNotes,
-                        label:      this.calendarEventLabel
+                        labelColor: this.calendarEventLabel
                     });
                 }
 
                 // ---------- after successful store commit, reset fields: ----------
-                this.calendarEventName = '';
+                this.calendarEventName  = '';
                 this.calendarEventNotes = '';
-                this.calendarEventId = null;
+                this.calendarEventId    = null;
             },
 
             /**
@@ -190,7 +191,7 @@
                 // convert ISO date-time value to moment object, then we can query hours, minutes, meridiem:
                 const momentEventStartTime = getHoursMinutesMeridiumFromISO(calendarEvent.startTime);
 
-                this.calendarEventLabel              = calendarEvent.label;
+                this.calendarEventLabel              = calendarEvent.labelColor;
                 this.calendarEventName               = calendarEvent.name;
                 this.calendarEventNotes              = calendarEvent.notes;
                 this.calendarEventId                 = calendarEvent.id;

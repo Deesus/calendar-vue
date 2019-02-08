@@ -22,7 +22,7 @@
 
 <script>
     import { DATE_ENUM } from '../appConstants';
-    import { SET_CURRENT_MONTH_MUTATION, SET_CURRENT_YEAR_MUTATION } from '../store/typesMutation';
+    import * as MUTATION from '../store/typesMutations';
     import { ChevronLeftIcon, ChevronRightIcon } from 'vue-feather-icons';
 
     const HEADER_TRANSITION_DIRECTION_NEXT_NAME = 'NEXT';
@@ -59,11 +59,11 @@
 
                 // update selected month and year:
                 if (this.$store.state.selectedMonth === DATE_ENUM.JANUARY) {
-                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.DECEMBER);
-                    this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear - 1);
+                    this.$store.commit(MUTATION.SET_CURRENT_MONTH, DATE_ENUM.DECEMBER);
+                    this.$store.commit(MUTATION.SET_CURRENT_YEAR, this.$store.state.selectedYear - 1);
                 }
                 else {
-                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, this.$store.state.selectedMonth - 1);
+                    this.$store.commit(MUTATION.SET_CURRENT_MONTH, this.$store.state.selectedMonth - 1);
                 }
             },
 
@@ -77,11 +77,11 @@
 
                 // update selected month and year:
                 if (this.$store.state.selectedMonth === DATE_ENUM.DECEMBER) {
-                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, DATE_ENUM.JANUARY);
-                    this.$store.commit(SET_CURRENT_YEAR_MUTATION, this.$store.state.selectedYear + 1);
+                    this.$store.commit(MUTATION.SET_CURRENT_MONTH, DATE_ENUM.JANUARY);
+                    this.$store.commit(MUTATION.SET_CURRENT_YEAR, this.$store.state.selectedYear + 1);
                 }
                 else {
-                    this.$store.commit(SET_CURRENT_MONTH_MUTATION, this.$store.state.selectedMonth + 1);
+                    this.$store.commit(MUTATION.SET_CURRENT_MONTH, this.$store.state.selectedMonth + 1);
                 }
             }
         },

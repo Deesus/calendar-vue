@@ -7,7 +7,7 @@
             <c-label class="c-month-view-day__event"
                      v-for="event in eventsInDay"
                      :key="event.id"
-                     :color="event.label"
+                     :color="event.labelColor"
                      :message="event.name"
                      :blockLevel="'block'"/>
         </div>
@@ -17,10 +17,7 @@
 
 
 <script>
-    import { SET_CURRENT_DAY_MUTATION,
-             SET_CURRENT_MONTH_MUTATION,
-             SET_CURRENT_YEAR_MUTATION
-           } from '../store/typesMutation';
+    import * as MUTATION from '../store/typesMutations';
     import { DATE_ENUM } from '../appConstants';
     import CLabel from '../components/CLabel.vue';
 
@@ -50,9 +47,9 @@
             // since we commit the the 'current date', if we select days from next/previous month,
             // the return link redirects to new month rather than the month user was viewing
             dayClicked() {
-                this.$store.commit(SET_CURRENT_DAY_MUTATION,     this.day.date() );
-                this.$store.commit(SET_CURRENT_MONTH_MUTATION,   this.day.month() );
-                this.$store.commit(SET_CURRENT_YEAR_MUTATION,    this.day.year() );
+                this.$store.commit(MUTATION.SET_CURRENT_DAY,     this.day.date() );
+                this.$store.commit(MUTATION.SET_CURRENT_MONTH,   this.day.month() );
+                this.$store.commit(MUTATION.SET_CURRENT_YEAR,    this.day.year() );
             },
         },
 

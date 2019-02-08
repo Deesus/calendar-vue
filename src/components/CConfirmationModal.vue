@@ -18,7 +18,7 @@
 
 <script>
     import { KEY_CODES } from '../appConstants';
-    import { SHOW_CONFIRM_MODAL_MUTATION } from '../store/typesMutation';
+    import { SHOW_CONFIRM_MODAL } from '../store/typesMutations';
     import { XIcon } from 'vue-feather-icons';
 
     export default {
@@ -55,7 +55,7 @@
              * Handle event: when user clicks to close 'confirmation modal' (e.g. 'X' icon), close the modal
              */
             handleCloseModalClick() {
-                this.$store.commit(SHOW_CONFIRM_MODAL_MUTATION, false);
+                this.$store.commit(SHOW_CONFIRM_MODAL, false);
             },
 
             /**

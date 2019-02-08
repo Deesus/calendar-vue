@@ -37,3 +37,10 @@ export const LABEL_COLORS = Object.freeze({
 export const KEY_CODES = Object.freeze({
     ESCAPE: 27
 });
+
+
+export const FIREBASE = Object.freeze({
+    // see <https://firebase.google.com/docs/reference/js/firebase.database.Reference> about Firebase ref;
+    // if a res is not set on your database, the default value should be a slash: `/`
+    REFERENCE_NODE: 'events'
+});
