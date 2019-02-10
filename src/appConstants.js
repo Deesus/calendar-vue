@@ -42,5 +42,16 @@ export const KEY_CODES = Object.freeze({
 export const FIREBASE = Object.freeze({
     // see <https://firebase.google.com/docs/reference/js/firebase.database.Reference> about Firebase ref;
     // if a res is not set on your database, the default value should be a slash: `/`
-    REFERENCE_NODE: 'events'
+    REFERENCE_NODE: 'events',
+
+    // TODO: replace the api key with your own Firebase key:
+    // the Firebase api key allows users to connect to the db; it's NOT a security risk that we're making it publicly visible
+    API_KEY: {
+        apiKey:             "AIzaSyCdeyI4ZS-YZCMouUEZ9On42VF2kdteBsE",
+        authDomain:         "vuejs-calendar.firebaseapp.com",
+        databaseURL:        "https://vuejs-calendar.firebaseio.com",
+        projectId:          "vuejs-calendar",
+        storageBucket:      "vuejs-calendar.appspot.com",
+        messagingSenderId:  "40971087134"
+    }
 });

@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Firebase from 'firebase/app';
 import 'firebase/database';
-import firebaseSecrets from '../../SECRETS.FIREBASE';
 import moment from 'moment-timezone';
 import { createMomentObjectFromYearMonthDay } from '../utils/utils';
 import * as MUTATION from './typesMutations';
@@ -183,7 +182,7 @@ export const actions = {
      * @param state
      */
     [ACTION.INSTANTIATE_FIREBASE]({ commit, state }) {
-        const fb = Firebase.initializeApp(firebaseSecrets)
+        const fb = Firebase.initializeApp(CONST.FIREBASE.API_KEY)
                            .database();
 
         commit(MUTATION.INSTANTIATE_FIREBASE, fb);

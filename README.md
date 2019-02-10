@@ -2,8 +2,9 @@
 ###### Demo: http://calendar.deepankara.com
 A monthly calendar where users can add custom events, times, and event notes. N.b. this is (currently) a front-end only project.
 
+
 ## Running the app via Docker:
-1. Unsure you have installed Docker.
+1. Unsure you have installed Docker
 2. In Bash, pull and run the image from the remote public repo:
 ```bash
 $ docker run -it -p 8080:80 --rm deesus/calendar-vue:1
@@ -12,10 +13,15 @@ $ docker run -it -p 8080:80 --rm deesus/calendar-vue:1
 
     
 ## Development Quickstart:
-1. clone repo and cd to directory
-2. install packages: `$ npm install`
-3. run the dev server: `$npm run dev` (code changes will automatically be updated in the browser)
-4. You'll want to delete the dummy data (i.e. the calendar events) in the Vuex store (`\src\store\index.js`)
+1. Clone repo and cd to directory
+2. Install packages: `$ npm install`
+3. Run the dev server: `$npm run dev` (code changes will automatically be updated in the browser)
+4. To use your own Firebase realtime database:
+    - Create a new Google Dev account if you don't already have one
+    - In the Firebase console, create a new project and select the *Realtime Database* option
+    - Rename the reference node for your database to `events`
+    - Click *Authentication > Web setup* to access your db's API key
+    - Replace the `API_KEY` property in `appConstants.js` with the API key that the Firebase console provides
 
 
 ## Production:
@@ -24,16 +30,15 @@ $ docker run -it -p 8080:80 --rm deesus/calendar-vue:1
 
 
 ## Technologies utilized:
-- Vue
-- Vue Router
-- Vuex
-- Docker
-- MomentJS
-- CSS Grids
-- Sass (SCSS)
-- Webpack
-- Nginx
+* [Vue](https://vuejs.org/)
+* [Vuex](https://vuex.vuejs.org/)
+* [Vue Router](https://router.vuejs.org/)
+* [Firebase](https://firebase.google.com/)
+* [Sass](http://sass-lang.com/)
+* [Webpack](https://webpack.js.org/)
+* [Docker](https://docs.docker.com/)
+* [Nginx](https://docs.nginx.com/)
 
 
 ## License:
-Copyright © 2018 Dee Reddy. BSD-2 license.
+Copyright © 2018-2019 Dee Reddy. BSD-2 license.
