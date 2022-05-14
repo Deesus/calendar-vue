@@ -41,4 +41,4 @@ $ docker run -it -p 8080:80 --rm deesus/calendar-vue:1
 
 
 ## License:
-Copyright © 2018-2019 Dee Reddy. BSD-2 license.
+Copyright © 2018-2019 Deepankara Reddy. BSD-2 license.
