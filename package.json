@@ -11,7 +11,6 @@
   "keywords": [
     "vue calendar"
   ],
-  "author": "Dee Reddy (Ди Редди)",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
