@@ -1,5 +1,5 @@
 # Vue.js Calendar
-###### Demo: http://calendar.deepankara.com
+###### Demo: https://calendar-vue.onrender.com
 A monthly calendar where users can add custom events, times, and event notes. N.b. this is (currently) a front-end only project.
 
 
